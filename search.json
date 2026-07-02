@@ -1,0 +1,23 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "",
+    "text": "A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI apps in Python — using chatlas, shinychat, and querychat."
+  },
+  {
+    "objectID": "index.html#what-well-cover",
+    "href": "index.html#what-well-cover",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "What we’ll cover",
+    "text": "What we’ll cover\n\n\n🧭Foundationsembrace the good, engineer around the bad · 45 min\n\n\nchatlasprogramming with LLMs · 60 min\n\n\nshinychatchatbots made easy · 45 min\n\n\nquerychatself-service analytics case study · 45 min"
+  },
+  {
+    "objectID": "index.html#resources",
+    "href": "index.html#resources",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "Resources",
+    "text": "Resources\n\nchatlas docs\nshinychat docs\nShiny GenAI chatbots guide\nquerychat docs"
+  }
+]
