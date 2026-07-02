@@ -18,4 +18,29 @@ A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI app
 [Setup Instructions](https://github.com/cpsievert/scipy26-tutorial#install){.btn .btn-outline-secondary role="button"}
 :::
 
-Placeholder — section cards and resources added in Task 3.
+## What we'll cover
+
+::: {.cards}
+::: {.card}
+[[🧭]{.emoji-icon}<br>**Foundations**<br>embrace the good, engineer around the bad · 45 min](slides/01-foundations.html)
+:::
+
+::: {.card}
+[![](slides/images/chatlas.png)<br>**chatlas**<br>programming with LLMs · 60 min](slides/02-chatlas.html)
+:::
+
+::: {.card}
+[![](slides/images/shinychat.svg)<br>**shinychat**<br>chatbots made easy · 45 min](slides/03-shinychat.html)
+:::
+
+::: {.card}
+[![](slides/images/querychat.png)<br>**querychat**<br>self-service analytics case study · 45 min](slides/04-querychat.html)
+:::
+:::
+
+## Resources
+
+- [chatlas docs](https://posit-dev.github.io/chatlas/)
+- [shinychat docs](https://posit-dev.github.io/shinychat/py/)
+- [Shiny GenAI chatbots guide](https://shiny.posit.co/py/docs/genai-chatbots.html)
+- [querychat docs](https://posit-dev.github.io/querychat/py/index.html)

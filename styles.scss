@@ -34,3 +34,40 @@ $link-color: #447099;
 .quick-links .btn {
   margin: 0 0.4rem;
 }
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.card {
+  border: 1px solid #e1e5ea;
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.card img {
+  height: 44px;
+  margin-bottom: 0.5rem;
+}
+
+.card .emoji-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
