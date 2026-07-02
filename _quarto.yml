@@ -1,0 +1,17 @@
+project:
+  type: website
+  render:
+    - index.qmd
+
+website:
+  title: "Safe & Maintainable AI Apps in Python"
+  navbar:
+    right:
+      - icon: github
+        href: https://github.com/cpsievert/scipy26-tutorial
+        aria-label: GitHub repo
+
+format:
+  html:
+    theme: cosmo
+    toc: false

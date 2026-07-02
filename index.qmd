@@ -1,0 +1,7 @@
+---
+title: "Safe & Maintainable AI Apps in Python"
+subtitle: "SciPy 2026 Tutorial"
+title-block-banner: false
+---
+
+Placeholder content — replaced in Task 2 and Task 3.
