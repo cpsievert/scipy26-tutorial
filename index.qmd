@@ -4,4 +4,18 @@ subtitle: "SciPy 2026 Tutorial"
 title-block-banner: false
 ---
 
-Placeholder content — replaced in Task 2 and Task 3.
+::: {.hero}
+![](slides/images/me-square.png){.hero-photo}
+
+### Carson Sievert · Posit
+
+A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI apps in Python — using **chatlas**, **shinychat**, and **querychat**.
+:::
+
+::: {.quick-links}
+[Slides](slides/00-welcome.html){.btn .btn-primary role="button"}
+[GitHub Repo](https://github.com/cpsievert/scipy26-tutorial){.btn .btn-outline-secondary role="button"}
+[Setup Instructions](https://github.com/cpsievert/scipy26-tutorial#install){.btn .btn-outline-secondary role="button"}
+:::
+
+Placeholder — section cards and resources added in Task 3.
