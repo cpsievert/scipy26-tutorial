@@ -1,0 +1,6 @@
+querychat[viz]
+shinychat
+chatlas
+polars
+sqlalchemy
+duckdb

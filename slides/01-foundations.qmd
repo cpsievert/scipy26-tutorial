@@ -1,0 +1,408 @@
+---
+title: "Foundations"
+subtitle: "Embrace the good, engineer around the bad"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+# LLM capabilities are _jagged_ {.center}
+
+::: notes
+The single most important mental model for this whole day. "Jagged" comes from
+Ethan Mollick's research — the idea that LLM capability isn't a smooth gradient
+from easy to hard. Some tasks that *feel* trivial to humans are brutally hard
+for LLMs, and vice versa.
+:::
+
+## The strawberry problem {.center}
+
+> How many r's are in "strawberry"?
+
+::: {.fragment}
+
+Most LLMs confidently answer **2**.
+
+The correct answer is **3**.
+
+:::
+
+::: {.fragment}
+An "easy" task for a 5-year-old. A hard task for a trillion-parameter model.
+:::
+
+::: notes
+Live demo opportunity: actually ask an LLM this in real time if you want.
+Recent models have gotten better at this specific example (it's become a
+benchmark), but the underlying point stands: tokenization means LLMs don't
+"see" individual characters the way we do. This is a symptom, not a fluke.
+:::
+
+## But also... {.center}
+
+::: {.placeholder style="min-height: 350px;"}
+SCREENSHOT: an impressive Claude Code or Copilot session —<br>
+a complex coding task completed in seconds<br>
+(e.g., "build me a Shiny app that does X" → working app)
+:::
+
+A "hard" task for most humans. Trivial for an LLM.
+
+::: notes
+The juxtaposition is the point. The same system that can't count letters can
+write a working web app from a paragraph of prose. The audience should feel
+this tension viscerally — it's what motivates everything we build today.
+:::
+
+## The jagged frontier {.center}
+
+::: {.placeholder style="min-height: 400px;"}
+IMAGE: "Jagged frontier" illustration —<br>
+a line graph with "task difficulty (human perception)" on x-axis<br>
+and "LLM performance" on y-axis, showing a jagged, non-monotonic curve<br>
+(Source: Ethan Mollick / "Co-Intelligence", or recreate as a simple sketch)
+:::
+
+::: notes
+Credit Ethan Mollick here. The frontier is jagged — there are pockets of
+superhuman performance next to pockets of embarrassing failure. Our job as
+engineers is to put LLMs to work in the high-performance pockets and build
+guardrails around the low ones.
+:::
+
+## The key insight {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+
+### LLMs are great at
+
+- Language → code
+- Summarization
+- Pattern matching
+- "Fuzzy" translation
+
+:::
+::: {.column width="50%"}
+
+### LLMs are bad at
+
+- Precise counting / math
+- Faithful recall of facts
+- Consistent long-range state
+- Knowing what they don't know
+
+:::
+:::
+
+::: {.fragment}
+**Our strategy:** focus LLMs on what they're good at, and **engineer around** the rest.
+:::
+
+::: notes
+This two-column framing is the actionable takeaway from the jagged frontier.
+The left column is where we'll aim chatlas, shinychat, and querychat — we're
+asking LLMs to *translate user intent into code*, not to *be* the database or
+*be* the calculator. The right column is what we'll build harnesses around.
+:::
+
+## What is an agent? {.center}
+
+::: {.columns}
+::: {.column width="55%"}
+
+```{mermaid}
+%%| fig-width: 5.5
+flowchart TD
+    U["👤 User"] --> |prompt| L["🧠 LLM"]
+    L --> |tool call| T["🔧 Tools"]
+    T --> |result| L
+    L --> |response| U
+    style L fill:#447099,stroke:#33567a,color:#fff
+    style T fill:#ee6331,stroke:#c84e1f,color:#fff
+    style U fill:#0e3b5c,stroke:#082638,color:#fff
+```
+
+:::
+::: {.column width="45%"}
+
+An **agent** is an LLM, in a **harness**, that calls **tools** in a loop — deciding each next step from the last result.
+
+- **Read** tools observe the world
+- **Write** tools change the world
+
+:::
+:::
+
+::: notes
+Definition from Joe Cheng's "What is an agent?" post. Keep the diagram on
+screen and walk through it: the user prompts, the LLM decides what tool to
+call, the tool returns a result, the LLM decides what to do next. The "loop"
+part is what separates an agent from a single LLM call.
+
+Read vs. write tools: reading a file, searching the web, querying a database
+= read tools. Writing a file, sending an email, making an API call = write
+tools. The risk profile is very different.
+:::
+
+## Agent harnesses are getting good {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+::: {.placeholder style="min-height: 300px;"}
+SCREENSHOT: Claude Code terminal session<br>
+(something relatable — fixing a bug, writing tests)
+:::
+:::
+::: {.column width="50%"}
+::: {.placeholder style="min-height: 300px;"}
+SCREENSHOT: OpenAI Codex or similar<br>
+(another agent IDE in action)
+:::
+:::
+:::
+
+This has **radically changed** how I work in the last 6 months.
+
+::: notes
+Be personal here. Talk about your actual experience — what changed in your
+workflow, what surprised you, what you'd never go back from. The audience is
+data scientists who probably use ChatGPT but haven't let an agent loose on
+their codebase yet. Your honest enthusiasm (and healthy caution) is the
+credibility play.
+:::
+
+## YOLO mode {.center}
+
+::: {style="font-size: 1.8em; font-weight: 700; margin-bottom: 0.5em;"}
+Let the agent run unsupervised.
+:::
+
+Terrifying. But _so_ useful.
+
+::: {.fragment}
+
+:::: {.columns}
+::: {.column width="50%"}
+### ✅ Viable when...
+- **Local dev** environment
+- Easy to undo (git)
+- Low blast radius
+:::
+::: {.column width="50%"}
+### ❌ Dangerous when...
+- **Hosted / production** system
+- Real users, real data
+- Hard to undo
+:::
+::::
+
+:::
+
+::: notes
+"YOLO mode" is the colloquial term — Claude Code calls it "auto-accept."
+The key distinction: local dev agents operate in a sandbox where the worst case
+is a git reset. Hosted prod agents can delete databases, email customers, or
+corrupt data. Same technology, completely different risk profile. This
+distinction — local dev vs. hosted prod — is a recurring theme today.
+:::
+
+## Hallucinations & sycophancy {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+
+### Hallucination
+
+The model **invents** plausible-sounding information that isn't true.
+
+_"The `pandas.DataFrame.fuzzy_merge()` method..."_
+
+(This doesn't exist.)
+
+:::
+::: {.column width="50%"}
+
+### Sycophancy
+
+The model **agrees** with you even when you're wrong.
+
+_"You're right, that approach is much better!"_
+
+(It wasn't.)
+
+:::
+:::
+
+::: {.fragment}
+Both are **unsolved**. Both are why we need human-in-the-loop design.
+:::
+
+::: notes
+These aren't edge cases — they're fundamental properties of how LLMs work.
+Hallucination comes from next-token prediction having no ground truth anchor.
+Sycophancy comes from RLHF optimizing for human approval. Neither is going
+away soon. The practical consequence: never trust LLM output that you can't
+verify.
+:::
+
+---
+
+::: {style="text-align: center; margin-top: 1.5em;"}
+
+### I feel deeply conflicted about AI {style="color: #0e3b5c;"}
+
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+
+I'm **so** much more productive.
+
+But at what cost?
+
+::: {.fragment}
+**Personal** — Am I losing the ability to think for myself?
+:::
+
+::: {.fragment}
+**Societal** — Am I contributing to something harmful?
+:::
+
+:::
+::: {.column width="50%"}
+::: {.placeholder style="min-height: 300px;"}
+IMAGE: something contemplative —<br>
+a person at a crossroads, or a balance/scale visual<br>
+(keep it tasteful, not melodramatic)
+:::
+:::
+:::
+
+::: notes
+This is the vulnerable moment. Be genuine. The audience is probably feeling
+some version of this too, especially at a conference like SciPy where
+thoughtfulness about technology is valued. Don't resolve the tension — just
+name it honestly. The point is to show that using these tools doesn't require
+ignoring the hard questions.
+:::
+
+## What's the alternative? {.center}
+
+::: {style="font-size: 1.2em; margin-bottom: 0.8em;"}
+If I practice AI abstinence, is that better than<br>helping people practice **safe AI**?
+:::
+
+::: {.fragment}
+I chose to build tools that make AI **safer and more transparent**:
+
+- Humans stay in the loop
+- Outputs are **verifiable**
+- The system is **auditable**
+:::
+
+::: notes
+The sex-ed analogy is deliberately provocative but apt. The alternative to
+engagement isn't purity — it's ceding the space to people who won't build
+guardrails. You've chosen to build tools (chatlas, querychat) that keep humans
+in the driver's seat. That's the "safe AI" framing for the rest of the day.
+:::
+
+## In data science, correctness matters {.center}
+
+::: {.columns}
+::: {.column width="60%"}
+
+Design systems where humans can **course-correct** and **verify**.
+
+- Show your work (code, not just answers)
+- Make it reproducible
+- Let the human say "no, that's wrong"
+
+:::
+::: {.column width="40%"}
+::: {.placeholder style="min-height: 280px;"}
+SCREENSHOT: Posit Assistant showing<br>
+generated code alongside results —<br>
+the "show your work" pattern
+:::
+:::
+:::
+
+::: notes
+This is where your DS background pays off. In stats, we learned that showing
+your methodology matters as much as showing your result. The same principle
+applies to AI-assisted analysis: an app that shows the generated code lets the
+user verify, reproduce, and correct. This is exactly what querychat does — but
+we'll get there.
+
+Mention your colleague's talk on correctness/reproducibility if it's at SciPy.
+TODO(Carson): add the colleague's name and talk title.
+:::
+
+## Don't overthink it {.center}
+
+::: {style="font-size: 1.3em; margin-bottom: 0.5em;"}
+You probably don't need:
+:::
+
+::: {.columns}
+::: {.column width="33%"}
+### ~~Complex RAG~~
+:::
+::: {.column width="34%"}
+### ~~Multi-agent systems~~
+:::
+::: {.column width="33%"}
+### ~~Fine-tuned models~~
+:::
+:::
+
+::: {.fragment style="margin-top: 1em;"}
+What you **do** need:
+
+**Good context** + **good tools** + **a human in the loop**
+
+Unless you have scale issues, agentic search of plain text files works surprisingly well.
+:::
+
+::: notes
+This is the "permission to start simple" slide, and it's the bridge to the
+rest of the tutorial. The three things we'll build with today — chatlas,
+shinychat, querychat — are all context + tools + human-in-the-loop. No vector
+databases, no fine-tuning, no multi-agent orchestration. You can go far with
+the basics done well.
+:::
+
+## The recipe for today {.center}
+
+::: {style="font-size: 1.4em; line-height: 1.8;"}
+
+1. Focus LLMs on **language → code**
+2. Give them **tools** and **context**
+3. Keep **humans in the loop**
+
+:::
+
+::: {.fragment style="margin-top: 0.5em;"}
+That's it. Let's go build.
+:::
+
+::: notes
+This is the thesis slide — the three principles that underpin everything we
+do for the rest of the day. Refer back to it at the start of each section.
+Quick transition to break.
+:::
+
+# ☕ Break — 5 min {.center background-color="#0e3b5c"}
+
+::: notes
+Remind them: next up is chatlas — we're writing code. Make sure their API keys
+/ LM Studio is working before we start.
+:::

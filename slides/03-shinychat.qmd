@@ -1,0 +1,334 @@
+---
+title: "shinychat"
+subtitle: "Chatbots made easy"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+## {.center}
+
+![](images/shinychat.svg){height="250px" fig-align="center"}
+
+Turn a chatlas client into a **full chatbot UI** — in 5 lines.
+
+::: notes
+shinychat is the bridge between "I can call an LLM in a script" and "I have an
+app other people can use." It's built on Shiny for Python, but you don't need
+to know Shiny to use it.
+:::
+
+## The 5-line chatbot {.center}
+
+```{.python filename="app.py"}
+from chatlas import ChatAnthropic
+from shinychat.express import Chat
+
+client = ChatAnthropic(system_prompt="You are a helpful assistant.")
+chat = Chat(id="chat", client=client)
+chat.ui()
+```
+
+```{.bash}
+shiny run app.py
+```
+
+::: notes
+Live demo: create this file, run it, open the browser. This is the wow moment.
+By passing `client=`, shinychat automatically wires up:
+- Streaming responses
+- Multi-turn conversation history
+- Cancel button during generation
+- File attachment support
+- Bookmarkable state
+
+All of that from 5 lines. Let them absorb this before moving on.
+:::
+
+## What `client=` gives you for free {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+
+- ✅ **Streaming** responses
+- ✅ **Multi-turn** conversation
+- ✅ **Tool calling** with display
+- ✅ **Cancel** mid-generation
+
+:::
+::: {.column width="50%"}
+
+- ✅ **File attachments** (images, PDFs)
+- ✅ **Bookmarkable** state
+- ✅ Automatic **error** handling
+- ✅ **Async** by default
+
+:::
+:::
+
+::: {.fragment}
+You _could_ wire all this up manually... but why would you?
+:::
+
+::: notes
+The point of this slide is to justify the abstraction. Each of these features
+would be dozens of lines of code to implement from scratch. The `client=`
+parameter is doing a lot of work under the hood — it calls
+`client.stream_async(user_input, *attachments, content="all")` and feeds the
+result into the chat UI.
+:::
+
+## Bring your own backend {.center}
+
+Not using chatlas? Wire up any async generator:
+
+```{.python filename="app.py"}
+from shinychat.express import Chat
+
+chat = Chat(id="chat")
+chat.ui()
+
+@chat.on_user_submit
+async def handle_user_input(user_input: str):
+    response = my_langchain_chain.astream(user_input)
+    await chat.append_message_stream(response)
+```
+
+::: notes
+Brief slide — just establish the escape hatch. If they're using LangChain,
+Pydantic AI, or any other framework, they can still use shinychat as the UI
+layer. The `@chat.on_user_submit` decorator gives you full control over what
+happens when the user sends a message.
+
+Don't spend more than 60 seconds here — most attendees will use the chatlas
+path.
+:::
+
+## Feature tour {.center}
+
+::: {.columns}
+::: {.column width="33%"}
+
+### Slash commands
+
+```{.python}
+@chat.slash_command(
+    "help",
+    "Show help"
+)
+async def _():
+    await chat.append_message(
+        "Here's how to use me..."
+    )
+```
+
+:::
+::: {.column width="33%"}
+
+### Input suggestions
+
+```{.python}
+await chat.append_message(
+    ui.HTML("""
+    Try asking:
+    <ul>
+      <li><span class='suggestion'>
+        Summarize the data
+      </span></li>
+      <li><span class='suggestion'>
+        Show a bar chart
+      </span></li>
+    </ul>
+    """)
+)
+```
+
+:::
+::: {.column width="34%"}
+
+### Attachments
+
+```{.python}
+# Enabled automatically
+# when client= is set.
+#
+# Or restrict to specific
+# file types:
+chat.ui(
+    allow_attachments=[
+        "image/png",
+        "application/pdf",
+    ],
+)
+```
+
+:::
+:::
+
+::: notes
+Quick flyby — don't demo all of these, just show they exist. Slash commands
+are great for power-user shortcuts. Input suggestions (clickable chips) are
+great for guiding users who don't know what to ask. Attachments are free with
+the chatlas client.
+
+Point out the suggestion pattern: wrapping text in
+`<span class='suggestion'>` makes it clickable. Adding the `submit` class
+auto-submits it. A `<ul>` of suggestion items renders as a card grid.
+:::
+
+## Custom tool displays {.center}
+
+By default, tool results show as collapsible text. But you can make them **beautiful**.
+
+::: {.placeholder style="min-height: 350px;"}
+SCREENSHOT: side-by-side comparison —<br>
+(left) default tool result display (plain collapsible text)<br>
+(right) custom ToolResultDisplay with icon, title, and formatted markdown
+:::
+
+::: notes
+This is the main teaching point of the shinychat section. When a chatlas tool
+runs, the result shows up in the chat as a collapsible block. That's fine for
+debugging, but for end users you want something polished. ToolResultDisplay
+lets you control exactly how it looks.
+
+Show the default first, then show the custom version. The contrast is the
+motivator.
+:::
+
+## Building a tool display {.center}
+
+```{.python}
+from chatlas import ContentToolResult
+from shinychat.types import ToolResultDisplay
+import faicons
+
+def get_weather(lat: float, lng: float, location: str) -> ContentToolResult:
+    """Get the current weather for a location.
+    ...
+    """
+    data = call_weather_api(lat, lng)
+    return ContentToolResult(
+        value=data,                                  # what the LLM sees
+        extra={
+            "display": ToolResultDisplay(
+                title=f"Weather: {location}",
+                icon=faicons.icon_svg("cloud-sun"),
+                markdown=f"**{data['temp']}°C** — {data['condition']}",
+            )
+        },
+    )
+```
+
+::: notes
+Walk through the anatomy:
+
+1. Return type is `ContentToolResult`, not a plain value.
+2. `value=` is what the LLM sees — it still needs the raw data to reason about.
+3. `extra={"display": ToolResultDisplay(...)}` is what the *user* sees in the
+   chat UI. The LLM never sees this.
+4. `title` and `icon` appear in the collapsed header. `markdown` (or `html` or
+   `text`) is the expanded body.
+
+Other useful params: `full_screen=True` adds an expand button (great for
+charts/tables), `open=True` starts expanded, `footer` for attribution.
+:::
+
+## Tool display in action {.center}
+
+::: {.placeholder style="min-height: 400px;"}
+SCREENSHOT: a shinychat conversation showing a custom tool display —<br>
+the weather card with icon, title, and formatted content<br>
+embedded naturally in the chat flow
+:::
+
+::: notes
+If you've got time, live-demo this. Otherwise, show the screenshot.
+The key insight: the chat feels like a polished product, not a developer tool.
+This is the difference between a prototype and something you'd hand to a
+stakeholder.
+:::
+
+## Observability with OpenTelemetry {.center}
+
+chatlas emits **OTel spans** for every LLM call — latency, tokens, errors.
+
+```{.python}
+# In production, configure your OTel exporter before the app starts
+# e.g., with Logfire, Datadog, Honeycomb, etc.
+import logfire
+logfire.configure()
+
+# Then just run your shinychat app as normal — tracing is automatic
+```
+
+::: {.fragment}
+See what your users are actually asking, how long it takes, and what fails.
+:::
+
+::: notes
+Brief slide. OTel support is built into chatlas, so shinychat apps get it for
+free. In production you'd configure an exporter (Logfire is the easiest if
+you're in the Posit ecosystem). This gives you dashboards showing: what
+questions users ask, how long responses take, token usage, error rates.
+
+Don't go deep — just plant the idea that observability is built in, not
+bolted on.
+:::
+
+## 🛠️ Hands-on: build a chatbot {.center}
+
+**~15 minutes** — pick your adventure:
+
+::: {.columns}
+::: {.column width="50%"}
+
+### 🧪 Option A: Add a tool display
+
+Start from the exercise file:
+
+1. Run the app — it has a working tool
+2. Upgrade the tool to return a **`ToolResultDisplay`**
+3. **Bonus**: add a **slash command**
+
+:::
+::: {.column width="50%"}
+
+### 🚀 Option B: Deploy it
+
+Take your working chatbot and:
+
+1. **Deploy** to Connect Cloud
+2. Share the URL with a neighbor
+3. Watch the OTel traces roll in
+
+:::
+:::
+
+Exercise file: **`exercises/02-shinychat-starter.py`**
+
+::: notes
+Option A is the guided path — they take a working chatbot and make the tool
+output prettier. This reinforces the ToolResultDisplay pattern.
+
+Option B is for people who are already comfortable and want the full loop.
+Deploying to Connect Cloud is a `rsconnect deploy shiny .` command if they
+have credentials set up.
+
+TODO(Carson): decide whether Connect Cloud deploy is realistic for the
+tutorial environment. If not, cut Option B and replace with "add a second tool
+with a display."
+:::
+
+# ☕ Break — 5 min {.center background-color="#0e3b5c"}
+
+::: notes
+Next up: querychat — the capstone. Everything we've learned (chatlas + tools +
+shinychat UI) comes together as a self-service analytics platform.
+:::

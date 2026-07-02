@@ -1,0 +1,443 @@
+---
+title: "chatlas"
+subtitle: "Programming with LLMs in Python"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+## {.center}
+
+![](images/chatlas.png){height="250px" fig-align="center"}
+
+One consistent interface to **any** LLM provider.
+
+::: notes
+chatlas is the foundation everything else builds on. It gives you one Python
+API that works the same whether you're hitting Anthropic, OpenAI, Google, or
+a local model. You learn one set of patterns, and you can swap providers with
+a single line change.
+:::
+
+## Hello, chatlas {.center}
+
+```{.python}
+import chatlas as ctl
+
+chat = ctl.ChatAnthropic()
+chat.chat("What is the most popular Python package for data analysis?")
+```
+
+::: {.fragment}
+That's it. One import, two lines, streaming output.
+:::
+
+::: notes
+Live demo: run this in a notebook or console. The output streams in real-time.
+Point out that `chat.chat()` both sends the message AND echoes the response —
+it's designed for interactive exploration.
+
+Mention: if they're using OpenAI, just swap to `ctl.ChatOpenAI()`. Local
+model? `ctl.ChatOllama()` or `ctl.ChatLMStudio()`. The rest of the code
+stays identical.
+:::
+
+## Bring your own provider {.center}
+
+```{.python}
+# Hosted
+chat = ctl.ChatAnthropic()          # Claude
+chat = ctl.ChatOpenAI()             # GPT
+chat = ctl.ChatGoogle()             # Gemini
+
+# Local (no API key needed)
+chat = ctl.ChatOllama()             # Ollama
+chat = ctl.ChatLMStudio()           # LM Studio
+
+# Pick via a single string
+chat = ctl.ChatAuto("anthropic:claude-sonnet-4-6")
+```
+
+Same API, every provider. Use whatever you have today.
+
+::: notes
+Don't linger here — just establish that provider choice is a one-line decision.
+`ChatAuto` is useful when you want to parameterize the provider (e.g., from
+an env var or config file). For the rest of the slides we'll use
+`ChatAnthropic()` but they should substitute their own.
+:::
+
+## System prompt {.center}
+
+```{.python}
+chat = ctl.ChatAnthropic(
+    system_prompt=(
+        "You are a data science tutor. "
+        "Explain concepts simply, using analogies from everyday life."
+    ),
+)
+
+chat.chat("What is a p-value?")
+```
+
+::: {.fragment}
+The system prompt is your **invisible hand** — it shapes every response
+without the user seeing it.
+:::
+
+::: notes
+Live demo: run this, then run the same question without a system prompt to
+show the contrast. The system prompt is sent with every request (LLMs are
+stateless between calls). This is the simplest form of "context engineering"
+— the theme of the whole day.
+
+Key point: the system prompt is where *you the developer* talk to the model.
+The user prompt is where *the end user* talks to the model. Keeping these
+separate is a fundamental design principle.
+:::
+
+## Multi-turn: the chat remembers {.center}
+
+```{.python}
+chat.chat("What about confidence intervals?")
+```
+
+```{.python}
+chat.chat("How do those two concepts relate?")
+```
+
+::: {.fragment}
+`Chat` objects are **stateful** — they accumulate conversation history.
+
+```{.python}
+chat.get_turns()          # inspect the history
+chat.set_turns([])        # reset to start fresh
+```
+:::
+
+::: notes
+This is a key thing for newcomers to understand: the Chat object is managing
+the conversation state for you. Each call to .chat() appends the user message
+and the assistant response to an internal list of turns. When the next request
+goes out, the full history goes with it.
+
+This is why the model can answer "how do those two concepts relate?" — it has
+the full conversation in context. If you want a fresh start, `set_turns([])`
+clears the history.
+:::
+
+## `.chat()` vs `.stream()` {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+
+### `.chat()` — interactive
+
+```{.python}
+# Blocks, auto-echoes output
+chat.chat("Explain PCA")
+```
+
+Great for **notebooks** and **exploration**.
+
+:::
+::: {.column width="50%"}
+
+### `.stream()` — for apps
+
+```{.python}
+# Returns a generator you control
+for chunk in chat.stream("Explain PCA"):
+    print(chunk, end="")
+```
+
+Great for **Shiny**, **FastAPI**, etc.
+
+:::
+:::
+
+::: {.fragment}
+Both have async variants: `.chat_async()` and `.stream_async()`
+:::
+
+::: notes
+This distinction matters when we get to shinychat. In an app, you don't want
+to block the event loop — you want to stream chunks to the UI as they arrive.
+`.stream()` gives you that control. `.chat()` is the convenience wrapper for
+when you're just exploring.
+
+For multi-user web apps, always use the async variants — they won't block
+other users' requests.
+:::
+
+## Tool calling: the big idea {.center}
+
+LLMs can't **do** things — but they can **ask you** to do things.
+
+```{mermaid}
+%%| fig-width: 8
+sequenceDiagram
+    participant U as You
+    participant L as LLM
+    participant T as Your Tool
+
+    U->>L: "What's the weather in Paris?"
+    L->>T: get_weather(city="Paris")
+    T-->>L: {"temp": 18, "condition": "cloudy"}
+    L->>U: "It's 18°C and cloudy in Paris."
+```
+
+The model **decides** what to call. Your code **executes** it.
+
+::: notes
+This is the conceptual slide — make sure they understand the flow before
+seeing code. The LLM never actually calls the function itself. It outputs a
+structured "please call this function with these arguments" message. chatlas
+intercepts that, calls your Python function, sends the result back to the
+model, and the model incorporates it into its response.
+
+This is the "harness" concept from the foundations section in action.
+:::
+
+## Your first tool {.center}
+
+```{.python}
+def get_current_weather(lat: float, lng: float):
+    """Get the current weather for a location.
+
+    Parameters
+    ----------
+    lat
+        The latitude.
+    lng
+        The longitude.
+    """
+    import requests
+    resp = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params={"latitude": lat, "longitude": lng, "current": "temperature_2m"},
+    )
+    return resp.json()["current"]
+
+chat = ctl.ChatAnthropic()
+chat.register_tool(get_current_weather)
+chat.chat("What's the weather in Paris?")
+```
+
+::: notes
+Live demo. Walk through the key ingredients:
+
+1. **Type hints** (lat: float, lng: float) — required. The model uses these to
+   know what arguments to pass.
+2. **Docstring** — required. This is how the model understands what the tool
+   does and when to use it.
+3. **`register_tool()`** — hands the tool to the chat. chatlas automatically
+   converts the function signature + docstring into the tool schema the model
+   expects.
+4. **The loop is automatic** — chatlas handles the tool call, sends the result
+   back, and lets the model generate a final response. You don't write any
+   loop code.
+
+Point out: the model figured out Paris's lat/lng on its own. That's the
+"language → code" strength we talked about in foundations.
+:::
+
+## What just happened? {.center}
+
+When you ran `chat.chat(...)`, chatlas ran this loop for you:
+
+::: {.incremental}
+1. Sent your message **+** the tool schema to the model
+2. Model responded: _"call `get_current_weather(48.85, 2.35)`"_
+3. chatlas **called your function** with those arguments
+4. Sent the result back to the model
+5. Model responded with a **natural language** answer
+:::
+
+::: {.fragment}
+Steps 2–4 can repeat — the model can call **multiple tools** in sequence.
+:::
+
+::: notes
+This is the "under the hood" explanation. Emphasize that they never had to
+write any of this orchestration code — chatlas does it. But understanding the
+loop is important because it explains why tools need good docstrings (the
+model reads them) and why errors in tools don't crash the program (chatlas
+catches them and sends the error back to the model).
+:::
+
+## Tools for data scientists {.center}
+
+```{.python}
+import pandas as pd
+
+tips = pd.read_csv(
+    "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv"
+)
+
+def query_tips(code: str):
+    """Execute Python code to answer a question about the tips dataset.
+
+    Parameters
+    ----------
+    code
+        Python code to run. The `tips` DataFrame and `pd` (pandas) are available.
+    """
+    return str(eval(code, {"tips": tips, "pd": pd}))
+
+chat = ctl.ChatAnthropic()
+chat.register_tool(query_tips)
+chat.chat("What's the average tip percentage by day of the week?")
+```
+
+::: notes
+This is the "aha" moment for data scientists in the room. The model writes
+pandas code, chatlas executes it, and the model interprets the result in
+natural language. This is a preview of what querychat does at scale — but
+here it's just 10 lines of code.
+
+Live demo: run this, then ask a follow-up like "which day has the highest
+total bill?" to show multi-turn tool use.
+
+SAFETY NOTE: `eval()` here is fine for a local demo, but you'd never do this
+in production. querychat uses a sandboxed approach — we'll cover that later.
+:::
+
+## Built-in tools {.center}
+
+```{.python}
+from chatlas import tool_web_search
+
+chat = ctl.ChatAnthropic()
+chat.register_tool(tool_web_search())
+
+chat.chat("What were the top Python packages released this month?")
+```
+
+::: {.fragment}
+No API key, no configuration — the provider handles it natively.
+:::
+
+::: notes
+chatlas ships built-in tools that use the provider's native capabilities.
+`tool_web_search()` is the most useful — it lets the model search the web
+for current information. Supported by Anthropic, OpenAI, and Google.
+
+There's also `tool_web_fetch()` for reading specific URLs (Anthropic and
+Google only).
+
+The nice thing: these aren't custom implementations — they use the provider's
+own grounded search, which means citations and source attribution come free.
+:::
+
+## Quick tour: more capabilities {.center}
+
+::: {.columns}
+::: {.column width="50%"}
+
+### Structured output
+```{.python}
+from pydantic import BaseModel
+
+class Person(BaseModel):
+    name: str
+    age: int
+
+chat.chat_structured(
+    "Susan is 13 years old",
+    data_model=Person,
+)
+# → Person(name='Susan', age=13)
+```
+
+:::
+::: {.column width="50%"}
+
+### MCP tools
+```{.python}
+await chat.register_mcp_tools_stdio_async(
+    command="uvx",
+    args=["mcp-server-fetch"],
+)
+```
+
+### Images & PDFs
+```{.python}
+chat.chat(
+    ctl.content_image_file("chart.png"),
+    "Describe this chart.",
+)
+```
+
+:::
+:::
+
+::: notes
+Don't go deep on any of these — just plant the seed. Structured output is
+incredibly useful for extraction pipelines. MCP lets you connect to any
+MCP-compatible tool server. Multi-modal input (images, PDFs) opens up
+document analysis workflows.
+
+The point: chatlas is a full-featured LLM client, not a toy. But today we're
+focusing on the core loop (chat + tools) because that's what shinychat and
+querychat build on.
+:::
+
+## 🛠️ Hands-on: build with chatlas {.center}
+
+**~15 minutes** — pick your adventure:
+
+::: {.columns}
+::: {.column width="50%"}
+
+### 🧪 Option A: Extend an example
+
+Start from the exercise file and:
+
+1. Add a **system prompt** that sets a persona
+2. Add a **second tool** (e.g., a unit converter, a dice roller, etc.)
+3. **Bonus**: add `tool_web_search()`
+
+:::
+::: {.column width="50%"}
+
+### 🤖 Option B: Vibe-code it
+
+Open your favorite chatbot and prompt:
+
+_"Create a chatlas Python app that [your idea here]"_
+
+See how far you get — then **read** and **fix** what it generates.
+
+:::
+:::
+
+Exercise file: **`exercises/01-chatlas-starter.py`**
+
+::: notes
+Option A is the guided path — they start from working code and extend it.
+Option B is the self-directed path — they use an LLM to generate chatlas code
+and see whether it works. Option B is a meta-learning exercise: they're
+learning to evaluate LLM-generated code, which is exactly the "human in the
+loop" principle from the foundations section.
+
+Float around the room and help. Common stumbles:
+- Forgetting type hints or docstrings on tools
+- Using `chat.stream()` when they meant `chat.chat()` in a script
+- API key not set as env var
+
+Wrap up by asking 1-2 people to share what they built.
+:::
+
+# ☕ Break — 5 min {.center background-color="#0e3b5c"}
+
+::: notes
+Next up: shinychat — turning chatlas into a real chatbot UI. Make sure everyone
+has a working chatlas example before moving on.
+:::

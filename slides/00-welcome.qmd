@@ -1,0 +1,135 @@
+---
+title: "Safe, Verifiable, & Maintainable AI Apps in Python"
+subtitle: "Welcome & Setup"
+author: "Carson Sievert · Posit"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+## Hi, I'm Carson 👋 {.center}
+
+::: {.columns}
+::: {.column width="45%"}
+::: {.placeholder}
+![](images/me-square.png)
+:::
+:::
+::: {.column width="55%" .center}
+
+- Open source software engineer at **Posit**
+- Work on **chatlas**, **shinychat**, **querychat**
+- Background in **statistics** and **data science**
+
+:::
+:::
+
+
+## I work at posit {.center}
+
+<br>
+
+> ### Posit’s mission is to create open-source software for data science, scientific research, and technical communication. We build tools that prioritize correctness, transparency, and reproducibility in their output.
+
+
+## Visit our Booth! {.center}
+
+Many notable names in open source:
+
+- Hadley Wickham (R, tidyverse, ggplot2, etc)
+- Joe Cheng (Posit CTO, Shiny)
+- Winston Chang (Posit Assistant, Shiny)
+- Carlos Scheidegger (Quarto, scientific publishing)
+- and others
+
+
+
+## Who's in the room? {.center}
+
+Quick show of hands 🙋
+
+
+::: {.fragment}
+- Use **Python** on daily basis?
+:::
+::: {.fragment}
+- Use **Python** for data work?
+:::
+::: {.fragment}
+- Called an **LLM API** in code before?
+:::
+::: {.fragment}
+- Built or shipped an **LLM app**?
+:::
+::: {.fragment}
+- Would like to ship an **AI app** that lets others explore your data more easily?
+:::
+
+
+
+## What we'll cover today {.center}
+
+| | Section | Time |
+|:-:|---|--:|
+| 🧭 | **Foundations** — embrace the good, engineer around the bad | 45 min |
+| ![](images/chatlas.png){height="50px"} | **chatlas** — programming with LLMs | 60 min |
+| ![](images/shinychat.svg){height="50px"} | **shinychat** — chatbots made easy | 45 min |
+| ![](images/querychat.png){height="50px"} | **querychat** — self-service analytics case study | 45 min |
+
+: {tbl-colwidths="[10,75,15]"}
+
+
+
+
+## Materials 📁 {.center}
+
+#### Slides: <https://cpsievert.github.io/scipy26-tutorial>
+
+#### GitHub repo: <https://github.com/cpsievert/scipy26-tutorial>
+
+TODO: shortlink / QR code for slides
+
+
+
+## Computing environments 💻 {.center}
+
+#### [Workshop Environment](https://workshop.posit.team)
+
+#### [Install locally](https://github.com/cpsievert/scipy26-tutorial#readme)
+
+TODO: shortlink / QR code for workshop environment
+
+
+
+## LLM access 🤖 {.center}
+
+Exercises require access to an LLM. 
+
+### Workshop environment: things will just work.
+
+### Running locally: follow [these instructions](https://github.com/cpsievert/scipy26-tutorial#llm-access)
+
+
+## Test run
+
+If you can run this exercise file and see output, then you're all set up!
+
+```bash
+python exercises/00-test-run.py
+```
+
+
+## Ground rules {.center}
+
+- ❓ **Interrupt with questions** — this is a tutorial, not a keynote.
+- 🤝 **Pair up** with a neighbor — it's more fun and faster.
+- 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
+
+
+# Let's begin 🚀 {.center background-color="#0e3b5c"}

@@ -1,0 +1,94 @@
+/*-- scss:defaults --*/
+
+// Posit-ish, clean, high-contrast tutorial theme
+
+$font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !default;
+$font-family-monospace: "Fira Code", "JetBrains Mono", SFMono-Regular, Menlo, Consolas, monospace !default;
+
+$body-bg: #ffffff;
+$body-color: #1f2933;
+
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-color: #0e3b5c;
+$presentation-font-size-root: 36px;
+
+// Brand accents
+$accent: #447099;      // posit blue
+$accent-2: #ee6331;    // posit orange
+$muted: #62748a;
+
+$link-color: $accent;
+$selection-bg: lighten($accent, 40%);
+
+$code-block-font-size: 0.78em;
+$code-block-bg: #f6f8fa;
+
+/*-- scss:rules --*/
+
+.reveal h1, .reveal h2, .reveal h3 {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.reveal .slides section .fragment.highlight-current-accent.current-fragment {
+  color: $accent-2;
+}
+
+// Lead/title emphasis
+.reveal .accent { color: $accent; }
+.reveal .accent-2 { color: $accent-2; }
+.reveal .muted { color: $muted; }
+
+// A subtle kicker label above headings
+.reveal .kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.5em;
+  font-weight: 700;
+  color: $accent-2;
+  margin-bottom: 0.2em;
+}
+
+// Image placeholder styling (for assets to be sourced later)
+.reveal .placeholder {
+  border: 2px dashed $muted;
+  border-radius: 8px;
+  background: repeating-linear-gradient(
+    45deg, #f6f8fa, #f6f8fa 12px, #eef1f5 12px, #eef1f5 24px
+  );
+  color: $muted;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5em;
+  font-style: italic;
+  font-size: 0.7em;
+  min-height: 3em;
+}
+
+// The "layered stack" mental model
+.reveal .stack-layer {
+  border-radius: 10px;
+  padding: 0.5em 0.8em;
+  margin: 0.35em auto;
+  font-weight: 600;
+  width: 80%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.reveal .big-number {
+  font-size: 2.2em;
+  font-weight: 800;
+  color: $accent-2;
+  line-height: 1;
+}
+
+.reveal blockquote {
+  border-left: 4px solid $accent-2;
+  font-style: italic;
+  color: $muted;
+}
+
+// Tighten default list spacing a touch
+.reveal ul, .reveal ol { line-height: 1.35; }
