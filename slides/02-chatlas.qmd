@@ -1,6 +1,6 @@
 ---
 title: "chatlas"
-subtitle: "Programming with LLMs in Python"
+subtitle: "Programming with LLMs made easy"
 format:
   revealjs:
     theme: [default, theme.scss]
@@ -12,250 +12,277 @@ format:
     code-line-numbers: false
 ---
 
-## {.center}
+## chatlas: programming with LLMs made easy {.center}
 
-![](images/chatlas.png){height="250px" fig-align="center"}
+::: {.columns}
+::: {.column}
 
-One consistent interface to **any** LLM provider.
-
-::: notes
-chatlas is the foundation everything else builds on. It gives you one Python
-API that works the same whether you're hitting Anthropic, OpenAI, Google, or
-a local model. You learn one set of patterns, and you can swap providers with
-a single line change.
+![](images/chatlas.png){width="80%" fig-align="center"}
 :::
 
-## Hello, chatlas {.center}
+::: {.column}
+* One interface to many LLMs
+* Streaming output
+* Tool calling, MCP, etc
+* Structured data extraction
+* Async/non-blocking
+* Evals, OTel, etc
+* And more…
+:::
+
+:::
+
+## Many providers, one interface {.center}
+
+::: {.columns}
+::: {.column}
+
+```{.python}
+import chatlas as ctl
+
+chat1 = ctl.ChatAnthropic()
+chat2 = ctl.ChatOpenAI()
+chat3 = ctl.ChatGoogle()
+```
+:::
+
+::: {.column}
+Dozens of `Chat{$Provider}` available.
+:::
+
+:::
+
+## Many providers, one interface {.center}
+
+::: {.columns}
+::: {.column}
 
 ```{.python}
 import chatlas as ctl
 
 chat = ctl.ChatAnthropic()
-chat.chat("What is the most popular Python package for data analysis?")
+
+chat.chat("Teach me Python")
 ```
+:::
+
+::: {.column}
+Switch providers without changing downstream code.
+:::
+
+:::
+
+
+## Model hints {.center}
+
+::: {.columns}
+::: {.column}
+
+![](images/model-type-hints.png){width="80%" fig-align="center"}
+:::
+
+::: {.column}
+See what model slugs are available for each provider.
+:::
+
+:::
 
 ::: {.fragment}
-That's it. One import, two lines, streaming output.
+
+💡 Expressed as a single string: `ChatAuto("openai/gpt-5.5")`.
 :::
 
-::: notes
-Live demo: run this in a notebook or console. The output streams in real-time.
-Point out that `chat.chat()` both sends the message AND echoes the response —
-it's designed for interactive exploration.
 
-Mention: if they're using OpenAI, just swap to `ctl.ChatOpenAI()`. Local
-model? `ctl.ChatOllama()` or `ctl.ChatLMStudio()`. The rest of the code
-stays identical.
-:::
+## Streaming "just works" {.center}
 
-## Bring your own provider {.center}
-
-```{.python}
-# Hosted
-chat = ctl.ChatAnthropic()          # Claude
-chat = ctl.ChatOpenAI()             # GPT
-chat = ctl.ChatGoogle()             # Gemini
-
-# Local (no API key needed)
-chat = ctl.ChatOllama()             # Ollama
-chat = ctl.ChatLMStudio()           # LM Studio
-
-# Pick via a single string
-chat = ctl.ChatAuto("anthropic:claude-sonnet-4-6")
-```
-
-Same API, every provider. Use whatever you have today.
-
-::: notes
-Don't linger here — just establish that provider choice is a one-line decision.
-`ChatAuto` is useful when you want to parameterize the provider (e.g., from
-an env var or config file). For the rest of the slides we'll use
-`ChatAnthropic()` but they should substitute their own.
-:::
-
-## System prompt {.center}
-
-```{.python}
-chat = ctl.ChatAnthropic(
-    system_prompt=(
-        "You are a data science tutor. "
-        "Explain concepts simply, using analogies from everyday life."
-    ),
-)
-
-chat.chat("What is a p-value?")
-```
-
-::: {.fragment}
-The system prompt is your **invisible hand** — it shapes every response
-without the user seeing it.
-:::
-
-::: notes
-Live demo: run this, then run the same question without a system prompt to
-show the contrast. The system prompt is sent with every request (LLMs are
-stateless between calls). This is the simplest form of "context engineering"
-— the theme of the whole day.
-
-Key point: the system prompt is where *you the developer* talk to the model.
-The user prompt is where *the end user* talks to the model. Keeping these
-separate is a fundamental design principle.
-:::
+![](images/hello-chat.mp4){width="70%" fig-align="center"}
 
 ## Multi-turn: the chat remembers {.center}
 
-```{.python}
-chat.chat("What about confidence intervals?")
-```
+::: {.columns}
+::: {.column}
 
 ```{.python}
-chat.chat("How do those two concepts relate?")
+import chatlas as ctl
+chat = ctl.ChatAnthropic()
+chat.chat("My name is Carson.")
+chat.chat("What's my name?")
 ```
 
-::: {.fragment}
+::: fragment
+::: chatlas-response-container
+Your name is Carson.
+:::
+:::
+
+
+:::
+
+
+
+::: {.column}
+
+::: fragment
+LLMs are inherently stateless, but `chat` objects are **stateful** — they accumulate conversation history.
+:::
+
+:::
+:::
+
+## Working with chat state {.center}
+
 `Chat` objects are **stateful** — they accumulate conversation history.
 
 ```{.python}
-chat.get_turns()          # inspect the history
+chat                      # see the history
+chat.get_turns()          # obtain list of user/assistant turns
 chat.set_turns([])        # reset to start fresh
 ```
-:::
 
-::: notes
-This is a key thing for newcomers to understand: the Chat object is managing
-the conversation state for you. Each call to .chat() appends the user message
-and the assistant response to an internal list of turns. When the next request
-goes out, the full history goes with it.
+## Multi-modal input
 
-This is why the model can answer "how do those two concepts relate?" — it has
-the full conversation in context. If you want a fresh start, `set_turns([])`
-clears the history.
-:::
-
-## `.chat()` vs `.stream()` {.center}
-
-::: {.columns}
-::: {.column width="50%"}
-
-### `.chat()` — interactive
+Submit input other than text, such as images, pdfs, and more.
 
 ```{.python}
-# Blocks, auto-echoes output
-chat.chat("Explain PCA")
+chat.chat(
+  ctl.content_image_url("https://www.python.org/static/img/python-logo.png"),
+  "Can you explain this logo?"
+)
 ```
 
-Great for **notebooks** and **exploration**.
+::: {.fragment .chatlas-response-container}
+
+The Python logo features two intertwined snakes in yellow and blue,
+representing the Python programming language. The design symbolizes...
 
 :::
-::: {.column width="50%"}
 
-### `.stream()` — for apps
+
+## System prompt {.center}
+
+Behind-the-scenes information that shapes every response — invisible to the user.
 
 ```{.python}
-# Returns a generator you control
-for chunk in chat.stream("Explain PCA"):
-    print(chunk, end="")
+chat = ctl.ChatAnthropic(
+    system_prompt="You are Jerry Seinfeld."
+)
+
+chat.chat("Tell me a joke")
 ```
 
-Great for **Shiny**, **FastAPI**, etc.
+::: {.fragment .chatlas-response-container}
+
+What is the deal with passwords? You need a capital letter, a number, a symbol... at this point I need a degree just to log into my email.
 
 :::
-:::
+
+## System prompt tips {.center}
+
+1. Set the scene (e.g., “You are a dashboard chat assistant”).
+2. Define (un)desirable behavior (e.g., “Be concise”).
+    * Give examples
+3. Give missing context (e.g., "Today's date: 2026-07-13").
+    * Provide relevant information that the model might need to generate accurate responses.
+
+## Chat methods
+
+Three methods for interactive use:
+
+* `.chat()` — "echo" output, returns final response
+* `.console()` — open dedicated Python console
+* `.app()` — open dedicated web app
 
 ::: {.fragment}
-Both have async variants: `.chat_async()` and `.stream_async()`
+
+Two methods for programmatic use:
+
+* `.stream()` — returns a generator, you control output
+* `.stream_async()` — async version of `.stream()`
+
 :::
 
-::: notes
-This distinction matters when we get to shinychat. In an app, you don't want
-to block the event loop — you want to stream chunks to the UI as they arrive.
-`.stream()` gives you that control. `.chat()` is the convenience wrapper for
-when you're just exploring.
 
-For multi-user web apps, always use the async variants — they won't block
-other users' requests.
-:::
+## Exercise {.center}
+
+1. Use `.chat()` to submit some text and see the response.
+2. Add a custom system prompt to change the model's behavior.
+3. Try using `.app()` -- how is this similar/different from ChatGPT, etc?
+
+<br>
+
+{{< countdown "5:00" >}}
+
 
 ## Tool calling: the big idea {.center}
 
 LLMs can't **do** things — but they can **ask you** to do things.
 
 ```{mermaid}
-%%| fig-width: 8
+%%| fig-width: 15
 sequenceDiagram
     participant U as You
     participant L as LLM
     participant T as Your Tool
 
-    U->>L: "What's the weather in Paris?"
-    L->>T: get_weather(city="Paris")
+    U->>L: "What's the weather in San Francisco?"
+    L->>T: get_weather(city="San Francisco")
     T-->>L: {"temp": 18, "condition": "cloudy"}
-    L->>U: "It's 18°C and cloudy in Paris."
+    L->>U: "It's 18°C and cloudy in San Francisco."
 ```
 
 The model **decides** what to call. Your code **executes** it.
 
-::: notes
-This is the conceptual slide — make sure they understand the flow before
-seeing code. The LLM never actually calls the function itself. It outputs a
-structured "please call this function with these arguments" message. chatlas
-intercepts that, calls your Python function, sends the result back to the
-model, and the model incorporates it into its response.
-
-This is the "harness" concept from the foundations section in action.
-:::
-
-## Your first tool {.center}
+## Tools are just functions {.center}
 
 ```{.python}
 def get_current_weather(lat: float, lng: float):
-    """Get the current weather for a location.
-
-    Parameters
-    ----------
-    lat
-        The latitude.
-    lng
-        The longitude.
-    """
+    """Get the current weather for a location."""
     import requests
     resp = requests.get(
         "https://api.open-meteo.com/v1/forecast",
         params={"latitude": lat, "longitude": lng, "current": "temperature_2m"},
     )
     return resp.json()["current"]
-
-chat = ctl.ChatAnthropic()
-chat.register_tool(get_current_weather)
-chat.chat("What's the weather in Paris?")
 ```
 
-::: notes
-Live demo. Walk through the key ingredients:
+::: fragment
+Note that:
 
-1. **Type hints** (lat: float, lng: float) — required. The model uses these to
-   know what arguments to pass.
-2. **Docstring** — required. This is how the model understands what the tool
-   does and when to use it.
-3. **`register_tool()`** — hands the tool to the chat. chatlas automatically
-   converts the function signature + docstring into the tool schema the model
-   expects.
-4. **The loop is automatic** — chatlas handles the tool call, sends the result
-   back, and lets the model generate a final response. You don't write any
-   loop code.
-
-Point out: the model figured out Paris's lat/lng on its own. That's the
-"language → code" strength we talked about in foundations.
+* Type hints are required — the model uses these to know what arguments to pass.
 :::
 
-## What just happened? {.center}
+::: fragment
+* Docstring is required — this is how the model understands what the tool does.
+:::
 
-When you ran `chat.chat(...)`, chatlas ran this loop for you:
+
+## Tools in action
+
+```{.python}
+chat.register_tool(get_current_weather)
+chat.chat("What's the weather in San Francisco?")
+```
+
+::: {.chatlas-response-container .fragment}
+
+```python
+# 🛠️ tool request
+get_current_weather(37.7749, -122.4194)
+# ✅ tool result
+sunny
+```
+
+The current weather in San Francisco is sunny.
+:::
+
+## What just happened?
+
+chatlas ran the "tool loop" for you:
 
 ::: {.incremental}
-1. Sent your message **+** the tool schema to the model
-2. Model responded: _"call `get_current_weather(48.85, 2.35)`"_
-3. chatlas **called your function** with those arguments
+1. Sent the prompt & the tool schema to the model
+2. Model responded: _"call `get_current_weather(37.7749, -122.4194)`"_
+3. **Invoked that function** with those arguments
 4. Sent the result back to the model
 5. Model responded with a **natural language** answer
 :::
@@ -264,77 +291,116 @@ When you ran `chat.chat(...)`, chatlas ran this loop for you:
 Steps 2–4 can repeat — the model can call **multiple tools** in sequence.
 :::
 
-::: notes
-This is the "under the hood" explanation. Emphasize that they never had to
-write any of this orchestration code — chatlas does it. But understanding the
-loop is important because it explains why tools need good docstrings (the
-model reads them) and why errors in tools don't crash the program (chatlas
-catches them and sends the error back to the model).
+## Agents: LLM + tools + loop
+
+* Tools are a means by which LLMs both learn and alter the state of the world. 
+
+::: fragment
+* This particular "agent" is safe, but not very capable.
 :::
 
-## Tools for data scientists {.center}
+::: fragment
+* What if the model could write and execute code?
+:::
+
+::: fragment
+* **Key idea**: define a tool that takes code as input and executes it.
+:::
+
+## A tool for executing code
+
+LLMs are _very_ good at translating natural language into code. So, we can define a tool that takes code as input and executes it.
 
 ```{.python}
-import pandas as pd
-
-tips = pd.read_csv(
-    "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv"
-)
-
-def query_tips(code: str):
-    """Execute Python code to answer a question about the tips dataset.
-
-    Parameters
-    ----------
-    code
-        Python code to run. The `tips` DataFrame and `pd` (pandas) are available.
-    """
-    return str(eval(code, {"tips": tips, "pd": pd}))
-
-chat = ctl.ChatAnthropic()
-chat.register_tool(query_tips)
-chat.chat("What's the average tip percentage by day of the week?")
+def eval_code(code: str):
+    """Execute Python code."""
+    return eval(code)
 ```
 
-::: notes
-This is the "aha" moment for data scientists in the room. The model writes
-pandas code, chatlas executes it, and the model interprets the result in
-natural language. This is a preview of what querychat does at scale — but
-here it's just 10 lines of code.
-
-Live demo: run this, then ask a follow-up like "which day has the highest
-total bill?" to show multi-turn tool use.
-
-SAFETY NOTE: `eval()` here is fine for a local demo, but you'd never do this
-in production. querychat uses a sandboxed approach — we'll cover that later.
+::: fragment
+Are you terrified? You should be! This is a **illustrative example** — never execute arbitrary code in production without proper sandboxing and security measures.
 :::
 
-## Built-in tools {.center}
+
+## Guardrails for code execution
+
+1. Use a **sandbox** to isolate the execution environment.
+   * Warning: here be dragons — this is a hard problem.
+
+2. Restrict the **scope** of what can be executed (e.g., SQL with read-only permissions).
+
+3. Leverage _remote_ tools to shift execution to a separate process or service.
+
+
+## Remote tools
+
+* Tools don't _have_ to be available in the same process as the LLM client. 
+
+::: fragment
+* They can be:
+  * **Provider tools**: connect through a particular provider's API.
+  * **MCP tools**: connect through a web service or local process.
+:::
+
+::: fragment
+* Remote tools can be implemented in any language, not just Python.
+:::
+
+
+## Provider tools
+
+**chatlas** comes with some "built-in" tools that use the provider's native capabilities. 
+
+::: fragment
+These currently include:
+
+1. `tool_web_search()` — search the web for current information
+2. `tool_web_fetch()` — read a specific URL
+:::
+
+
+::: fragment
+Use it like this:
 
 ```{.python}
-from chatlas import tool_web_search
-
-chat = ctl.ChatAnthropic()
-chat.register_tool(tool_web_search())
-
+chat.register_tool(ctl.tool_web_search())
 chat.chat("What were the top Python packages released this month?")
 ```
-
-::: {.fragment}
-No API key, no configuration — the provider handles it natively.
 :::
 
-::: notes
-chatlas ships built-in tools that use the provider's native capabilities.
-`tool_web_search()` is the most useful — it lets the model search the web
-for current information. Supported by Anthropic, OpenAI, and Google.
 
-There's also `tool_web_fetch()` for reading specific URLs (Anthropic and
-Google only).
+## MCP tools
 
-The nice thing: these aren't custom implementations — they use the provider's
-own grounded search, which means citations and source attribution come free.
+* Some are available through a hosted web service (e.g., [DeepWiki](https://deepwiki.ai)).
+
+::: fragment
+* Others might require you to run a local process (e.g., [uvx](https://github.com/username/uvx)).
 :::
+
+::: fragment
+* Here's an example of registering a local MCP tool:
+
+```{.python}
+await chat.register_mcp_tools_stdio_async(
+    command="uvx",
+    args=["mcp-server-fetch"],
+)
+chat.chat(
+    "Summarize the first paragraph of https://en.wikipedia.org/wiki/Python_(programming_language)"
+)
+```
+:::
+
+
+## Exercise {.center}
+
+1. Register a tool, any tool, and call it from chat.
+2. Trigger a tool call from `.app()`, what do you see in the UI?
+
+<br>
+
+{{< countdown "5:00" >}}
+
 
 ## Quick tour: more capabilities {.center}
 
@@ -360,6 +426,8 @@ chat.chat_structured(
 ::: {.column width="50%"}
 
 ### MCP tools
+
+
 ```{.python}
 await chat.register_mcp_tools_stdio_async(
     command="uvx",

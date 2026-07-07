@@ -6,7 +6,9 @@
 <script src="02-chatlas_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="02-chatlas_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="02-chatlas_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="02-chatlas_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="02-chatlas_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02-chatlas_files/libs/quarto-contrib/countdown-0.6.0/countdown.js"></script>
+<link href="02-chatlas_files/libs/quarto-contrib/countdown-0.6.0/countdown.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.37">
 
   <title>chatlas</title>
@@ -97,7 +99,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="02-chatlas_files/libs/revealjs/dist/theme/quarto-85547d7f4b227780dcbd27fb35ef063c.css">
+  <link rel="stylesheet" href="02-chatlas_files/libs/revealjs/dist/theme/quarto-037fb6bbb0c52faed5d85f9e131ff02b.css">
   <link href="02-chatlas_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="02-chatlas_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="02-chatlas_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -199,175 +201,177 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">chatlas</h1>
-  <p class="subtitle">Programming with LLMs in Python</p>
+  <p class="subtitle">Programming with LLMs made easy</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="section" class="slide level2 center">
-<h2></h2>
+<section id="chatlas-programming-with-llms-made-easy" class="slide level2 center">
+<h2>chatlas: programming with LLMs made easy</h2>
+<div class="columns">
+<div class="column">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/chatlas.png" class="quarto-figure quarto-figure-center" height="250"></p>
+<p><img data-src="images/chatlas.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
 </figure>
 </div>
-<p>One consistent interface to <strong>any</strong> LLM provider.</p>
-<aside class="notes">
-<p>chatlas is the foundation everything else builds on. It gives you one Python API that works the same whether you’re hitting Anthropic, OpenAI, Google, or a local model. You learn one set of patterns, and you can swap providers with a single line change.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div><div class="column">
+<ul>
+<li>One interface to many LLMs</li>
+<li>Streaming output</li>
+<li>Tool calling, MCP, etc</li>
+<li>Structured data extraction</li>
+<li>Async/non-blocking</li>
+<li>Evals, OTel, etc</li>
+<li>And more…</li>
+</ul>
+</div></div>
 </section>
-<section id="hello-chatlas" class="slide level2 center">
-<h2>Hello, chatlas</h2>
+<section id="many-providers-one-interface" class="slide level2 center">
+<h2>Many providers, one interface</h2>
+<div class="columns">
+<div class="column">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What is the most popular Python package for data analysis?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>That’s it. One import, two lines, streaming output.</p>
-</div>
-<aside class="notes">
-<p>Live demo: run this in a notebook or console. The output streams in real-time. Point out that <code>chat.chat()</code> both sends the message AND echoes the response — it’s designed for interactive exploration.</p>
-<p>Mention: if they’re using OpenAI, just swap to <code>ctl.ChatOpenAI()</code>. Local model? <code>ctl.ChatOllama()</code> or <code>ctl.ChatLMStudio()</code>. The rest of the code stays identical.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat1 <span class="op">=</span> ctl.ChatAnthropic()</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat2 <span class="op">=</span> ctl.ChatOpenAI()</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat3 <span class="op">=</span> ctl.ChatGoogle()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<p>Dozens of <code>Chat{$Provider}</code> available.</p>
+</div></div>
 </section>
-<section id="bring-your-own-provider" class="slide level2 center">
-<h2>Bring your own provider</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Hosted</span></span>
-<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()          <span class="co"># Claude</span></span>
-<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatOpenAI()             <span class="co"># GPT</span></span>
-<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatGoogle()             <span class="co"># Gemini</span></span>
-<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Local (no API key needed)</span></span>
-<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatOllama()             <span class="co"># Ollama</span></span>
-<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatLMStudio()           <span class="co"># LM Studio</span></span>
-<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick via a single string</span></span>
-<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAuto(<span class="st">"anthropic:claude-sonnet-4-6"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Same API, every provider. Use whatever you have today.</p>
-<aside class="notes">
-<p>Don’t linger here — just establish that provider choice is a one-line decision. <code>ChatAuto</code> is useful when you want to parameterize the provider (e.g., from an env var or config file). For the rest of the slides we’ll use <code>ChatAnthropic()</code> but they should substitute their own.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="many-providers-one-interface-1" class="slide level2 center">
+<h2>Many providers, one interface</h2>
+<div class="columns">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"Teach me Python"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<p>Switch providers without changing downstream code.</p>
+</div></div>
 </section>
-<section id="system-prompt" class="slide level2 center">
-<h2>System prompt</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic(</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>    system_prompt<span class="op">=</span>(</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"You are a data science tutor. "</span></span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Explain concepts simply, using analogies from everyday life."</span></span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What is a p-value?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>The system prompt is your <strong>invisible hand</strong> — it shapes every response without the user seeing it.</p>
+<section id="model-hints" class="slide level2 center">
+<h2>Model hints</h2>
+<div class="columns">
+<div class="column">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/model-type-hints.png" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+</figure>
 </div>
-<aside class="notes">
-<p>Live demo: run this, then run the same question without a system prompt to show the contrast. The system prompt is sent with every request (LLMs are stateless between calls). This is the simplest form of “context engineering” — the theme of the whole day.</p>
-<p>Key point: the system prompt is where <em>you the developer</em> talk to the model. The user prompt is where <em>the end user</em> talks to the model. Keeping these separate is a fundamental design principle.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div><div class="column">
+<p>See what model slugs are available for each provider.</p>
+</div></div>
+<div class="fragment">
+<p>💡 Expressed as a single string: <code>ChatAuto("openai/gpt-5.5")</code>.</p>
+</div>
+</section>
+<section id="streaming-just-works" class="slide level2 center">
+<h2>Streaming “just works”</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><video data-src="images/hello-chat.mp4" class="quarto-figure quarto-figure-center" style="width:70.0%" controls=""><a href="images/hello-chat.mp4">Video</a></video></p>
+</figure>
+</div>
 </section>
 <section id="multi-turn-the-chat-remembers" class="slide level2 center">
 <h2>Multi-turn: the chat remembers</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What about confidence intervals?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"How do those two concepts relate?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p><code>Chat</code> objects are <strong>stateful</strong> — they accumulate conversation history.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.get_turns()          <span class="co"># inspect the history</span></span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.set_turns([])        <span class="co"># reset to start fresh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<aside class="notes">
-<p>This is a key thing for newcomers to understand: the Chat object is managing the conversation state for you. Each call to .chat() appends the user message and the assistant response to an internal list of turns. When the next request goes out, the full history goes with it.</p>
-<p>This is why the model can answer “how do those two concepts relate?” — it has the full conversation in context. If you want a fresh start, <code>set_turns([])</code> clears the history.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="chat-vs-.stream" class="slide level2 center">
-<h2><code>.chat()</code> vs <code>.stream()</code></h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="chat-interactive"><code>.chat()</code> — interactive</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Blocks, auto-echoes output</span></span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"Explain PCA"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Great for <strong>notebooks</strong> and <strong>exploration</strong>.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="stream-for-apps"><code>.stream()</code> — for apps</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Returns a generator you control</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chunk <span class="kw">in</span> chat.stream(<span class="st">"Explain PCA"</span>):</span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(chunk, end<span class="op">=</span><span class="st">""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Great for <strong>Shiny</strong>, <strong>FastAPI</strong>, etc.</p>
-</div></div>
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"My name is Carson."</span>)</span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What's my name?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
-<p>Both have async variants: <code>.chat_async()</code> and <code>.stream_async()</code></p>
+<div class="chatlas-response-container">
+<p>Your name is Carson.</p>
 </div>
-<aside class="notes">
-<p>This distinction matters when we get to shinychat. In an app, you don’t want to block the event loop — you want to stream chunks to the UI as they arrive. <code>.stream()</code> gives you that control. <code>.chat()</code> is the convenience wrapper for when you’re just exploring.</p>
-<p>For multi-user web apps, always use the async variants — they won’t block other users’ requests.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div>
+</div><div class="column">
+<div class="fragment">
+<p>LLMs are inherently stateless, but <code>chat</code> objects are <strong>stateful</strong> — they accumulate conversation history.</p>
+</div>
+</div></div>
+</section>
+<section id="working-with-chat-state" class="slide level2 center">
+<h2>Working with chat state</h2>
+<p><code>Chat</code> objects are <strong>stateful</strong> — they accumulate conversation history.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat                      <span class="co"># see the history</span></span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.get_turns()          <span class="co"># obtain list of user/assistant turns</span></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat.set_turns([])        <span class="co"># reset to start fresh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="multi-modal-input" class="slide level2">
+<h2>Multi-modal input</h2>
+<p>Submit input other than text, such as images, pdfs, and more.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>  ctl.content_image_url(<span class="st">"https://www.python.org/static/img/python-logo.png"</span>),</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Can you explain this logo?"</span></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment chatlas-response-container">
+<p>The Python logo features two intertwined snakes in yellow and blue, representing the Python programming language. The design symbolizes…</p>
+</div>
+</section>
+<section id="system-prompt" class="slide level2 center">
+<h2>System prompt</h2>
+<p>Behind-the-scenes information that shapes every response — invisible to the user.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic(</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>    system_prompt<span class="op">=</span><span class="st">"You are Jerry Seinfeld."</span></span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"Tell me a joke"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment chatlas-response-container">
+<p>What is the deal with passwords? You need a capital letter, a number, a symbol… at this point I need a degree just to log into my email.</p>
+</div>
+</section>
+<section id="system-prompt-tips" class="slide level2 center">
+<h2>System prompt tips</h2>
+<ol type="1">
+<li>Set the scene (e.g., “You are a dashboard chat assistant”).</li>
+<li>Define (un)desirable behavior (e.g., “Be concise”).
+<ul>
+<li>Give examples</li>
+</ul></li>
+<li>Give missing context (e.g., “Today’s date: 2026-07-13”).
+<ul>
+<li>Provide relevant information that the model might need to generate accurate responses.</li>
+</ul></li>
+</ol>
+</section>
+<section id="chat-methods" class="slide level2">
+<h2>Chat methods</h2>
+<p>Three methods for interactive use:</p>
+<ul>
+<li><code>.chat()</code> — “echo” output, returns final response</li>
+<li><code>.console()</code> — open dedicated Python console</li>
+<li><code>.app()</code> — open dedicated web app</li>
+</ul>
+<div class="fragment">
+<p>Two methods for programmatic use:</p>
+<ul>
+<li><code>.stream()</code> — returns a generator, you control output</li>
+<li><code>.stream_async()</code> — async version of <code>.stream()</code></li>
+</ul>
+</div>
+</section>
+<section id="exercise" class="slide level2 center">
+<h2>Exercise</h2>
+<ol type="1">
+<li>Use <code>.chat()</code> to submit some text and see the response.</li>
+<li>Add a custom system prompt to change the model’s behavior.</li>
+<li>Try using <code>.app()</code> – how is this similar/different from ChatGPT, etc?</li>
+</ol>
+<p><br></p>
+<countdown-timer id="timer_814cce1afba9b49f5008e5d613c344a765da4f2c" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+ </countdown-timer>
 </section>
 <section id="tool-calling-the-big-idea" class="slide level2 center">
 <h2>Tool calling: the big idea</h2>
 <p>LLMs can’t <strong>do</strong> things — but they can <strong>ask you</strong> to do things.</p>
-<div class="cell" data-reveal="true" data-fig-width="8" data-layout-align="default">
+<div class="cell" data-reveal="true" data-fig-width="15" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class=""><p></p>
@@ -377,10 +381,10 @@
     participant L as LLM
     participant T as Your Tool
 
-    U-&gt;&gt;L: "What's the weather in Paris?"
-    L-&gt;&gt;T: get_weather(city="Paris")
+    U-&gt;&gt;L: "What's the weather in San Francisco?"
+    L-&gt;&gt;T: get_weather(city="San Francisco")
     T--&gt;&gt;L: {"temp": 18, "condition": "cloudy"}
-    L-&gt;&gt;U: "It's 18°C and cloudy in Paris."
+    L-&gt;&gt;U: "It's 18°C and cloudy in San Francisco."
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -388,182 +392,193 @@
 </div>
 </div>
 <p>The model <strong>decides</strong> what to call. Your code <strong>executes</strong> it.</p>
-<aside class="notes">
-<p>This is the conceptual slide — make sure they understand the flow before seeing code. The LLM never actually calls the function itself. It outputs a structured “please call this function with these arguments” message. chatlas intercepts that, calls your Python function, sends the result back to the model, and the model incorporates it into its response.</p>
-<p>This is the “harness” concept from the foundations section in action.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="your-first-tool" class="slide level2 center">
-<h2>Your first tool</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_current_weather(lat: <span class="bu">float</span>, lng: <span class="bu">float</span>):</span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the current weather for a location.</span></span>
-<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    lat</span></span>
-<span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">        The latitude.</span></span>
-<span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    lng</span></span>
-<span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">        The longitude.</span></span>
-<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb9-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> requests</span>
-<span id="cb9-12"><a href="" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(</span>
-<span id="cb9-13"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"https://api.open-meteo.com/v1/forecast"</span>,</span>
-<span id="cb9-14"><a href="" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"latitude"</span>: lat, <span class="st">"longitude"</span>: lng, <span class="st">"current"</span>: <span class="st">"temperature_2m"</span>},</span>
-<span id="cb9-15"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb9-16"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()[<span class="st">"current"</span>]</span>
-<span id="cb9-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
-<span id="cb9-19"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(get_current_weather)</span>
-<span id="cb9-20"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What's the weather in Paris?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Live demo. Walk through the key ingredients:</p>
-<ol type="1">
-<li><strong>Type hints</strong> (lat: float, lng: float) — required. The model uses these to know what arguments to pass.</li>
-<li><strong>Docstring</strong> — required. This is how the model understands what the tool does and when to use it.</li>
-<li><strong><code>register_tool()</code></strong> — hands the tool to the chat. chatlas automatically converts the function signature + docstring into the tool schema the model expects.</li>
-<li><strong>The loop is automatic</strong> — chatlas handles the tool call, sends the result back, and lets the model generate a final response. You don’t write any loop code.</li>
-</ol>
-<p>Point out: the model figured out Paris’s lat/lng on its own. That’s the “language → code” strength we talked about in foundations.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="tools-are-just-functions" class="slide level2 center">
+<h2>Tools are just functions</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_current_weather(lat: <span class="bu">float</span>, lng: <span class="bu">float</span>):</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Get the current weather for a location."""</span></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> requests</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>    resp <span class="op">=</span> requests.get(</span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"https://api.open-meteo.com/v1/forecast"</span>,</span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>        params<span class="op">=</span>{<span class="st">"latitude"</span>: lat, <span class="st">"longitude"</span>: lng, <span class="st">"current"</span>: <span class="st">"temperature_2m"</span>},</span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> resp.json()[<span class="st">"current"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Note that:</p>
+<ul>
+<li>Type hints are required — the model uses these to know what arguments to pass.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Docstring is required — this is how the model understands what the tool does.</li>
+</ul>
+</div>
 </section>
-<section id="what-just-happened" class="slide level2 center">
+<section id="tools-in-action" class="slide level2">
+<h2>Tools in action</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(get_current_weather)</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What's the weather in San Francisco?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="chatlas-response-container fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># 🛠️ tool request</span></span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>get_current_weather(<span class="fl">37.7749</span>, <span class="op">-</span><span class="fl">122.4194</span>)</span>
+<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># ✅ tool result</span></span>
+<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a>sunny</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The current weather in San Francisco is sunny.</p>
+</div>
+</section>
+<section id="what-just-happened" class="slide level2">
 <h2>What just happened?</h2>
-<p>When you ran <code>chat.chat(...)</code>, chatlas ran this loop for you:</p>
+<p>chatlas ran the “tool loop” for you:</p>
 <ol type="1">
-<li class="fragment">Sent your message <strong>+</strong> the tool schema to the model</li>
-<li class="fragment">Model responded: <em>“call <code>get_current_weather(48.85, 2.35)</code>”</em></li>
-<li class="fragment">chatlas <strong>called your function</strong> with those arguments</li>
+<li class="fragment">Sent the prompt &amp; the tool schema to the model</li>
+<li class="fragment">Model responded: <em>“call <code>get_current_weather(37.7749, -122.4194)</code>”</em></li>
+<li class="fragment"><strong>Invoked that function</strong> with those arguments</li>
 <li class="fragment">Sent the result back to the model</li>
 <li class="fragment">Model responded with a <strong>natural language</strong> answer</li>
 </ol>
 <div class="fragment">
 <p>Steps 2–4 can repeat — the model can call <strong>multiple tools</strong> in sequence.</p>
 </div>
-<aside class="notes">
-<p>This is the “under the hood” explanation. Emphasize that they never had to write any of this orchestration code — chatlas does it. But understanding the loop is important because it explains why tools need good docstrings (the model reads them) and why errors in tools don’t crash the program (chatlas catches them and sends the error back to the model).</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="tools-for-data-scientists" class="slide level2 center">
-<h2>Tools for data scientists</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>tips <span class="op">=</span> pd.read_csv(</span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv"</span></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> query_tips(code: <span class="bu">str</span>):</span>
-<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Execute Python code to answer a question about the tips dataset.</span></span>
-<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
-<span id="cb10-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
-<span id="cb10-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    code</span></span>
-<span id="cb10-13"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">        Python code to run. The `tips` DataFrame and `pd` (pandas) are available.</span></span>
-<span id="cb10-14"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb10-15"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(<span class="bu">eval</span>(code, {<span class="st">"tips"</span>: tips, <span class="st">"pd"</span>: pd}))</span>
-<span id="cb10-16"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
-<span id="cb10-18"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(query_tips)</span>
-<span id="cb10-19"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What's the average tip percentage by day of the week?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>This is the “aha” moment for data scientists in the room. The model writes pandas code, chatlas executes it, and the model interprets the result in natural language. This is a preview of what querychat does at scale — but here it’s just 10 lines of code.</p>
-<p>Live demo: run this, then ask a follow-up like “which day has the highest total bill?” to show multi-turn tool use.</p>
-<p>SAFETY NOTE: <code>eval()</code> here is fine for a local demo, but you’d never do this in production. querychat uses a sandboxed approach — we’ll cover that later.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="built-in-tools" class="slide level2 center">
-<h2>Built-in tools</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> chatlas <span class="im">import</span> tool_web_search</span>
-<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatAnthropic()</span>
-<span id="cb11-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(tool_web_search())</span>
-<span id="cb11-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What were the top Python packages released this month?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="agents-llm-tools-loop" class="slide level2">
+<h2>Agents: LLM + tools + loop</h2>
+<ul>
+<li>Tools are a means by which LLMs both learn and alter the state of the world.</li>
+</ul>
 <div class="fragment">
-<p>No API key, no configuration — the provider handles it natively.</p>
+<ul>
+<li>This particular “agent” is safe, but not very capable.</li>
+</ul>
 </div>
-<aside class="notes">
-<p>chatlas ships built-in tools that use the provider’s native capabilities. <code>tool_web_search()</code> is the most useful — it lets the model search the web for current information. Supported by Anthropic, OpenAI, and Google.</p>
-<p>There’s also <code>tool_web_fetch()</code> for reading specific URLs (Anthropic and Google only).</p>
-<p>The nice thing: these aren’t custom implementations — they use the provider’s own grounded search, which means citations and source attribution come free.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="fragment">
+<ul>
+<li>What if the model could write and execute code?</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Key idea</strong>: define a tool that takes code as input and executes it.</li>
+</ul>
+</div>
+</section>
+<section id="a-tool-for-executing-code" class="slide level2">
+<h2>A tool for executing code</h2>
+<p>LLMs are <em>very</em> good at translating natural language into code. So, we can define a tool that takes code as input and executes it.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eval_code(code: <span class="bu">str</span>):</span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Execute Python code."""</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">eval</span>(code)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Are you terrified? You should be! This is a <strong>illustrative example</strong> — never execute arbitrary code in production without proper sandboxing and security measures.</p>
+</div>
+</section>
+<section id="guardrails-for-code-execution" class="slide level2">
+<h2>Guardrails for code execution</h2>
+<ol type="1">
+<li><p>Use a <strong>sandbox</strong> to isolate the execution environment.</p>
+<ul>
+<li>Warning: here be dragons — this is a hard problem.</li>
+</ul></li>
+<li><p>Restrict the <strong>scope</strong> of what can be executed (e.g., SQL with read-only permissions).</p></li>
+<li><p>Leverage <em>remote</em> tools to shift execution to a separate process or service.</p></li>
+</ol>
+</section>
+<section id="remote-tools" class="slide level2">
+<h2>Remote tools</h2>
+<ul>
+<li>Tools don’t <em>have</em> to be available in the same process as the LLM client.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>They can be:
+<ul>
+<li><strong>Provider tools</strong>: connect through a particular provider’s API.</li>
+<li><strong>MCP tools</strong>: connect through a web service or local process.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Remote tools can be implemented in any language, not just Python.</li>
+</ul>
+</div>
+</section>
+<section id="provider-tools" class="slide level2">
+<h2>Provider tools</h2>
+<p><strong>chatlas</strong> comes with some “built-in” tools that use the provider’s native capabilities.</p>
+<div class="fragment">
+<p>These currently include:</p>
+<ol type="1">
+<li><code>tool_web_search()</code> — search the web for current information</li>
+<li><code>tool_web_fetch()</code> — read a specific URL</li>
+</ol>
+</div>
+<div class="fragment">
+<p>Use it like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(ctl.tool_web_search())</span>
+<span id="cb11-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What were the top Python packages released this month?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="mcp-tools" class="slide level2">
+<h2>MCP tools</h2>
+<ul>
+<li>Some are available through a hosted web service (e.g., <a href="https://deepwiki.ai">DeepWiki</a>).</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Others might require you to run a local process (e.g., <a href="https://github.com/username/uvx">uvx</a>).</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Here’s an example of registering a local MCP tool:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> chat.register_mcp_tools_stdio_async(</span>
+<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a>    command<span class="op">=</span><span class="st">"uvx"</span>,</span>
+<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>[<span class="st">"mcp-server-fetch"</span>],</span>
+<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(</span>
+<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Summarize the first paragraph of https://en.wikipedia.org/wiki/Python_(programming_language)"</span></span>
+<span id="cb12-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="exercise-1" class="slide level2 center">
+<h2>Exercise</h2>
+<ol type="1">
+<li>Register a tool, any tool, and call it from chat.</li>
+<li>Trigger a tool call from <code>.app()</code>, what do you see in the UI?</li>
+</ol>
+<p><br></p>
+<countdown-timer id="timer_814cce1afba9b49f5008e5d613c344a765da4f2c" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+ </countdown-timer>
 </section>
 <section id="quick-tour-more-capabilities" class="slide level2 center">
 <h2>Quick tour: more capabilities</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <h3 id="structured-output">Structured output</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
-<span id="cb12-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Person(BaseModel):</span>
-<span id="cb12-4"><a href="" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
-<span id="cb12-5"><a href="" aria-hidden="true" tabindex="-1"></a>    age: <span class="bu">int</span></span>
-<span id="cb12-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat_structured(</span>
-<span id="cb12-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Susan is 13 years old"</span>,</span>
-<span id="cb12-9"><a href="" aria-hidden="true" tabindex="-1"></a>    data_model<span class="op">=</span>Person,</span>
-<span id="cb12-10"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># → Person(name='Susan', age=13)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Person(BaseModel):</span>
+<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a>    name: <span class="bu">str</span></span>
+<span id="cb13-5"><a href="" aria-hidden="true" tabindex="-1"></a>    age: <span class="bu">int</span></span>
+<span id="cb13-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat_structured(</span>
+<span id="cb13-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Susan is 13 years old"</span>,</span>
+<span id="cb13-9"><a href="" aria-hidden="true" tabindex="-1"></a>    data_model<span class="op">=</span>Person,</span>
+<span id="cb13-10"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb13-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># → Person(name='Susan', age=13)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<h3 id="mcp-tools">MCP tools</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> chat.register_mcp_tools_stdio_async(</span>
-<span id="cb13-2"><a href="" aria-hidden="true" tabindex="-1"></a>    command<span class="op">=</span><span class="st">"uvx"</span>,</span>
-<span id="cb13-3"><a href="" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>[<span class="st">"mcp-server-fetch"</span>],</span>
-<span id="cb13-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<h3 id="images-pdfs">Images &amp; PDFs</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(</span>
-<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>    ctl.content_image_file(<span class="st">"chart.png"</span>),</span>
-<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Describe this chart."</span>,</span>
+<h3 id="mcp-tools-1">MCP tools</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> chat.register_mcp_tools_stdio_async(</span>
+<span id="cb14-2"><a href="" aria-hidden="true" tabindex="-1"></a>    command<span class="op">=</span><span class="st">"uvx"</span>,</span>
+<span id="cb14-3"><a href="" aria-hidden="true" tabindex="-1"></a>    args<span class="op">=</span>[<span class="st">"mcp-server-fetch"</span>],</span>
 <span id="cb14-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<h3 id="images-pdfs">Images &amp; PDFs</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(</span>
+<span id="cb15-2"><a href="" aria-hidden="true" tabindex="-1"></a>    ctl.content_image_file(<span class="st">"chart.png"</span>),</span>
+<span id="cb15-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Describe this chart."</span>,</span>
+<span id="cb15-4"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <aside class="notes">
 <p>Don’t go deep on any of these — just plant the seed. Structured output is incredibly useful for extraction pipelines. MCP lets you connect to any MCP-compatible tool server. Multi-modal input (images, PDFs) opens up document analysis workflows.</p>

@@ -44,6 +44,7 @@
     - Prime directive is important!
     - Safe execution is (sometimes) important!
     - How much "leash" are you willing to give the agent?
+- Important: programmatically calling LLM is different from using ChatGPT, Claude, etc.
 - Don't overthink it
   - You probably don't need: complex RAG, multi-agent, etc
   - Unless you have scale issues, agentic search of text files works quite well

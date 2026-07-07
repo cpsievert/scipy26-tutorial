@@ -1,6 +1,6 @@
 querychat[viz]
 shinychat
-chatlas
+chatlas[anthropic]
 polars
 sqlalchemy
 duckdb

@@ -11,6 +11,7 @@ format:
     incremental: false
     transition: fade
     code-line-numbers: false
+callout-appearance: simple
 ---
 
 ## Hi, I'm Carson 👋 {.center}
@@ -31,11 +32,11 @@ format:
 :::
 
 
-## I work at posit {.center}
+## Posit’s mission... {.center}
 
-<br>
 
-> ### Posit’s mission is to create open-source software for data science, scientific research, and technical communication. We build tools that prioritize correctness, transparency, and reproducibility in their output.
+> ### To create open-source software for data science, scientific research, and technical communication. We build tools that prioritize correctness, transparency, and reproducibility in their output.
+
 
 
 ## Visit our Booth! {.center}
@@ -87,23 +88,27 @@ Quick show of hands 🙋
 
 
 
-## Materials 📁 {.center}
+## Website (materials) 📁
 
-#### Slides: <https://cpsievert.github.io/scipy26-tutorial>
+::: {.hcenter .center}
 
-#### GitHub repo: <https://github.com/cpsievert/scipy26-tutorial>
+![](images/website-qr.svg){height="400px"}
 
-TODO: shortlink / QR code for slides
+### [bit.ly/scipy26](https://bit.ly/scipy26){.big}
+
+:::
 
 
 
 ## Computing environments 💻 {.center}
 
-#### [Workshop Environment](https://workshop.posit.team)
-
-#### [Install locally](https://github.com/cpsievert/scipy26-tutorial#readme)
+#### Workshop Environment <https://workshop.posit.team>
 
 TODO: shortlink / QR code for workshop environment
+
+::: {.callout-tip}
+If you'd rather work locally, follow the instructions in the website.
+:::
 
 
 
@@ -113,7 +118,9 @@ Exercises require access to an LLM.
 
 ### Workshop environment: things will just work.
 
-### Running locally: follow [these instructions](https://github.com/cpsievert/scipy26-tutorial#llm-access)
+::: {.callout-tip}
+If you'd rather work locally, follow the instructions in the website.
+:::
 
 
 ## Test run

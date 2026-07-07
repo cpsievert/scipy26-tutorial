@@ -1,0 +1,19 @@
+---
+title: "Feelings about AI"
+subtitle: "It's ok to feel conflicted"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+The agony and ecstacy
+
+## Conflicted
+
+![](images/conflicted.png){.absolute top=100 left=100 width="85%"}
