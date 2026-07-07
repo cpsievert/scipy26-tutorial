@@ -7,11 +7,32 @@
     "text": "A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI apps in Python — using chatlas, shinychat, and querychat."
   },
   {
-    "objectID": "index.html#what-well-cover",
-    "href": "index.html#what-well-cover",
+    "objectID": "index.html#slides",
+    "href": "index.html#slides",
     "title": "Safe & Maintainable AI Apps in Python",
-    "section": "What we’ll cover",
-    "text": "What we’ll cover\n\n\n🧭Foundationsembrace the good, engineer around the bad · 45 min\n\n\nchatlasprogramming with LLMs · 60 min\n\n\nshinychatchatbots made easy · 45 min\n\n\nquerychatself-service analytics case study · 45 min"
+    "section": "Slides",
+    "text": "Slides\n\nWelcome\nFoundations\nchatlas\nshinychat\nquerychat"
+  },
+  {
+    "objectID": "index.html#computer-setup",
+    "href": "index.html#computer-setup",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "Computer setup",
+    "text": "Computer setup\nTODO: shortlink / QR code for workshop environment\nA computing environment with all of the dependencies needed to run exercises is available here.\nIf you’d rather locally run the tutorial exercises, follow the following instructions to get set up.\n\nClone the repo\n\ngit clone https://github.com/cpsievert/scipy26-tutorial.git\ncd scipy26-tutorial\n\nInstall uv globally\n\n# macOS/Linux\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n# Windows\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\nIf you can’t use uv for some reason, Just do what you’d normally do to install the requirements.txt\n\nSetup a virtual environment\n\nuv venv\nsource .venv/bin/activate\n\nInstall dependencies\n\nuv pip install -r requirements.txt"
+  },
+  {
+    "objectID": "index.html#llm-access",
+    "href": "index.html#llm-access",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "LLM access",
+    "text": "LLM access\nExercises depend on access to an LLM. Here are a few different ways to get access:\n\nSign up for a free trial at https://posit.ai/. No credit card required. You can use the free trial for the entire workshop.\nBring your own API key. If you have your own API key, like OPENAI_API_KEY, ANTHROPIC_API_KEY, etc. that will work just fine.\nRun a local model on your laptop via LM Studio or Ollama. No key required, fully private, but slower and requires a beefy laptop. See the LM Studio docs for setup instructions.\n\nFor more choices and details, see https://posit-dev.github.io/chatlas/get-started/models.html"
+  },
+  {
+    "objectID": "index.html#exercises-solutions-and-more",
+    "href": "index.html#exercises-solutions-and-more",
+    "title": "Safe & Maintainable AI Apps in Python",
+    "section": "Exercises, solutions, and more",
+    "text": "Exercises, solutions, and more\nCan be found in the GitHub repo. See the exercises/ and solutions/ folders."
   },
   {
     "objectID": "index.html#resources",

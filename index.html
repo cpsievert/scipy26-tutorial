@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -139,24 +174,59 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </div>
 <div class="quick-links">
-<p><a href="slides/00-welcome.html" class="btn btn-primary" role="button">Slides</a> <a href="https://github.com/cpsievert/scipy26-tutorial" class="btn btn-outline-secondary" role="button">GitHub Repo</a> <a href="https://github.com/cpsievert/scipy26-tutorial#install" class="btn btn-outline-secondary" role="button">Setup Instructions</a></p>
+<p><a href="https://github.com/cpsievert/scipy26-tutorial" class="btn btn-outline-secondary" role="button">GitHub Repo</a></p>
 </div>
-<section id="what-well-cover" class="level2">
-<h2 class="anchored" data-anchor-id="what-well-cover">What we’ll cover</h2>
-<div class="cards">
-<div class="card">
-<p><a href="slides/01-foundations.html"><span class="emoji-icon">🧭</span><br><strong>Foundations</strong><br>embrace the good, engineer around the bad · 45 min</a></p>
-</div>
-<div class="card">
-<p><a href="slides/02-chatlas.html"><img src="slides/images/chatlas.png" class="img-fluid"><br><strong>chatlas</strong><br>programming with LLMs · 60 min</a></p>
-</div>
-<div class="card">
-<p><a href="slides/03-shinychat.html"><img src="slides/images/shinychat.svg" class="img-fluid"><br><strong>shinychat</strong><br>chatbots made easy · 45 min</a></p>
-</div>
-<div class="card">
-<p><a href="slides/04-querychat.html"><img src="slides/images/querychat.png" class="img-fluid"><br><strong>querychat</strong><br>self-service analytics case study · 45 min</a></p>
-</div>
-</div>
+<section id="slides" class="level2">
+<h2 class="anchored" data-anchor-id="slides">Slides</h2>
+<ol type="1">
+<li><a href="slides/00-welcome.html">Welcome</a></li>
+<li><a href="slides/01-foundations.html">Foundations</a></li>
+<li><a href="slides/02-chatlas.html">chatlas</a></li>
+<li><a href="slides/03-shinychat.html">shinychat</a></li>
+<li><a href="slides/04-querychat.html">querychat</a></li>
+</ol>
+</section>
+<section id="computer-setup" class="level2">
+<h2 class="anchored" data-anchor-id="computer-setup">Computer setup</h2>
+<p>TODO: shortlink / QR code for workshop environment</p>
+<p>A computing environment with all of the dependencies needed to run exercises is available <a href="https://workshop.posit.team">here</a>.</p>
+<p>If you’d rather locally run the tutorial exercises, follow the following instructions to get set up.</p>
+<ol type="1">
+<li>Clone the repo</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/cpsievert/scipy26-tutorial.git</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> scipy26-tutorial</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li><a href="https://docs.astral.sh/uv/getting-started/installation/">Install uv</a> globally</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS/Linux</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-LsSf</span> https://astral.sh/uv/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">powershell</span> <span class="at">-ExecutionPolicy</span> ByPass <span class="at">-c</span> <span class="st">"irm https://astral.sh/uv/install.ps1 | iex"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you can’t use uv for some reason, Just do what you’d normally do to install the <code>requirements.txt</code></p>
+<ol start="3" type="1">
+<li>Setup a virtual environment</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> venv</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> .venv/bin/activate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li>Install dependencies</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> pip install <span class="at">-r</span> requirements.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="llm-access" class="level2">
+<h2 class="anchored" data-anchor-id="llm-access">LLM access</h2>
+<p>Exercises depend on access to an LLM. Here are a few different ways to get access:</p>
+<ol type="1">
+<li><p>Sign up for a free trial at <a href="https://posit.ai/" class="uri">https://posit.ai/</a>. No credit card required. You can use the free trial for the entire workshop.</p></li>
+<li><p>Bring your own API key. If you have your own API key, like <code>OPENAI_API_KEY</code>, <code>ANTHROPIC_API_KEY</code>, etc. that will work just fine.</p></li>
+<li><p>Run a local model on your laptop via <strong>LM Studio</strong> or <strong>Ollama</strong>. No key required, fully private, but slower and requires a beefy laptop. See the <a href="https://lmstudio.io/docs/">LM Studio docs</a> for setup instructions.</p></li>
+</ol>
+<p>For more choices and details, see https://posit-dev.github.io/chatlas/get-started/models.html</p>
+</section>
+<section id="exercises-solutions-and-more" class="level2">
+<h2 class="anchored" data-anchor-id="exercises-solutions-and-more">Exercises, solutions, and more</h2>
+<p>Can be found in the <a href="https://github.com/cpsievert/scipy26-tutorial">GitHub repo</a>. See the <code>exercises/</code> and <code>solutions/</code> folders.</p>
 </section>
 <section id="resources" class="level2">
 <h2 class="anchored" data-anchor-id="resources">Resources</h2>
