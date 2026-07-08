@@ -43,7 +43,7 @@ def get_current_weather(lat: float, lng: float):
 
 
 # TODO(1): add a system_prompt argument here
-chat = ctl.ChatAnthropic()
+chat = ctl.ChatBedrockAnthropic()
 
 chat.register_tool(get_current_weather)
 # TODO(2): register your second tool here

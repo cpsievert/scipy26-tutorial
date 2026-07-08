@@ -1,6 +1,7 @@
 querychat[viz]
 shinychat
-chatlas[anthropic]
+chatlas[bedrock-anthropic]
+chatlas[mcp]
 polars
 sqlalchemy
 duckdb

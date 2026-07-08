@@ -74,16 +74,23 @@ Quick show of hands 🙋
 
 
 
-## What we'll cover today {.center}
+##
 
-| | Section | Time |
-|:-:|---|--:|
-| 🧭 | **Foundations** — embrace the good, engineer around the bad | 45 min |
-| ![](images/chatlas.png){height="50px"} | **chatlas** — programming with LLMs | 60 min |
-| ![](images/shinychat.svg){height="50px"} | **shinychat** — chatbots made easy | 45 min |
-| ![](images/querychat.png){height="50px"} | **querychat** — self-service analytics case study | 45 min |
+| Section | Time |
+|---|---|
+| **Welcome & Setup** | 20 min |
+| **LLM foundations** | 20 min |
+| **Chat basics** | 25 min |
+| Break+Recap | 10 min |
+| **Tool calling / agents** | 25 min |
+| **Structured data extraction** | 15 min |
+| **Chatbots** | 20 min |
+| Break+Recap | 10 min |
+| **Production tooling** | 25 min |
+| **Evals** | 20 min |
+| **querychat** — self-service analytics case study | 15 min |
 
-: {tbl-colwidths="[10,75,15]"}
+: {tbl-colwidths="[75,25]"}
 
 
 

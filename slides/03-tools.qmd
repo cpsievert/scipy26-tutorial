@@ -1,0 +1,286 @@
+
+---
+title: "Tool calling and agents"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+
+## LLMs don't have access to live data
+
+LLMs are trained on a "fixed" data set (i.e., they have a "knowledge cutoff"). 
+
+<br>
+
+```{.python}
+import chatlas as ctl
+
+chat = ctl.ChatBedrockAnthropic()
+chat.chat("What's the weather in San Francisco?")
+```
+
+::: {.fragment .chatlas-response-container}
+I don't have the ability to check real-time weather data.
+:::
+
+## LLMs don't have access to live data
+
+LLMs are trained on a "fixed" data set -- providers typically refer to this as a "knowledge cutoff".
+
+::: fragment
+Three main techniques:
+
+1. **Prompting**: supply knowledge to system prompt. Simple, but it doesn't scale well.
+2. **RAG**: retrieve relevant information based on user prompt.
+3. **Tool calling**: define a tool that can access knowledge, and let the model call it.
+:::
+
+::: fragment
+RAG is a popular term, but the core idea is outdated. Now you would supply a tool that can retrieve relevant information, and let the model call it.
+:::
+
+
+## Tools = functions + metadata {.center}
+
+
+## Tools = functions + metadata
+
+```{.python}
+def get_current_weather(lat: float, lng: float):
+    """Get the current weather for a location."""
+    import requests
+    resp = requests.get(
+        "https://api.open-meteo.com/v1/forecast",
+        params={"latitude": lat, "longitude": lng, "current": "temperature_2m"},
+    )
+    return resp.json()["current"]
+```
+
+::: fragment
+Note that:
+
+* Type hints are required — the model uses these to know what arguments to pass.
+:::
+
+::: fragment
+* Docstring is required — this is how the model understands what the tool does.
+:::
+
+
+## Now the LLM can get the current weather
+
+```{.python}
+chat.register_tool(get_current_weather)
+chat.chat("What's the weather in San Francisco?")
+```
+
+::: {.chatlas-response-container .fragment}
+
+```python
+# 🛠️ tool request
+get_current_weather(37.7749, -122.4194)
+# ✅ tool result
+sunny
+```
+
+The current weather in San Francisco is sunny.
+:::
+
+## How tool calling works
+
+![](images/tool-calling.png){width="80%" fig-align="center"}
+
+
+## The tool loop in detail
+
+::: {.incremental}
+1. User sends: prompt & tool metadata
+2. Model responds: call `x` tool with `y` arguments
+3. chatlas invokes: function with those arguments
+4. chatlas sends: result back to the model
+5. Model responds: with a **natural language** answer
+:::
+
+::: {.fragment}
+* Steps 2–4 can repeat — the model can call **multiple tools** in sequence.
+:::
+
+::: {.fragment}
+* Model can "gracefully recover" from errors: if failure occurs, the error is sent back to the model.
+:::
+
+
+## Exercise {.center}
+
+1. Write a python function that reports the current date.
+2. Register it as a tool and call it from chat.
+
+<br>
+
+{{< countdown "3:00" >}}
+
+
+## Agents: LLM + tools + loop
+
+* Tools are a means by which LLMs both learn & alter the state of the world. 
+
+::: fragment
+* This particular "agent" is safe, but not very capable.
+:::
+
+::: fragment
+* LLMs are very good at generating code -- what if the model could write and execute code?
+:::
+
+::: fragment
+* **Key idea**: define a tool that takes code as input and executes it.
+
+```{.python}
+def eval_code(code: str):
+    """Execute Python code."""
+    return eval(code)
+```
+:::
+
+::: fragment
+⚠️ This is a **illustrative example** — never execute arbitrary code in production without proper sandboxing and security measures.
+:::
+
+
+
+## Guardrails for code execution
+
+Three main strategies to mitigate risk:
+
+1. Use a **sandbox** to isolate the execution environment.
+    * Warning: here be dragons — this is a hard problem.
+
+::: fragment
+2. Leverage **remote** tools to execute on a separate process or server.
+    * Major LLM providers have code execution tools.
+:::
+
+::: fragment
+3. Restrict the **scope** of what can be executed (e.g., read-only SQL).
+    * This is the approach used by querychat.
+    * Can also lead to model getting "less creative", which can be a good thing for correctness.
+:::
+
+
+## Remote tools
+
+* Tools don't _have_ to be available in the same process as the LLM client. 
+
+::: fragment
+* They can be:
+  * **Provider tools**: connect through a particular provider's API.
+  * **MCP tools**: connect through a web service or local process.
+:::
+
+::: fragment
+* Remote tools can be implemented in any language, not just Python.
+:::
+
+
+## Provider tools
+
+**chatlas** comes with some "built-in" tools that use the provider's native capabilities. 
+
+::: fragment
+These currently include:
+
+1. `tool_web_search()` — search the web for current information
+2. `tool_web_fetch()` — read a specific URL
+:::
+
+
+::: fragment
+Use it like this:
+
+```{.python}
+chat.register_tool(ctl.tool_web_search())
+chat.chat("What were the top Python packages released this month?")
+```
+:::
+
+
+## MCP tools
+
+MCP tools can be served through either:
+
+1. **HTTP** — the tool is served through a web service (e.g., [DeepWiki](https://docs.devin.ai/work-with-devin/deepwiki))
+
+::: fragment
+```{.python}
+await chat.register_mcp_tools_http_stream_async(
+  url="https://mcp.deepwiki.com/mcp"
+)
+```
+:::
+
+::: fragment
+MCP tools are async, which means you must also use `.chat_async()` to call them.
+:::
+
+::: fragment
+```{.python}
+await chat.chat_async(
+  "Summarize what's in cpsievert/scipy26-tutorial on GitHub"
+)
+```
+:::
+
+
+## MCP tools
+
+MCP tools can be served through either:
+
+1. **HTTP** — a web service (e.g., [DeepWiki](https://docs.devin.ai/work-with-devin/deepwiki))
+2. **STDIO** — a local process (e.g., uvx)
+
+::: fragment
+If the tool must be run locally, you can serve, register and use like this:
+
+```{.python}
+await chat.register_mcp_tools_stdio_async(
+  command="uvx",
+  args=["mcp-server-fetch"],
+)
+await chat.chat_async(
+  "What are the top 5 Python packages released this month?"
+)
+```
+:::
+
+
+## Is MCP dead?
+
+* Some argue CLIs are better and more efficient than MCP. 
+
+::: fragment
+* There is some truth to this, but it also assumes you're ok with arbitrary commands running in the terminal. 
+:::
+
+::: fragment
+* MCP is safer since it reduces the risk surface, making it a better fit for web apps.
+:::
+
+
+## Exercise {.center}
+
+1. Go to <https://www.pulsemcp.com/servers>.
+2. Click on Filters -> "Remote Available".
+3. Sort from most popular.
+4. Pick an MCP server.
+5. Register it with a chatlas client and make a query to it.
+
+<br>
+
+{{< countdown "5:00" >}}
