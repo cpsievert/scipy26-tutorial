@@ -119,8 +119,9 @@ The current weather in San Francisco is sunny.
 
 ## Exercise {.center}
 
-1. Write a python function that reports the current date.
-2. Register it as a tool and call it from chat.
+1. Open up `exercises/01-chat-tools.py`.
+2. Write a python function that reports the current date.
+3. Register it as a tool and call it from chat.
 
 <br>
 

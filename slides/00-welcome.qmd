@@ -35,7 +35,20 @@ callout-appearance: simple
 ## Posit’s mission... {.center}
 
 
-> ### To create open-source software for data science, scientific research, and technical communication. We build tools that prioritize correctness, transparency, and reproducibility in their output.
+> ### To create open-source software for data science, scientific research, and technical communication.
+
+::: {.r-hstack .fragment}
+![](images/shiny.svg){height="200px"}
+![](images/quarto.svg){height="200px"}
+![](images/great_tables.svg){height="200px"}
+:::
+
+::: {.r-hstack .fragment style="margin-top: -2em; margin-left: 4em;"}
+![](images/chatlas.png){height="200px"}
+![](images/shinychat.svg){height="200px"}
+![](images/querychat.png){height="200px"}
+:::
+
 
 
 
@@ -46,7 +59,8 @@ Many notable names in open source:
 - Hadley Wickham (R, tidyverse, ggplot2, etc)
 - Joe Cheng (Posit CTO, Shiny)
 - Winston Chang (Posit Assistant, Shiny)
-- Carlos Scheidegger (Quarto, scientific publishing)
+- Josh Taillon (Shiny)
+- Carlos Scheidegger (Quarto)
 - and others
 
 
@@ -55,32 +69,43 @@ Many notable names in open source:
 
 Quick show of hands 🙋
 
+::: columns
+::: {.column width="50%"}
 
-::: {.fragment}
+::: fragment
 - Use **Python** on daily basis?
 :::
-::: {.fragment}
-- Use **Python** for data work?
+::: fragment
+- Use **Copilot** for AI assistance?
 :::
-::: {.fragment}
-- Called an **LLM API** in code before?
-:::
-::: {.fragment}
-- Built or shipped an **LLM app**?
-:::
-::: {.fragment}
-- Would like to ship an **AI app** that lets others explore your data more easily?
+::: fragment
+- Use **Claude Code** or **Codex** for AI assistance?
 :::
 
+:::
+
+::: {.column width="50%"}
+
+::: fragment
+- Called an **LLM API** in code before?
+:::
+::: fragment
+- Built or shipped an **LLM app**?
+:::
+::: fragment
+- Would like to ship an **AI app** that lets others explore your data more easily?
+:::
+:::
+:::
 
 
 ##
 
 | Section | Time |
 |---|---|
-| **Welcome & Setup** | 20 min |
-| **LLM foundations** | 20 min |
-| **Chat basics** | 25 min |
+| **Welcome & Setup** | 30 min |
+| **LLM foundations** | 30 min |
+| **Chat basics** | 30 min |
 | Break+Recap | 10 min |
 | **Tool calling / agents** | 25 min |
 | **Structured data extraction** | 15 min |
@@ -99,22 +124,14 @@ Quick show of hands 🙋
 
 ::: {.hcenter .center}
 
-![](images/website-qr.svg){height="400px"}
+![](images/website-qr.svg){height="350px"}
 
 ### [bit.ly/scipy26](https://bit.ly/scipy26){.big}
 
-:::
+The website has links to these slides and other helpful things. 
 
+Please bookmark it for easy access during the workshop.
 
-
-## Computing environments 💻 {.center}
-
-#### Workshop Environment <https://workshop.posit.team>
-
-TODO: shortlink / QR code for workshop environment
-
-::: {.callout-tip}
-If you'd rather work locally, follow the instructions in the website.
 :::
 
 
@@ -123,20 +140,48 @@ If you'd rather work locally, follow the instructions in the website.
 
 Exercises require access to an LLM. 
 
-### Workshop environment: things will just work.
+::: fragment
+### Things will just work if you use the provided environment
+:::
 
+::: fragment
 ::: {.callout-tip}
-If you'd rather work locally, follow the instructions in the website.
+If you'd rather work locally, follow the instructions in [the website](https://bit.ly/scipy26).
+:::
 :::
 
 
-## Test run
+## Computing environment 💻 {.center}
 
-If you can run this exercise file and see output, then you're all set up!
+1. Go to [dev.workshop.posit.team](https://dev.workshop.posit.team)
+2. Sign in via your GitHub account (or create a new account)
+3. Click **New session** at the top
+4. Under **Environment**, select the appropriate image:
+    * `654654567442.dkr.ecr.us-east-2.amazonaws.com/ptd-adhoc-pwb:session-jammy-scipy-2026.05.0-218.pro1-76c65f7f`
+5. Click **Launch**.
+    * Wait for longer than you expect -- blank screen is normal while the environment is being provisioned.
+7. Click **Open** -> **Open Folder** -> Enter `/opt/scipy26-tutorial`
 
-```bash
-python exercises/00-test-run.py
-```
+::: {.callout-tip}
+If you'd rather work locally, follow the instructions in [the website](https://bit.ly/scipy26).
+:::
+
+
+## Exercise: Test run {.center background-color="#0e3b5c"}
+
+1. Open the `exercises/00-chat-hello.py` file.
+2. Run it in the provided environment.
+    * Press play button or Cmd/Ctrl+Enter
+3. You should see a joke response from the LLM.
+4. If you prefer a notebook
+    * Open command palette with Cmd/Ctrl+Shift+Enter
+    * Enter "New Jupyter notebook"
+    * Copy/paste over code over
+
+
+<br>
+
+{{<countdown "3:00" >}}
 
 
 ## Ground rules {.center}
@@ -146,4 +191,4 @@ python exercises/00-test-run.py
 - 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
 
 
-# Let's begin 🚀 {.center background-color="#0e3b5c"}
+# It's ok to feel conflicted about AI, I certainly am! {.center}

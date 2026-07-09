@@ -12,7 +12,7 @@ format:
     code-line-numbers: false
 ---
 
-## chatlas: LLM based chat made easy {.center}
+## chatlas: an opinionated LLM framework
 
 ::: {.columns}
 ::: {.column}
@@ -21,6 +21,8 @@ format:
 :::
 
 ::: {.column}
+<br>
+
 * One interface to many LLMs
 * Streaming output
 * Tool calling, MCP, etc
@@ -32,26 +34,36 @@ format:
 
 :::
 
-## There are many Python llm frameworks -- why chatlas?
+## There are many frameworks -- why chatlas?
 
+
+::: {.columns}
+::: {.column width="40%"}
 * I'm the author :)
 
 ::: fragment
-* Backed by Posit, a company with 15+ years of heavy investment in open source
+* Backed by Posit -- a company with 15+ years of heavy investment in open source
 :::
 
 ::: fragment
 * Open source, MIT license
 :::
 
+:::
+
+::: {.column width="60%"}
+
 ::: fragment
-* Simpler to get started than "mega-frameworks" (e.g., LangChain, LlamaIndex, etc.)
+* Simpler to navigate than "mega-frameworks" (e.g., LangChain, LlamaIndex, etc.)
 :::
 
 ::: fragment
 * Similar in spirit to [Pydantic AI](https://pydantic.dev/docs/ai/overview/) and [llm](https://github.com/simonw/LLM), but different focus:
   * Interactive streaming "just works"
   * Delightful integration with shinychat
+:::
+
+:::
 :::
 
 ## Many providers, one interface {.center}
@@ -223,13 +235,35 @@ Two methods for programmatic use:
 
 :::
 
+## Streaming, in a nutshell {.center}
+
+Similar to `.chat()`, but you control where each chunk of output goes.
+
+```{.python}
+import chatlas as ctl
+
+chat = ctl.ChatBedrockAnthropic()
+
+stream = chat.stream("My name is Carson.")
+for chunk in stream:
+    print(chunk)
+```
+
+::: {.fragment .chatlas-response-container}
+Hello <br>
+Chatlas. <br>
+How <br>
+can <br>
+I <br>
+help?
+:::
+
 
 ## Exercise {.center}
 
-1. Open up `exercises/00-hello-chat.py`.
+1. Open up `exercises/00-chat-hello.py`.
 2. Add a custom system prompt to change the model's behavior.
 3. Try using `.app()` -- how is this similar/different from ChatGPT, etc?
-  * If running in 
 
 <br>
 

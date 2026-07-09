@@ -5,3 +5,7 @@ chatlas[mcp]
 polars
 sqlalchemy
 duckdb
+shiny
+shinywidgets
+ipyleaflet
+faicons

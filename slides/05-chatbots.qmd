@@ -1,6 +1,6 @@
 ---
-title: "shinychat"
-subtitle: "Chatbots made easy"
+title: "Chatbots (i.e., web apps)"
+subtitle: "Building chatbots with chatlas and shinychat"
 format:
   revealjs:
     theme: [default, theme.scss]
@@ -12,103 +12,134 @@ format:
     code-line-numbers: false
 ---
 
-## {.center}
+## Recap: the `.app()` method
 
-![](images/shinychat.svg){height="250px" fig-align="center"}
+* We've already seen `chat.app()` -- a **working chatbot** in 1 line of code.
 
-Turn a chatlas client into a **full chatbot UI** — in 5 lines.
-
-::: notes
-shinychat is the bridge between "I can call an LLM in a script" and "I have an
-app other people can use." It's built on Shiny for Python, but you don't need
-to know Shiny to use it.
+::: fragment
+* Under the hood, it uses [`shinychat`](https://posit-dev.github.io/shinychat/py/)  --  a **chat UI** built on [Shiny](https://shiny.posit.co/py/).
 :::
 
-## The 5-line chatbot {.center}
+::: fragment
+* `chatlas` + `shinychat` provides a delightful UX, but you could also:
+  1. Use `chatlas` with your own frontend (e.g., Streamlit, FastAPI, etc.)
+  2. Use `shinychat` with your own backend (e.g., LangChain, Pydantic AI, etc.)
+:::
 
-```{.python filename="app.py"}
-from chatlas import ChatBedrockAnthropic
+## `shinychat`: high-level API
+
+`.app()` is a thin wrapper around `shinychat`. It's basically just:
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+```{.python}
+import chatlas as ctl
 from shinychat.express import Chat
 
-client = ChatBedrockAnthropic(system_prompt="You are a helpful assistant.")
-chat = Chat(id="chat", client=client)
+chat = Chat(
+  "chat", 
+  client=ctl.ChatBedrockAnthropic()
+)
+
 chat.ui()
 ```
-
-```{.bash}
-shiny run app.py
-```
-
-::: notes
-Live demo: create this file, run it, open the browser. This is the wow moment.
-By passing `client=`, shinychat automatically wires up:
-- Streaming responses
-- Multi-turn conversation history
-- Cancel button during generation
-- File attachment support
-- Bookmarkable state
-
-All of that from 5 lines. Let them absorb this before moving on.
 :::
 
-## What `client=` gives you for free {.center}
-
-::: {.columns}
 ::: {.column width="50%"}
 
-- ✅ **Streaming** responses
-- ✅ **Multi-turn** conversation
-- ✅ **Tool calling** with display
-- ✅ **Cancel** mid-generation
-
+::: fragment
+* `client=` is what wires up all the chat features (automatically).
 :::
-::: {.column width="50%"}
 
-- ✅ **File attachments** (images, PDFs)
-- ✅ **Bookmarkable** state
-- ✅ Automatic **error** handling
-- ✅ **Async** by default
+
+::: fragment
+* This lets you easily drop a chat UI in a larger Shiny app.
+:::
 
 :::
 :::
 
-::: {.fragment}
-You _could_ wire all this up manually... but why would you?
-:::
+## `shinychat`: low-level API
 
-::: notes
-The point of this slide is to justify the abstraction. Each of these features
-would be dozens of lines of code to implement from scratch. The `client=`
-parameter is doing a lot of work under the hood — it calls
-`client.stream_async(user_input, *attachments, content="all")` and feeds the
-result into the chat UI.
-:::
+`shinychat` has a low-level API that gives you **full control** over the chat.
 
-## Bring your own backend {.center}
+<br>
 
-Not using chatlas? Wire up any async generator:
-
-```{.python filename="app.py"}
+```{.python}
+import chatlas as ctl
 from shinychat.express import Chat
 
-chat = Chat(id="chat")
+chat = Chat("chat")
 chat.ui()
+client = ctl.ChatBedrockAnthropic()
 
 @chat.on_user_submit
 async def handle_user_input(user_input: str):
-    response = my_langchain_chain.astream(user_input)
+    # This next line could also be a LangChain chain, 
+    # Pydantic AI call, or any generator.
+    response = await client.stream_async(user_input)
     await chat.append_message_stream(response)
 ```
 
-::: notes
-Brief slide — just establish the escape hatch. If they're using LangChain,
-Pydantic AI, or any other framework, they can still use shinychat as the UI
-layer. The `@chat.on_user_submit` decorator gives you full control over what
-happens when the user sends a message.
+## What `client=` gives you for free
 
-Don't spend more than 60 seconds here — most attendees will use the chatlas
-path.
+
+- ✅ **History** (multiple conversations)
+- ✅ **Tool calling** with display
+- ✅ **Async streaming** responses
+- ✅ **Cancel** mid-generation
+- ✅ **File attachments** (images, PDFs)
+- ✅ **Multi-turn** conversation
+- ✅ Automatic **error** handling
+
+## shinychat: tool displays
+
+![](images/tool-displays.png){fig-align="center"}
+
+## shinychat: custom tool displays
+
+![](images/tool-displays-custom.png){fig-align="center"}
+
+## shinychat: custom tool displays
+
+**Main idea**: Return `ContentToolResult` with a `ToolResultDisplay`.
+
+
+::: fragment
+```{.python}
+import chatlas as ctl
+from shinychat.types import ToolResultDisplay
+
+def my_tool():
+    return ctl.ContentToolResult(
+        value="value for the LLM",
+        extra={
+            "display": ToolResultDisplay(
+                title="Custom title for the user",
+                icon="maybe an icon here",
+                html="<b>HTML content for the user</b>",
+            )
+        }
+    )
+```
 :::
+
+::: fragment
+`shinychat` uses this to display rich tables and visualizations in the chat. The LLM sees the raw data, user sees a polished display.
+:::
+
+
+## Beyond chat
+
+We often associate LLMs with chat, but they can be used for **any interactive app**.
+
+We won't dwell on this, but here are a couple examples:
+
+1. [Invoice data extractor](https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs)
+2. [Workout generator](https://shiny.posit.co/py/templates/workout-plan/)
+
 
 ## Feature tour {.center}
 
@@ -253,82 +284,4 @@ If you've got time, live-demo this. Otherwise, show the screenshot.
 The key insight: the chat feels like a polished product, not a developer tool.
 This is the difference between a prototype and something you'd hand to a
 stakeholder.
-:::
-
-## Observability with OpenTelemetry {.center}
-
-chatlas emits **OTel spans** for every LLM call — latency, tokens, errors.
-
-```{.python}
-# In production, configure your OTel exporter before the app starts
-# e.g., with Logfire, Datadog, Honeycomb, etc.
-import logfire
-logfire.configure()
-
-# Then just run your shinychat app as normal — tracing is automatic
-```
-
-::: {.fragment}
-See what your users are actually asking, how long it takes, and what fails.
-:::
-
-::: notes
-Brief slide. OTel support is built into chatlas, so shinychat apps get it for
-free. In production you'd configure an exporter (Logfire is the easiest if
-you're in the Posit ecosystem). This gives you dashboards showing: what
-questions users ask, how long responses take, token usage, error rates.
-
-Don't go deep — just plant the idea that observability is built in, not
-bolted on.
-:::
-
-## 🛠️ Hands-on: build a chatbot {.center}
-
-**~15 minutes** — pick your adventure:
-
-::: {.columns}
-::: {.column width="50%"}
-
-### 🧪 Option A: Add a tool display
-
-Start from the exercise file:
-
-1. Run the app — it has a working tool
-2. Upgrade the tool to return a **`ToolResultDisplay`**
-3. **Bonus**: add a **slash command**
-
-:::
-::: {.column width="50%"}
-
-### 🚀 Option B: Deploy it
-
-Take your working chatbot and:
-
-1. **Deploy** to Connect Cloud
-2. Share the URL with a neighbor
-3. Watch the OTel traces roll in
-
-:::
-:::
-
-Exercise file: **`exercises/02-shinychat-starter.py`**
-
-::: notes
-Option A is the guided path — they take a working chatbot and make the tool
-output prettier. This reinforces the ToolResultDisplay pattern.
-
-Option B is for people who are already comfortable and want the full loop.
-Deploying to Connect Cloud is a `rsconnect deploy shiny .` command if they
-have credentials set up.
-
-TODO(Carson): decide whether Connect Cloud deploy is realistic for the
-tutorial environment. If not, cut Option B and replace with "add a second tool
-with a display."
-:::
-
-# ☕ Break — 5 min {.center background-color="#0e3b5c"}
-
-::: notes
-Next up: querychat — the capstone. Everything we've learned (chatlas + tools +
-shinychat UI) comes together as a self-service analytics platform.
 :::

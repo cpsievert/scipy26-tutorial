@@ -18,16 +18,17 @@
   - What's the alternative?
     - If I practice abstinence, is that any better than helping people practice "safe AI"? 
 
+
+**LLMs: embrace the good, engineer around the bad (20 min)**
+
 - In data science (my background), correctness matters!
   - Design systems where humans can help "course correct" and "verify"
   - Posit assistant is an example of this
   - Plug my colleagues talk on "correctness, reproducibility, etc"
 
-
-**LLMs: embrace the good, engineer around the bad (20 min)**
-
 - LLM capabilities are jagged
   - Some "easy" tasks (e.g., counting r's in strawberry) they are terrible at, but some "hard" tasks (e.g., coding) they are awesome at!
+- Important: programmatically calling LLM is different from using ChatGPT, Claude, etc.
   - Focus LLMs on what they're good at (language->code)
   - Engineer around the bad (i.e., provide a "harness" with tools, prompts, etc)
 - Agent "harnesses" are becoming quite capable!
@@ -44,7 +45,7 @@
     - Prime directive is important!
     - Safe execution is (sometimes) important!
     - How much "leash" are you willing to give the agent?
-- Important: programmatically calling LLM is different from using ChatGPT, Claude, etc.
+
 - Don't overthink it
   - You probably don't need: complex RAG, multi-agent, etc
   - Unless you have scale issues, agentic search of text files works quite well

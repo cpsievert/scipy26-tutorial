@@ -71,7 +71,9 @@ Person(name='Susan', age=13)
 
 ## Add descriptions
 
-In addition to type hints, you can add **descriptions** to your fields. These are used by the LLM to understand what the field is for.
+In addition to type hints, you can add **descriptions** to your fields.
+
+<br>
 
 ```{.python}
 class Person(BaseModel):
@@ -84,127 +86,129 @@ class Person(BaseModel):
 ```
 
 
-## Basic image recognition example
+## Literature mining
 
 ```{.python}
 import chatlas as ctl
 from pydantic import BaseModel
 
-class Image(BaseModel):
-    primary_shape: str
-    primary_colour: str
+class ModelResult(BaseModel):
+    model: str
+    dataset: str
+    metric: str
+    value: float
+
+class PaperResults(BaseModel):
+    results: list[ModelResult]
+
+abstract = """ResNet-50 achieves 93.2% top-1 accuracy on CIFAR-10 and 76.1% on
+ImageNet. A fine-tuned ViT-B/16 reaches 98.1% on CIFAR-10."""
+
+chat = ctl.ChatBedrockAnthropic()
+chat.chat_structured(abstract, data_model=PaperResults)
+```
+
+::: {.chatlas-response-container}
+```{.python}
+PaperResults(results=[
+    ModelResult(model='ResNet-50', dataset='CIFAR-10', metric='top-1 accuracy', value=93.2),
+    ModelResult(model='ResNet-50', dataset='ImageNet', metric='top-1 accuracy', value=76.1),
+    ModelResult(model='ViT-B/16',  dataset='CIFAR-10', metric='top-1 accuracy', value=98.1),
+])
+```
+:::
+
+
+## Image recognition example
+
+```{.python}
+import chatlas as ctl
+from pydantic import BaseModel
+
+class PlotInfo(BaseModel):
+    chart_type: str
+    x_label: str
+    y_label: str
+    trend: str
 
 chat = ctl.ChatBedrockAnthropic()
 chat.chat_structured(
-  ctl.content_image_url("https://www.python.org/static/img/python-logo.png"),
-  data_model=Image,
+  ctl.content_image_url("https://matplotlib.org/stable/_images/sphx_glr_simple_plot_001.png"),
+  data_model=PlotInfo,
 )
 ```
 
 ::: {.chatlas-response-container}
 ```{.python}
-Image(primary_shape='snake', primary_colour='blue')
+PlotInfo(chart_type='line', x_label='x', y_label='f(x)', trend='oscillating sine wave')
 ```
 :::
 
+## Classification example
 
-
-
-
-
-## Quick tour: more capabilities
-
-::: {.columns}
-::: {.column width="50%"}
-
-### Structured output
 ```{.python}
+import chatlas as ctl
 from pydantic import BaseModel
+from typing import Literal
 
-class Person(BaseModel):
-    name: str
-    age: int
+class IssueLabel(BaseModel):
+    label: Literal["bug", "enhancement", "docs", "question"]
+    confidence: Literal["low", "medium", "high"]
 
+chat = ctl.ChatBedrockAnthropic()
 chat.chat_structured(
-    "Susan is 13 years old",
-    data_model=Person,
+    "The `plt.show()` call hangs indefinitely on macOS with the Tk backend.",
+    data_model=IssueLabel,
 )
-# → Person(name='Susan', age=13)
 ```
 
+::: {.chatlas-response-container}
+```{.python}
+IssueLabel(label='bug', confidence='high')
+```
 :::
-::: {.column width="50%"}
 
-### MCP tools
 
+## Optional fields
+
+Use `| None` for fields that may be absent — preprints often lack a journal or DOI.
 
 ```{.python}
-await chat.register_mcp_tools_stdio_async(
-    command="uvx",
-    args=["mcp-server-fetch"],
-)
+import chatlas as ctl
+from pydantic import BaseModel, Field
+
+class Citation(BaseModel):
+    authors: list[str]
+    year: int
+    title: str
+    journal: str | None = Field(description="Journal name; None for preprints")
+    doi: str | None = Field(description="DOI if present, otherwise None")
+
+ref = "Harris et al. (2025). NumPy 2.0: Array API Standard Conformance. arXiv:2501.12345"
+
+chat = ctl.ChatBedrockAnthropic()
+chat.chat_structured(ref, data_model=Citation)
 ```
 
-### Images & PDFs
+::: {.chatlas-response-container}
 ```{.python}
-chat.chat(
-    ctl.content_image_file("chart.png"),
-    "Describe this chart.",
-)
+Citation(authors=['Harris', 'et al.'], year=2025,
+         title='NumPy 2.0: Array API Standard Conformance',
+         journal=None, doi=None)
 ```
-
-:::
 :::
 
-## 🛠️ Hands-on: build with chatlas
 
-**~15 minutes** — pick your adventure:
 
-::: {.columns}
-::: {.column width="50%"}
+## Exercise
 
-### 🧪 Option A: Extend an example
+Try extracting structured data from this PDF:
 
-Start from the exercise file and:
+<https://storage.googleapis.com/generativeai-downloads/data/pdf_structured_outputs/invoice.pdf>
 
-1. Add a **system prompt** that sets a persona
-2. Add a **second tool** (e.g., a unit converter, a dice roller, etc.)
-3. **Bonus**: add `tool_web_search()`
+Tips: 
 
-:::
-::: {.column width="50%"}
+1. Use `ctl.content_pdf_url()` to pass the PDF to the LLM.
+2. The hard part is the data model. Note there are multiple items, as well as metadata like invoice number, date, and total. You may want to use nested models.
 
-### 🤖 Option B: Vibe-code it
-
-Open your favorite chatbot and prompt:
-
-_"Create a chatlas Python app that [your idea here]"_
-
-See how far you get — then **read** and **fix** what it generates.
-
-:::
-:::
-
-Exercise file: **`exercises/01-chatlas-starter.py`**
-
-::: notes
-Option A is the guided path — they start from working code and extend it.
-Option B is the self-directed path — they use an LLM to generate chatlas code
-and see whether it works. Option B is a meta-learning exercise: they're
-learning to evaluate LLM-generated code, which is exactly the "human in the
-loop" principle from the foundations section.
-
-Float around the room and help. Common stumbles:
-- Forgetting type hints or docstrings on tools
-- Using `chat.stream()` when they meant `chat.chat()` in a script
-- API key not set as env var
-
-Wrap up by asking 1-2 people to share what they built.
-:::
-
-# ☕ Break — 5 min {.center background-color="#0e3b5c"}
-
-::: notes
-Next up: shinychat — turning chatlas into a real chatbot UI. Make sure everyone
-has a working chatlas example before moving on.
-:::
+{{< countdown "5:00" >}}
