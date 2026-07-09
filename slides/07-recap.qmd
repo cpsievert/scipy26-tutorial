@@ -1,0 +1,97 @@
+---
+title: "Recap"
+subtitle: "Tools, structured data, & chatbots"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+## Where we've been
+
+* 🔧 **Tools**: give LLMs real capabilities
+
+::: fragment
+* 📦 **Structured data extraction**: turn text/images/PDFs into typed data
+:::
+
+::: fragment
+* 💬 **shinychat**: turn a chat into an app. 
+    * Customize with tool displays, slash commands, and more
+:::
+
+
+## The big idea, again
+
+**Agent = LLM + tools + loop** — tools are how LLMs learn and act on the world.
+
+::: fragment
+A tool is just a **typed, documented function** — the model decides when to call it.
+:::
+
+::: fragment
+Letting an LLM execute arbitrary code is powerful but risky — **sandbox it, run it remotely, or restrict its scope**.
+:::
+
+::: fragment
+Structured output turns LLM responses into **data your code can branch on**, not just prose.
+:::
+
+## Tools & data, so far
+
+`register_tool()` turns a Python function into something the model can call.
+
+::: fragment
+**MCP** extends tools beyond your own process — over HTTP or STDIO.
+:::
+
+::: fragment
+`.chat_structured()` + a **Pydantic model** extracts typed data from text, images, or PDFs.
+:::
+
+::: fragment
+`str | None` fields handle data that's sometimes missing.
+:::
+
+## shinychat, so far {.center}
+
+::: fragment
+`chat.app()` is a thin wrapper — `shinychat` is what's actually powering it.
+:::
+
+::: fragment
+`client=` gives you history, tool display, streaming, cancel, attachments, error handling — **for free**.
+:::
+
+::: fragment
+Return a `ToolResultDisplay` to show the user a polished view while the model sees raw data.
+:::
+
+## Quick check 🙋🏻‍♀️
+
+What two things does a Python function need to become a tool?
+
+::: fragment
+Name one way to keep LLM-driven code execution safe.
+:::
+
+::: fragment
+What does `client=` give you for free in `shinychat`?
+:::
+
+## Up next {.center background-color="#0F3B5D"}
+
+✔️ **Measuring correctness** — evals
+
+::: fragment
+🧪 **Production tooling** — observability
+:::
+
+::: fragment
+📊 **querychat** — the capstone: self-service analytics
+:::

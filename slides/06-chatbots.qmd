@@ -1,0 +1,149 @@
+---
+title: "Chatbots (i.e., web apps)"
+subtitle: "Building chatbots with chatlas and shinychat"
+format:
+  revealjs:
+    theme: [default, theme.scss]
+    slide-number: c/t
+    width: 1280
+    height: 720
+    incremental: false
+    transition: fade
+    code-line-numbers: false
+---
+
+## Recap: the `.app()` method
+
+* We've already seen `chat.app()` -- a **working chatbot** in 1 line of code.
+
+::: fragment
+* Under the hood, it uses [`shinychat`](https://posit-dev.github.io/shinychat/py/)  --  a **chat UI** built on [Shiny](https://shiny.posit.co/py/).
+:::
+
+::: fragment
+* `chatlas` + `shinychat` provides a delightful UX, but you could also:
+  1. Use `chatlas` with your own frontend (e.g., Streamlit, FastAPI, etc.)
+  2. Use `shinychat` with your own backend (e.g., LangChain, Pydantic AI, etc.)
+:::
+
+## `shinychat`: high-level API
+
+`.app()` is a thin wrapper around `shinychat`. It's basically just:
+
+<br>
+
+::: columns
+::: {.column width="50%"}
+```{.python}
+import chatlas as ctl
+from shinychat.express import Chat
+
+chat = Chat(
+  "chat", 
+  client=ctl.ChatBedrockAnthropic()
+)
+
+chat.ui()
+```
+:::
+
+::: {.column width="50%"}
+
+::: fragment
+* `client=` is what wires up all the chat features (automatically).
+:::
+
+
+::: fragment
+* This lets you easily drop a chat UI in a larger Shiny app.
+:::
+
+:::
+:::
+
+## `shinychat`: low-level API
+
+`shinychat` has a low-level API that gives you **full control** over the chat.
+
+<br>
+
+```{.python}
+import chatlas as ctl
+from shinychat.express import Chat
+
+chat = Chat("chat")
+chat.ui()
+client = ctl.ChatBedrockAnthropic()
+
+@chat.on_user_submit
+async def handle_user_input(user_input: str):
+    # This next line could also be a LangChain chain, 
+    # Pydantic AI call, or any generator.
+    response = await client.stream_async(user_input)
+    await chat.append_message_stream(response)
+```
+
+## What `client=` gives you for free
+
+
+- ✅ **History** (multiple conversations)
+- ✅ **Tool calling** with display
+- ✅ **Async streaming** responses
+- ✅ **Cancel** mid-generation
+- ✅ **File attachments** (images, PDFs)
+- ✅ **Multi-turn** conversation
+- ✅ Automatic **error** handling
+
+## shinychat: tool displays
+
+![](images/tool-displays.png){fig-align="center"}
+
+## shinychat: custom tool displays
+
+![](images/tool-displays-custom.png){fig-align="center"}
+
+## shinychat: custom tool displays
+
+**Main idea**: Return `ContentToolResult` with a `ToolResultDisplay`.
+
+::: fragment
+```{.python}
+import chatlas as ctl
+from shinychat.types import ToolResultDisplay
+
+def my_tool():
+    return ctl.ContentToolResult(
+        value="value for the LLM",
+        extra={
+            "display": ToolResultDisplay(
+                title="Custom title for the user",
+                icon="maybe an icon here",
+                html="<b>HTML content for the user</b>",
+            )
+        }
+    )
+```
+:::
+
+::: fragment
+`shinychat` uses this to display rich tables and visualizations in the chat. The LLM sees the raw data, user sees a polished display.
+:::
+
+## Slash commands
+
+```{.python}
+@chat.slash_command("clear", "Clear the conversation")
+async def _():
+    await chat.clear_messages()
+```
+
+![](images/slash-commands.png){fig-align="center"}
+
+## Beyond chat {background-color="#0F3B5D"}
+
+We often associate LLMs with chat, but they can be used for **any interactive app**.
+
+We won't dwell on this, but here are a couple examples:
+
+1. [Invoice data extractor](https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs)
+2. [Workout generator](https://shiny.posit.co/py/templates/workout-plan/)

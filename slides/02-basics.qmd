@@ -75,7 +75,7 @@ format:
 import chatlas as ctl
 
 chat1 = ctl.ChatAnthropic()
-chat2 = ctl.ChatOpenAI()
+chat2 = ctl.ChatBedrockAnthropic()
 chat3 = ctl.ChatGoogle()
 ```
 :::
