@@ -32,11 +32,11 @@ A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI app
 11. [querychat](slides/10-chat-query.html)
 12. [Recap & Sendoff](slides/11-sendoff.html)
 
-## Computer setup
+## Setup
 
-TODO: shortlink / QR code for workshop environment
+A computing environment with all of the dependencies needed to run exercises is available [here](https://dev.workshop.posit.team). Please follow the instructions in the [welcome slides](slides/00-welcome.html) to get set up.
 
-A computing environment with all of the dependencies needed to run exercises is available [here](https://workshop.posit.team).
+## Local Setup
 
 If you'd rather locally run the tutorial exercises, follow the following instructions to get set up. 
 
@@ -86,9 +86,9 @@ Exercises depend on access to an LLM. Here are a few different ways to get acces
 
 For more choices and details, see https://posit-dev.github.io/chatlas/get-started/models.html
 
-## Exercises, solutions, and more
+## Exercises and more
 
-Can be found in the [GitHub repo](https://github.com/cpsievert/scipy26-tutorial). See the `exercises/` and `solutions/` folders.
+Can be found in the [GitHub repo](https://github.com/cpsievert/scipy26-tutorial). See the `exercises/` folder.
 
 ## Resources
 
