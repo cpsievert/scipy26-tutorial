@@ -204,8 +204,8 @@
 </div>
 
 </section>
-<section id="chatlas-llm-based-chat-made-easy" class="slide level2 center">
-<h2>chatlas: LLM based chat made easy</h2>
+<section id="chatlas-an-opinionated-llm-framework" class="slide level2">
+<h2>chatlas: an opinionated LLM framework</h2>
 <div class="columns">
 <div class="column">
 <div class="quarto-figure quarto-figure-center">
@@ -214,6 +214,7 @@
 </figure>
 </div>
 </div><div class="column">
+<p><br></p>
 <ul>
 <li>One interface to many LLMs</li>
 <li>Streaming output</li>
@@ -225,14 +226,16 @@
 </ul>
 </div></div>
 </section>
-<section id="there-are-many-python-llm-frameworks-why-chatlas" class="slide level2">
-<h2>There are many Python llm frameworks – why chatlas?</h2>
+<section id="there-are-many-frameworks-why-chatlas" class="slide level2">
+<h2>There are many frameworks – why chatlas?</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <ul>
 <li>I’m the author :)</li>
 </ul>
 <div class="fragment">
 <ul>
-<li>Backed by Posit, a company with 15+ years of heavy investment in open source</li>
+<li>Backed by Posit – a company with 15+ years of heavy investment in open source</li>
 </ul>
 </div>
 <div class="fragment">
@@ -240,9 +243,10 @@
 <li>Open source, MIT license</li>
 </ul>
 </div>
+</div><div class="column" style="width:60%;">
 <div class="fragment">
 <ul>
-<li>Simpler to get started than “mega-frameworks” (e.g., LangChain, LlamaIndex, etc.)</li>
+<li>Simpler to navigate than “mega-frameworks” (e.g., LangChain, LlamaIndex, etc.)</li>
 </ul>
 </div>
 <div class="fragment">
@@ -254,6 +258,7 @@
 </ul></li>
 </ul>
 </div>
+</div></div>
 </section>
 <section id="many-providers-one-interface" class="slide level2 center">
 <h2>Many providers, one interface</h2>
@@ -384,18 +389,29 @@
 </ul>
 </div>
 </section>
+<section id="streaming-in-a-nutshell" class="slide level2 center">
+<h2>Streaming, in a nutshell</h2>
+<p>Similar to <code>.chat()</code>, but you control where each chunk of output goes.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatBedrockAnthropic()</span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>stream <span class="op">=</span> chat.stream(<span class="st">"My name is Carson."</span>)</span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> chunk <span class="kw">in</span> stream:</span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(chunk)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment chatlas-response-container">
+<p>Hello <br> Chatlas. <br> How <br> can <br> I <br> help?</p>
+</div>
+</section>
 <section id="exercise" class="slide level2 center">
 <h2>Exercise</h2>
 <ol type="1">
-<li>Open up <code>exercises/00-hello-chat.py</code>.</li>
+<li>Open up <code>exercises/00-chat-hello.py</code>.</li>
 <li>Add a custom system prompt to change the model’s behavior.</li>
 <li>Try using <code>.app()</code> – how is this similar/different from ChatGPT, etc?</li>
 </ol>
-<ul>
-<li>If running in</li>
-</ul>
 <p><br></p>
-<countdown-timer id="timer_25563e794871c70a2e98c23426d11b6ff526f151" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_8ee3dfdeab6029b49360f75affd981d68171eec2" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>

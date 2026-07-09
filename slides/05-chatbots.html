@@ -9,7 +9,7 @@
 <link href="05-chatbots_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <title>shinychat</title>
+  <title>Chatbots (i.e., web apps)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -195,130 +195,130 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">shinychat</h1>
-  <p class="subtitle">Chatbots made easy</p>
+  <h1 class="title">Chatbots (i.e., web apps)</h1>
+  <p class="subtitle">Building chatbots with chatlas and shinychat</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="section" class="slide level2 center">
-<h2></h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/shinychat.svg" class="quarto-figure quarto-figure-center" height="250"></p>
-</figure>
+<section id="recap-the-.app-method" class="slide level2">
+<h2>Recap: the <code>.app()</code> method</h2>
+<ul>
+<li>We’ve already seen <code>chat.app()</code> – a <strong>working chatbot</strong> in 1 line of code.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Under the hood, it uses <a href="https://posit-dev.github.io/shinychat/py/"><code>shinychat</code></a> – a <strong>chat UI</strong> built on <a href="https://shiny.posit.co/py/">Shiny</a>.</li>
+</ul>
 </div>
-<p>Turn a chatlas client into a <strong>full chatbot UI</strong> — in 5 lines.</p>
-<aside class="notes">
-<p>shinychat is the bridge between “I can call an LLM in a script” and “I have an app other people can use.” It’s built on Shiny for Python, but you don’t need to know Shiny to use it.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="fragment">
+<ul>
+<li><code>chatlas</code> + <code>shinychat</code> provides a delightful UX, but you could also:
+<ol type="1">
+<li>Use <code>chatlas</code> with your own frontend (e.g., Streamlit, FastAPI, etc.)</li>
+<li>Use <code>shinychat</code> with your own backend (e.g., LangChain, Pydantic AI, etc.)</li>
+</ol></li>
+</ul>
+</div>
 </section>
-<section id="the-5-line-chatbot" class="slide level2 center">
-<h2>The 5-line chatbot</h2>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>app.py</strong></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> chatlas <span class="im">import</span> ChatBedrockAnthropic</span>
-<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shinychat.express <span class="im">import</span> Chat</span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> ChatBedrockAnthropic(system_prompt<span class="op">=</span><span class="st">"You are a helpful assistant."</span>)</span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> Chat(<span class="bu">id</span><span class="op">=</span><span class="st">"chat"</span>, client<span class="op">=</span>client)</span>
-<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat.ui()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">shiny</span> run app.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Live demo: create this file, run it, open the browser. This is the wow moment. By passing <code>client=</code>, shinychat automatically wires up: - Streaming responses - Multi-turn conversation history - Cancel button during generation - File attachment support - Bookmarkable state</p>
-<p>All of that from 5 lines. Let them absorb this before moving on.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-client-gives-you-for-free" class="slide level2 center">
-<h2>What <code>client=</code> gives you for free</h2>
+<section id="shinychat-high-level-api" class="slide level2">
+<h2><code>shinychat</code>: high-level API</h2>
+<p><code>.app()</code> is a thin wrapper around <code>shinychat</code>. It’s basically just:</p>
+<p><br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<ul>
-<li>✅ <strong>Streaming</strong> responses</li>
-<li>✅ <strong>Multi-turn</strong> conversation</li>
-<li>✅ <strong>Tool calling</strong> with display</li>
-<li>✅ <strong>Cancel</strong> mid-generation</li>
-</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shinychat.express <span class="im">import</span> Chat</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> Chat(</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"chat"</span>, </span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>  client<span class="op">=</span>ctl.ChatBedrockAnthropic()</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>chat.ui()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<ul>
-<li>✅ <strong>File attachments</strong> (images, PDFs)</li>
-<li>✅ <strong>Bookmarkable</strong> state</li>
-<li>✅ Automatic <strong>error</strong> handling</li>
-<li>✅ <strong>Async</strong> by default</li>
-</ul>
-</div></div>
 <div class="fragment">
-<p>You <em>could</em> wire all this up manually… but why would you?</p>
+<ul>
+<li><code>client=</code> is what wires up all the chat features (automatically).</li>
+</ul>
 </div>
-<aside class="notes">
-<p>The point of this slide is to justify the abstraction. Each of these features would be dozens of lines of code to implement from scratch. The <code>client=</code> parameter is doing a lot of work under the hood — it calls <code>client.stream_async(user_input, *attachments, content="all")</code> and feeds the result into the chat UI.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="fragment">
+<ul>
+<li>This lets you easily drop a chat UI in a larger Shiny app.</li>
+</ul>
+</div>
+</div></div>
 </section>
-<section id="bring-your-own-backend" class="slide level2 center">
-<h2>Bring your own backend</h2>
-<p>Not using chatlas? Wire up any async generator:</p>
-<div class="code-with-filename">
-<div class="code-with-filename-file">
-<pre><strong>app.py</strong></pre>
+<section id="shinychat-low-level-api" class="slide level2">
+<h2><code>shinychat</code>: low-level API</h2>
+<p><code>shinychat</code> has a low-level API that gives you <strong>full control</strong> over the chat.</p>
+<p><br></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shinychat.express <span class="im">import</span> Chat</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> Chat(<span class="st">"chat"</span>)</span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.ui()</span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> ctl.ChatBedrockAnthropic()</span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@chat.on_user_submit</span></span>
+<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> handle_user_input(user_input: <span class="bu">str</span>):</span>
+<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This next line could also be a LangChain chain, </span></span>
+<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pydantic AI call, or any generator.</span></span>
+<span id="cb2-12"><a href="" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> <span class="cf">await</span> client.stream_async(user_input)</span>
+<span id="cb2-13"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> chat.append_message_stream(response)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="what-client-gives-you-for-free" class="slide level2">
+<h2>What <code>client=</code> gives you for free</h2>
+<ul>
+<li>✅ <strong>History</strong> (multiple conversations)</li>
+<li>✅ <strong>Tool calling</strong> with display</li>
+<li>✅ <strong>Async streaming</strong> responses</li>
+<li>✅ <strong>Cancel</strong> mid-generation</li>
+<li>✅ <strong>File attachments</strong> (images, PDFs)</li>
+<li>✅ <strong>Multi-turn</strong> conversation</li>
+<li>✅ Automatic <strong>error</strong> handling</li>
+</ul>
+</section>
+<section id="shinychat-tool-displays" class="slide level2">
+<h2>shinychat: tool displays</h2>
+
+<img data-src="images/tool-displays.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="shinychat-custom-tool-displays" class="slide level2">
+<h2>shinychat: custom tool displays</h2>
+
+<img data-src="images/tool-displays-custom.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="shinychat-custom-tool-displays-1" class="slide level2">
+<h2>shinychat: custom tool displays</h2>
+<p><strong>Main idea</strong>: Return <code>ContentToolResult</code> with a <code>ToolResultDisplay</code>.</p>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shinychat.types <span class="im">import</span> ToolResultDisplay</span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_tool():</span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ctl.ContentToolResult(</span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>        value<span class="op">=</span><span class="st">"value for the LLM"</span>,</span>
+<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>        extra<span class="op">=</span>{</span>
+<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="st">"display"</span>: ToolResultDisplay(</span>
+<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>                title<span class="op">=</span><span class="st">"Custom title for the user"</span>,</span>
+<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>                icon<span class="op">=</span><span class="st">"maybe an icon here"</span>,</span>
+<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>                html<span class="op">=</span><span class="st">"&lt;b&gt;HTML content for the user&lt;/b&gt;"</span>,</span>
+<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shinychat.express <span class="im">import</span> Chat</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> Chat(<span class="bu">id</span><span class="op">=</span><span class="st">"chat"</span>)</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat.ui()</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@chat.on_user_submit</span></span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> handle_user_input(user_input: <span class="bu">str</span>):</span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> my_langchain_chain.astream(user_input)</span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> chat.append_message_stream(response)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>shinychat</code> uses this to display rich tables and visualizations in the chat. The LLM sees the raw data, user sees a polished display.</p>
 </div>
-<aside class="notes">
-<p>Brief slide — just establish the escape hatch. If they’re using LangChain, Pydantic AI, or any other framework, they can still use shinychat as the UI layer. The <code>@chat.on_user_submit</code> decorator gives you full control over what happens when the user sends a message.</p>
-<p>Don’t spend more than 60 seconds here — most attendees will use the chatlas path.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</section>
+<section id="beyond-chat" class="slide level2">
+<h2>Beyond chat</h2>
+<p>We often associate LLMs with chat, but they can be used for <strong>any interactive app</strong>.</p>
+<p>We won’t dwell on this, but here are a couple examples:</p>
+<ol type="1">
+<li><a href="https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs">Invoice data extractor</a></li>
+<li><a href="https://shiny.posit.co/py/templates/workout-plan/">Workout generator</a></li>
+</ol>
 </section>
 <section id="feature-tour" class="slide level2 center">
 <h2>Feature tour</h2>
@@ -447,87 +447,6 @@
 </div>
 <aside class="notes">
 <p>If you’ve got time, live-demo this. Otherwise, show the screenshot. The key insight: the chat feels like a polished product, not a developer tool. This is the difference between a prototype and something you’d hand to a stakeholder.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="observability-with-opentelemetry" class="slide level2 center">
-<h2>Observability with OpenTelemetry</h2>
-<p>chatlas emits <strong>OTel spans</strong> for every LLM call — latency, tokens, errors.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># In production, configure your OTel exporter before the app starts</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># e.g., with Logfire, Datadog, Honeycomb, etc.</span></span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> logfire</span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a>logfire.configure()</span>
-<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Then just run your shinychat app as normal — tracing is automatic</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<p>See what your users are actually asking, how long it takes, and what fails.</p>
-</div>
-<aside class="notes">
-<p>Brief slide. OTel support is built into chatlas, so shinychat apps get it for free. In production you’d configure an exporter (Logfire is the easiest if you’re in the Posit ecosystem). This gives you dashboards showing: what questions users ask, how long responses take, token usage, error rates.</p>
-<p>Don’t go deep — just plant the idea that observability is built in, not bolted on.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="hands-on-build-a-chatbot" class="slide level2 center">
-<h2>🛠️ Hands-on: build a chatbot</h2>
-<p><strong>~15 minutes</strong> — pick your adventure:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="option-a-add-a-tool-display">🧪 Option A: Add a tool display</h3>
-<p>Start from the exercise file:</p>
-<ol type="1">
-<li>Run the app — it has a working tool</li>
-<li>Upgrade the tool to return a <strong><code>ToolResultDisplay</code></strong></li>
-<li><strong>Bonus</strong>: add a <strong>slash command</strong></li>
-</ol>
-</div><div class="column" style="width:50%;">
-<h3 id="option-b-deploy-it">🚀 Option B: Deploy it</h3>
-<p>Take your working chatbot and:</p>
-<ol type="1">
-<li><strong>Deploy</strong> to Connect Cloud</li>
-<li>Share the URL with a neighbor</li>
-<li>Watch the OTel traces roll in</li>
-</ol>
-</div></div>
-<p>Exercise file: <strong><code>exercises/02-shinychat-starter.py</code></strong></p>
-<aside class="notes">
-<p>Option A is the guided path — they take a working chatbot and make the tool output prettier. This reinforces the ToolResultDisplay pattern.</p>
-<p>Option B is for people who are already comfortable and want the full loop. Deploying to Connect Cloud is a <code>rsconnect deploy shiny .</code> command if they have credentials set up.</p>
-<p>TODO(Carson): decide whether Connect Cloud deploy is realistic for the tutorial environment. If not, cut Option B and replace with “add a second tool with a display.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="break-5-min" class="title-slide slide level1 center" data-background-color="#0e3b5c">
-<h1>☕ Break — 5 min</h1>
-<aside class="notes">
-<p>Next up: querychat — the capstone. Everything we’ve learned (chatlas + tools + shinychat UI) comes together as a self-service analytics platform.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;

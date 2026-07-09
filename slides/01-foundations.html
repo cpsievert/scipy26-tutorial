@@ -123,9 +123,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="01-foundations_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="01-foundations_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="01-foundations_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -139,430 +136,269 @@
 </div>
 
 </section>
-<section>
-<section id="llm-capabilities-are-jagged" class="title-slide slide level1 center">
-<h1>LLM capabilities are <em>jagged</em></h1>
-<aside class="notes">
-<p>The single most important mental model for this whole day. “Jagged” comes from Ethan Mollick’s research — the idea that LLM capability isn’t a smooth gradient from easy to hard. Some tasks that <em>feel</em> trivial to humans are brutally hard for LLMs, and vice versa.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="posit-open-science-the-prime-directive" class="slide level2">
+<h2>Posit, open science, &amp; the prime directive</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<blockquote>
+<p>Posit creates open-source software for data science, scientific research, and technical communication.</p>
+</blockquote>
+<div class="fragment">
+<blockquote>
+<p>We build tools that prioritize correctness, transparency, and reproducibility in their output.</p>
+</blockquote>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<ul>
+<li>Results are often generated via Excel, SPSS, JMP, etc., which can’t be <strong>verified</strong> as <strong>trustworthy</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>John M. Chambers coined the term “<strong>the prime directive</strong>”: the obligation for analysts to produce work that can be <strong>shown</strong> to be <strong>trustworthy</strong>.</li>
+</ul>
+</div>
+</div></div>
 </section>
-<section id="the-strawberry-problem" class="slide level2 center">
-<h2>The strawberry problem</h2>
+<section id="fulfilling-the-prime-directive" class="slide level2">
+<h2>Fulfilling the prime directive</h2>
+<ul>
+<li>✅ <strong>Correctness</strong>: (Obviously)</li>
+<li>✅ <strong>Transparency</strong>: methods of the analysis can be inspected</li>
+<li>✅ <strong>Reproducibility</strong>: analysis can be repeated on the same data, hopefully yielding the same results</li>
+</ul>
+</section>
+<section id="llms-another-opaque-tool-but-worse" class="slide level2">
+<h2>LLMs: another opaque tool, but worse</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>❌ <strong>Correctness</strong>: LLMs are infamous for giving convincing but wrong answers.</li>
+<li>❌ <strong>Transparency</strong>: Nobody really understands how or why LLMs do what they do.</li>
+<li>❌ <strong>Reproducibility</strong>: LLMs are non-deterministic black boxes.</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="fragment">
+<ul>
+<li>With proper context and constraints, correctness can be improved (not guaranteed).</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>LLMs are <em>really good</em> at coding, so they can produce verifiable results that can be vetted by humans.</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="llm-capabilities-are-jagged" class="slide level2">
+<h2>LLM capabilities are <em>jagged</em></h2>
+<p>You might expect performance to drop with difficulty…</p>
+
+<img data-src="images/jagged1.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="llm-capabilities-are-jagged-1" class="slide level2">
+<h2>LLM capabilities are <em>jagged</em></h2>
+<p>… but in reality, performance is jagged.</p>
+
+<img data-src="images/jagged2.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="the-bad-counting-computing" class="slide level2">
+<h2>The bad: counting / computing</h2>
 <blockquote>
 <p>How many r’s are in “strawberry”?</p>
 </blockquote>
 <div class="fragment">
-<p>Most LLMs confidently answer <strong>2</strong>.</p>
-<p>The correct answer is <strong>3</strong>.</p>
+<p>Most LLMs confidently answer <strong>2</strong>, but it’s actually <strong>3</strong>.</p>
+</div>
+</section>
+<section id="the-bad-counting-computing-1" class="slide level2">
+<h2>The bad: counting / computing</h2>
+<blockquote>
+<p>How many values are in this array <code>[4, 8, ...]</code>?</p>
+</blockquote>
+<div class="fragment">
+<ul>
+<li>Again, most LLMs confidently answer incorrectly.</li>
+</ul>
 </div>
 <div class="fragment">
-<p>An “easy” task for a 5-year-old. A hard task for a trillion-parameter model.</p>
-</div>
-<aside class="notes">
-<p>Live demo opportunity: actually ask an LLM this in real time if you want. Recent models have gotten better at this specific example (it’s become a benchmark), but the underlying point stands: tokenization means LLMs don’t “see” individual characters the way we do. This is a symptom, not a fluke.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="but-also" class="slide level2 center">
-<h2>But also…</h2>
-<div class="placeholder" style="min-height: 350px;">
-<p>SCREENSHOT: an impressive Claude Code or Copilot session —<br> a complex coding task completed in seconds<br> (e.g., “build me a Shiny app that does X” → working app)</p>
-</div>
-<p>A “hard” task for most humans. Trivial for an LLM.</p>
-<aside class="notes">
-<p>The juxtaposition is the point. The same system that can’t count letters can write a working web app from a paragraph of prose. The audience should feel this tension viscerally — it’s what motivates everything we build today.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-jagged-frontier" class="slide level2 center">
-<h2>The jagged frontier</h2>
-<div class="placeholder" style="min-height: 400px;">
-<p>IMAGE: “Jagged frontier” illustration —<br> a line graph with “task difficulty (human perception)” on x-axis<br> and “LLM performance” on y-axis, showing a jagged, non-monotonic curve<br> (Source: Ethan Mollick / “Co-Intelligence”, or recreate as a simple sketch)</p>
-</div>
-<aside class="notes">
-<p>Credit Ethan Mollick here. The frontier is jagged — there are pockets of superhuman performance next to pockets of embarrassing failure. Our job as engineers is to put LLMs to work in the high-performance pockets and build guardrails around the low ones.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-key-insight" class="slide level2 center">
-<h2>The key insight</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="llms-are-great-at">LLMs are great at</h3>
 <ul>
-<li>Language → code</li>
-<li>Summarization</li>
-<li>Pattern matching</li>
-<li>“Fuzzy” translation</li>
+<li>That said, they definitely know how to <strong>write code</strong> to count!</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<h3 id="llms-are-bad-at">LLMs are bad at</h3>
-<ul>
-<li>Precise counting / math</li>
-<li>Faithful recall of facts</li>
-<li>Consistent long-range state</li>
-<li>Knowing what they don’t know</li>
-</ul>
-</div></div>
+</div>
 <div class="fragment">
-<p><strong>Our strategy:</strong> focus LLMs on what they’re good at, and <strong>engineer around</strong> the rest.</p>
-</div>
-<aside class="notes">
-<p>This two-column framing is the actionable takeaway from the jagged frontier. The left column is where we’ll aim chatlas, shinychat, and querychat — we’re asking LLMs to <em>translate user intent into code</em>, not to <em>be</em> the database or <em>be</em> the calculator. The right column is what we’ll build harnesses around.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="what-is-an-agent" class="slide level2 center">
-<h2>What is an agent?</h2>
-<div class="columns">
-<div class="column" style="width:55%;">
-<div class="cell" data-reveal="true" data-fig-width="5.5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
-    U["👤 User"] --&gt; |prompt| L["🧠 LLM"]
-    L --&gt; |tool call| T["🔧 Tools"]
-    T --&gt; |result| L
-    L --&gt; |response| U
-    style L fill:#447099,stroke:#33567a,color:#fff
-    style T fill:#ee6331,stroke:#c84e1f,color:#fff
-    style U fill:#0e3b5c,stroke:#082638,color:#fff
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:45%;">
-<p>An <strong>agent</strong> is an LLM, in a <strong>harness</strong>, that calls <strong>tools</strong> in a loop — deciding each next step from the last result.</p>
 <ul>
-<li><strong>Read</strong> tools observe the world</li>
-<li><strong>Write</strong> tools change the world</li>
+<li>LLMs don’t come with the inherent capability to execute code, but it’s excellent way for them to learn, be precise, and productive.</li>
 </ul>
-</div></div>
-<aside class="notes">
-<p>Definition from Joe Cheng’s “What is an agent?” post. Keep the diagram on screen and walk through it: the user prompts, the LLM decides what tool to call, the tool returns a result, the LLM decides what to do next. The “loop” part is what separates an agent from a single LLM call.</p>
-<p>Read vs.&nbsp;write tools: reading a file, searching the web, querying a database = read tools. Writing a file, sending an email, making an API call = write tools. The risk profile is very different.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="agent-harnesses-are-getting-good" class="slide level2 center">
-<h2>Agent harnesses are getting good</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="placeholder" style="min-height: 300px;">
-<p>SCREENSHOT: Claude Code terminal session<br> (something relatable — fixing a bug, writing tests)</p>
 </div>
-</div><div class="column" style="width:50%;">
-<div class="placeholder" style="min-height: 300px;">
-<p>SCREENSHOT: OpenAI Codex or similar<br> (another agent IDE in action)</p>
-</div>
-</div></div>
-<p>This has <strong>radically changed</strong> how I work in the last 6 months.</p>
-<aside class="notes">
-<p>Be personal here. Talk about your actual experience — what changed in your workflow, what surprised you, what you’d never go back from. The audience is data scientists who probably use ChatGPT but haven’t let an agent loose on their codebase yet. Your honest enthusiasm (and healthy caution) is the credibility play.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="yolo-mode" class="slide level2 center">
-<h2>YOLO mode</h2>
-<div style="font-size: 1.8em; font-weight: 700; margin-bottom: 0.5em;">
-<p>Let the agent run unsupervised.</p>
-</div>
-<p>Terrifying. But <em>so</em> useful.</p>
 <div class="fragment">
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="viable-when">✅ Viable when…</h3>
 <ul>
-<li><strong>Local dev</strong> environment</li>
-<li>Easy to undo (git)</li>
-<li>Low blast radius</li>
+<li>If the harness (i.e., context in which the LLM is operating) can <strong>execute code</strong>, then the LLM would get this right every time.</li>
 </ul>
-</div><div class="column" style="width:50%;">
-<h3 id="dangerous-when">❌ Dangerous when…</h3>
-<ul>
-<li><strong>Hosted / production</strong> system</li>
-<li>Real users, real data</li>
-<li>Hard to undo</li>
-</ul>
-</div></div>
 </div>
-<aside class="notes">
-<p>“YOLO mode” is the colloquial term — Claude Code calls it “auto-accept.” The key distinction: local dev agents operate in a sandbox where the worst case is a git reset. Hosted prod agents can delete databases, email customers, or corrupt data. Same technology, completely different risk profile. This distinction — local dev vs.&nbsp;hosted prod — is a recurring theme today.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="hallucinations-sycophancy" class="slide level2 center">
-<h2>Hallucinations &amp; sycophancy</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="hallucination">Hallucination</h3>
-<p>The model <strong>invents</strong> plausible-sounding information that isn’t true.</p>
-<p><em>“The <code>pandas.DataFrame.fuzzy_merge()</code> method…”</em></p>
-<p>(This doesn’t exist.)</p>
-</div><div class="column" style="width:50%;">
-<h3 id="sycophancy">Sycophancy</h3>
-<p>The model <strong>agrees</strong> with you even when you’re wrong.</p>
-<p><em>“You’re right, that approach is much better!”</em></p>
-<p>(It wasn’t.)</p>
-</div></div>
-<div class="fragment">
-<p>Both are <strong>unsolved</strong>. Both are why we need human-in-the-loop design.</p>
-</div>
-<aside class="notes">
-<p>These aren’t edge cases — they’re fundamental properties of how LLMs work. Hallucination comes from next-token prediction having no ground truth anchor. Sycophancy comes from RLHF optimizing for human approval. Neither is going away soon. The practical consequence: never trust LLM output that you can’t verify.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section id="how-do-llms-gain-coding-capabilities" class="title-slide slide level1 center" data-background-color="#0F3B5D">
+<h1>How do LLMs gain coding capabilities?</h1>
+<p>Through <strong>tool calling</strong>, which provides the foundation for <strong>agents</strong>.</p>
 </section>
-<section class="slide level2">
 
-<h3 style="color: #0e3b5c;" id="i-feel-deeply-conflicted-about-ai">I feel deeply conflicted about AI</h3>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>I’m <strong>so</strong> much more productive.</p>
-<p>But at what cost?</p>
-<div class="fragment">
-<p><strong>Personal</strong> — Am I losing the ability to think for myself?</p>
-</div>
-<div class="fragment">
-<p><strong>Societal</strong> — Am I contributing to something harmful?</p>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="placeholder" style="min-height: 300px;">
-<p>IMAGE: something contemplative —<br> a person at a crossroads, or a balance/scale visual<br> (keep it tasteful, not melodramatic)</p>
-</div>
-</div></div>
-<aside class="notes">
-<p>This is the vulnerable moment. Be genuine. The audience is probably feeling some version of this too, especially at a conference like SciPy where thoughtfulness about technology is valued. Don’t resolve the tension — just name it honestly. The point is to show that using these tools doesn’t require ignoring the hard questions.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<section>
+<section id="agent-llm-tools-loop" class="title-slide slide level1 center">
+<h1>Agent = LLM + tools + loop</h1>
+<p>An LLM with tools (i.e., <strong>functions</strong>) running in a loop — deciding each next step from the last result.</p>
 </section>
-<section id="whats-the-alternative" class="slide level2 center">
-<h2>What’s the alternative?</h2>
-<div style="font-size: 1.2em; margin-bottom: 0.8em;">
-<p>If I practice AI abstinence, is that better than<br>helping people practice <strong>safe AI</strong>?</p>
+<section id="the-good-coding-assistants" class="slide level2">
+<h2>The good: coding assistants</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/claude-code.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
 </div>
-<div class="fragment">
-<p>I chose to build tools that make AI <strong>safer and more transparent</strong>:</p>
+</div><div class="column" style="width:60%;">
 <ul>
-<li>Humans stay in the loop</li>
-<li>Outputs are <strong>verifiable</strong></li>
-<li>The system is <strong>auditable</strong></li>
+<li>Claude Code, Codex, and Copilot etc: harnesses that allow LLMs to write and execute code.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Primarily designed for software engineering tasks</li>
 </ul>
 </div>
-<aside class="notes">
-<p>The sex-ed analogy is deliberately provocative but apt. The alternative to engagement isn’t purity — it’s ceding the space to people who won’t build guardrails. You’ve chosen to build tools (chatlas, querychat) that keep humans in the driver’s seat. That’s the “safe AI” framing for the rest of the day.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<div class="fragment">
+<ul>
+<li>IME, YOLO mode is <strong>incredibly useful</strong>, but also <strong>terrifying</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><a href="https://assistant.posit.co/">Posit Assistant</a> brings a similar experience to data science, and designs for human-in-the-loop workflows.</li>
+</ul>
+</div>
+</div></div>
 </section>
-<section id="in-data-science-correctness-matters" class="slide level2 center">
-<h2>In data science, correctness matters</h2>
+<section id="posit-assistant" class="slide level2">
+<h2>Posit Assistant</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/posit-assistant.gif" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<ul>
+<li>Can access and control your Python/R sessions</li>
+</ul>
+</div></div>
+</section>
+<section id="posit-assistant-1" class="slide level2">
+<h2>Posit Assistant</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/cleaning-mode.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<ul>
+<li><p>Can access and control your Python/R sessions</p></li>
+<li><p>Helpful features for doing data science</p></li>
+</ul>
+</div></div>
+</section>
+<section id="posit-assistant-2" class="slide level2">
+<h2>Posit Assistant</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<script src="https://fast.wistia.com/player.js" async=""></script>
+<script src="https://fast.wistia.com/embed/pb1lqtpnnv.js" async="" type="module"></script>
+<style>wistia-player[media-id='pb1lqtpnnv']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/pb1lqtpnnv/swatch'); display: block; filter: blur(5px); padding-top:58.76%; }</style>
+<p><wistia-player media-id="pb1lqtpnnv" aspect="1.701851851851852"></wistia-player></p>
+</div><div class="column" style="width:35%;">
+<ul>
+<li><p>Can access and control your Python/R sessions</p></li>
+<li><p>Helpful features for doing data science</p></li>
+<li><p>Tight integration with Positron, Notebooks, etc.</p></li>
+</ul>
+</div></div>
+</section>
+<section id="posit-assistant-3" class="slide level2">
+<h2>Posit Assistant</h2>
+<div class="columns">
+<div class="column" style="width:65%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/slash-commands.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:35%;">
+<ul>
+<li><p>Can access and control your Python/R sessions</p></li>
+<li><p>Helpful features for doing data science</p></li>
+<li><p>Tight integration with Positron, Notebooks, etc.</p></li>
+<li><p>Synthesize findings into reproducible reports, etc.</p></li>
+</ul>
+</div></div>
+<div class="fragment">
+<p><strong>NOTE</strong>: Posit Assistant <em>helps you</em> do analysis – what about <em>helping others</em> leverage your work?</p>
+</div>
+</section>
+<section id="querychat-ask-more-of-your-dashboards" class="slide level2">
+<h2>Querychat: ask more of your dashboards</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<p>Design systems where humans can <strong>course-correct</strong> and <strong>verify</strong>.</p>
-<ul>
-<li>Show your work (code, not just answers)</li>
-<li>Make it reproducible</li>
-<li>Let the human say “no, that’s wrong”</li>
-</ul>
+<script src="https://fast.wistia.com/player.js" async=""></script>
+<script src="https://fast.wistia.com/embed/at01coepkh.js" async="" type="module"></script>
+<style>wistia-player[media-id='at01coepkh']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/at01coepkh/swatch'); display: block; filter: blur(5px); padding-top:58.76%; }</style>
+<p><wistia-player media-id="at01coepkh" aspect="1.701851851851852"></wistia-player></p>
 </div><div class="column" style="width:40%;">
-<div class="placeholder" style="min-height: 280px;">
-<p>SCREENSHOT: Posit Assistant showing<br> generated code alongside results —<br> the “show your work” pattern</p>
+<ul>
+<li>Web app framework for building AI assisted data exploration apps</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Restricted to SQL/<a href="https://ggsql.org/">ggsql</a> queries for safety</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Supplies context from data you provide</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Limited scope can lead to more correct answers, but less creative ones</li>
+</ul>
 </div>
 </div></div>
-<aside class="notes">
-<p>This is where your DS background pays off. In stats, we learned that showing your methodology matters as much as showing your result. The same principle applies to AI-assisted analysis: an app that shows the generated code lets the user verify, reproduce, and correct. This is exactly what querychat does — but we’ll get there.</p>
-<p>Mention your colleague’s talk on correctness/reproducibility if it’s at SciPy. TODO(Carson): add the colleague’s name and talk title.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="dont-overthink-it" class="slide level2 center">
-<h2>Don’t overthink it</h2>
-<div style="font-size: 1.3em; margin-bottom: 0.5em;">
-<p>You probably don’t need:</p>
-</div>
-<div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="complex-rag"><del>Complex RAG</del></h3>
-</div><div class="column" style="width:34%;">
-<h3 id="multi-agent-systems"><del>Multi-agent systems</del></h3>
-</div><div class="column" style="width:33%;">
-<h3 id="fine-tuned-models"><del>Fine-tuned models</del></h3>
-</div></div>
-<div class="fragment" style="margin-top: 1em;">
-<p>What you <strong>do</strong> need:</p>
-<p><strong>Good context</strong> + <strong>good tools</strong> + <strong>a human in the loop</strong></p>
-<p>Unless you have scale issues, agentic search of plain text files works surprisingly well.</p>
-</div>
-<aside class="notes">
-<p>This is the “permission to start simple” slide, and it’s the bridge to the rest of the tutorial. The three things we’ll build with today — chatlas, shinychat, querychat — are all context + tools + human-in-the-loop. No vector databases, no fine-tuning, no multi-agent orchestration. You can go far with the basics done well.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-recipe-for-today" class="slide level2 center">
-<h2>The recipe for today</h2>
-<div style="font-size: 1.4em; line-height: 1.8;">
+<section id="goals-for-today" class="slide level2" data-background-color="#0F3B5D">
+<h2>Goals for today</h2>
 <ol type="1">
-<li>Focus LLMs on <strong>language → code</strong></li>
-<li>Give them <strong>tools</strong> and <strong>context</strong></li>
-<li>Keep <strong>humans in the loop</strong></li>
+<li>Learn the basics of programming with LLMs (via <strong>chatlas</strong>).
+<ul>
+<li>System prompts, tool calling, etc.</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<ol start="2" type="1">
+<li>Learn the basics of <strong>shinychat</strong>, which makes it easy to build LLM-powered web apps.
+<ul>
+<li>Plus some useful things for putting apps into production</li>
+</ul></li>
 </ol>
 </div>
-<div class="fragment" style="margin-top: 0.5em;">
-<p>That’s it. Let’s go build.</p>
+<div class="fragment">
+<ol start="3" type="1">
+<li>Form a mental model for how these things serve as the foundation for <strong>querychat</strong>.
+<ul>
+<li>Hopefully this provides inspiration to create a tailored LLM-powered app for your own work.</li>
+</ul></li>
+</ol>
 </div>
-<aside class="notes">
-<p>This is the thesis slide — the three principles that underpin everything we do for the rest of the day. Refer back to it at the start of each section. Quick transition to break.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section id="break-5-min" class="title-slide slide level1 center" data-background-color="#0e3b5c">
-<h1>☕ Break — 5 min</h1>
-<aside class="notes">
-<p>Remind them: next up is chatlas — we’re writing code. Make sure their API keys / LM Studio is working before we start.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 
-</section>
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
