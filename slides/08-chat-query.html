@@ -6,7 +6,9 @@
 <script src="08-chat-query_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="08-chat-query_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="08-chat-query_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="08-chat-query_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="08-chat-query_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="08-chat-query_files/libs/quarto-contrib/countdown-0.6.0/countdown.js"></script>
+<link href="08-chat-query_files/libs/quarto-contrib/countdown-0.6.0/countdown.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
   <title>querychat</title>
@@ -256,6 +258,9 @@
 <li><strong>Filter:</strong> execute filter SQL queries on predetermined views, allowing the LLM to reactively drill into the data in response to user questions.</li>
 </ol>
 </div></div>
+<div class="fragment">
+<p><strong>Note</strong>: all three require only read-only access to the data.</p>
+</div>
 </section>
 <section id="get-started" class="slide level2">
 <h2>Get started</h2>
@@ -363,275 +368,74 @@
 <section id="exercise" class="slide level2 center" data-background-color="#0F3B5D">
 <h2>Exercise</h2>
 <ol type="1">
-<li>Open</li>
+<li>Open <code>exercises/querychat-app.py</code> and run it.
+<ul>
+<li>Can press run button in Positron or run <code>shiny run exercises/querychat-app.py</code> in terminal.</li>
+</ul></li>
+<li>Interact with the app enough to trigger all three tools. How do the tool call displays differ for each tool?</li>
+<li>Remove the <code>"visualize"</code> tool and add <code>print(qc.system_prompt)</code>.
+<ul>
+<li>What do you notice in the system prompt?</li>
+<li>When does the LLM gain context (if any) about the data?</li>
+</ul></li>
 </ol>
-<p>Give them an <code>.app()</code> to run? Make them trigger each of the three tools? Make them add a custom tool?</p>
+<p><br></p>
+<countdown-timer id="timer_fd291746be4608f08e3e0a5ccd97986331957098" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+ </countdown-timer>
 </section>
-<section id="built-in-tools" class="slide level2 center">
-<h2>Built-in tools</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Tool</th>
-<th>What it does</th>
-<th>User sees</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>filter</strong></td>
-<td><code>SELECT * WHERE ...</code> — updates the dashboard</td>
-<td>Data table + title update</td>
-</tr>
-<tr class="even">
-<td><strong>query</strong></td>
-<td>Arbitrary analytics SQL — returns results</td>
-<td>SQL + result table in chat</td>
-</tr>
-<tr class="odd">
-<td><strong>visualize</strong></td>
-<td>SQL + chart spec — renders inline</td>
-<td>Altair chart in chat</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Default: filter + query</span></span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>)</span>
+<section id="multiple-tables" class="slide level2">
+<h2>Multiple tables</h2>
+<div class="columns">
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat <span class="im">import</span> QueryChat</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic, penguins</span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># All three</span></span>
-<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>, tools<span class="op">=</span>(<span class="st">"filter"</span>, <span class="st">"query"</span>, <span class="st">"visualize"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(</span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>  client<span class="op">=</span><span class="st">"bedrock-anthropic"</span>,</span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>  tools<span class="op">=</span>(<span class="st">"filter"</span>, <span class="st">"query"</span>, <span class="st">"visualize"</span>),</span>
+<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(titanic(), <span class="st">"titanic"</span>)</span>
+<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(penguins(), <span class="st">"penguins"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<ul>
+<li>Supports multiple tables, each with its own schema context.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Stuffing all that context into a single system prompt doesn’t scale well</li>
+</ul>
 </div>
 <div class="fragment">
-<p>All tools are <strong>read-only</strong> — no INSERT, UPDATE, or DELETE.</p>
+<ul>
+<li>Instead, querychat uses a <strong>tool-based approach</strong>: the LLM calls a tool to get schema context for a specific table.</li>
+</ul>
 </div>
-<aside class="notes">
-<p>Walk through the three tools:</p>
-<ol type="1">
-<li><p><strong>filter</strong> is the most common — the user says “show me rows where X”, and the dashboard filters. The LLM writes a SQL WHERE clause, querychat validates and executes it, and <code>qc.df()</code> updates reactively.</p></li>
-<li><p><strong>query</strong> is for analytics — “what’s the average tip by day?” The LLM writes full SQL, the result appears as a table in the chat.</p></li>
-<li><p><strong>visualize</strong> is opt-in (requires <code>pip install "querychat[viz]"</code>). It uses a SQL extension that generates Altair charts.</p></li>
-</ol>
-<p>All three are read-only by design. The SQL is validated before execution.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="tools-in-action" class="slide level2 center">
-<h2>Tools in action</h2>
-<div class="placeholder" style="min-height: 450px;">
-<p>SCREENSHOT: querychat Titanic app showing a conversation —<br> 1. User asks “show me first-class passengers who survived” → dashboard filters<br> 2. User asks “what was the survival rate by class?” → query result table in chat<br> (capture a real session to show the natural flow)</p>
-</div>
-<aside class="notes">
-<p>If time permits, do this live instead of a screenshot. The key thing the audience should see: the user types natural language, the LLM writes SQL, and the result appears either in the dashboard (filter) or inline (query). The user never sees or writes SQL — but they could inspect it if they wanted.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="context-management" class="slide level2 center">
-<h2>Context management</h2>
-<p>querychat auto-generates context from your data:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="auto-generated">Auto-generated</h3>
-<ul>
-<li>Column names and SQL types</li>
-<li>Numeric ranges (min/max)</li>
-<li>Categorical values (≤20 unique)</li>
-</ul>
-<p><em>The LLM knows your schema without seeing your data.</em></p>
-</div><div class="column" style="width:50%;">
-<h3 id="user-supplied">User-supplied</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>QueryChat(</span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>    df, <span class="st">"titanic"</span>,</span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>    data_description<span class="op">=</span>(</span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"survived: 1 = survived, "</span></span>
-<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0 = did not survive"</span></span>
-<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>    extra_instructions<span class="op">=</span>(</span>
-<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Use British spelling. "</span></span>
-<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Refuse off-topic questions."</span></span>
-<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb6-11"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div></div>
-<aside class="notes">
-<p>This is the “context engineering” theme paying off. Auto-generated context means the LLM understands the shape of the data (what columns exist, what values are valid) without ever seeing the raw rows. This is both a <strong>correctness</strong> benefit (the LLM writes valid SQL) and a <strong>privacy</strong> benefit (no data leaks to the provider).</p>
-<p>User-supplied context adds domain knowledge the schema alone can’t convey: what does <code>survived=1</code> mean? What tone should the assistant use? This goes in <code>data_description</code> (about the data) or <code>extra_instructions</code> (about behavior).</p>
-<p>Both can be inline strings or paths to markdown files.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-security-model" class="slide level2 center">
-<h2>The security model</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="the-naive-approach">❌ The naive approach</h3>
-<p>Send your CSV to the LLM.</p>
-<ul>
-<li>Data <strong>leaves your server</strong></li>
-<li>Doesn’t scale past ~100K rows</li>
-<li>No reproducibility</li>
-<li>No verification</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<h3 id="the-querychat-approach">✅ The querychat approach</h3>
-<p>LLM writes SQL. You execute it locally.</p>
-<ul>
-<li>Data <strong>stays on your server</strong></li>
-<li>Scales via DuckDB</li>
-<li>SQL is <strong>reproducible</strong></li>
-<li>SQL is <strong>verifiable</strong> and <strong>read-only</strong></li>
-</ul>
-</div></div>
 <div class="fragment">
-<p>The LLM is a <strong>translator</strong> (language → SQL), not a <strong>database</strong>.</p>
+<ul>
+<li>BTW, a wide variety of data sources are supported: pandas, polars, ibis, sqlalchemy, etc.</li>
+</ul>
 </div>
-<aside class="notes">
-<p>This is the philosophical payoff of the whole day. Remember slide 1 of the foundations section: “focus LLMs on what they’re good at (language → code), engineer around the bad.” querychat does exactly this.</p>
-<p>The LLM never sees the actual data rows (except query tool results). It sees the schema context, writes SQL, and querychat executes it in a local DuckDB instance. The SQL is validated (read-only, no DDL) before execution.</p>
-<p>This means: - You can use querychat with sensitive data (it doesn’t leave your server) - You can use it with large datasets (DuckDB handles it, not the LLM context) - Every result is reproducible (you have the SQL) - Every result is verifiable (the user can read the SQL)</p>
-<p>This is “show your work” from the correctness slide, implemented as architecture.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="works-everywhere" class="slide level2 center">
-<h2>Works everywhere</h2>
-<div class="columns">
-<div class="column" style="width:25%;">
-<h3 id="shiny">Shiny ✨</h3>
-<p>Best experience — native reactivity. <code>qc.df()</code> drives the whole dashboard.</p>
-</div><div class="column" style="width:25%;">
-<h3 id="streamlit">Streamlit</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.streamlit <span class="op">\</span></span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:25%;">
-<h3 id="dash">Dash</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.dash <span class="op">\</span></span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:25%;">
-<h3 id="gradio">Gradio</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.gradio <span class="op">\</span></span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<div class="fragment">
-<p>Same <code>QueryChat</code> API — swap the import, keep your code.</p>
-</div>
-<aside class="notes">
-<p>Brief slide. querychat supports four frameworks with the same core API. Shiny gives the best experience because <code>qc.df()</code> is a true reactive value — in Streamlit/Dash/Gradio, the integration is more manual. But the same QueryChat constructor and tools work everywhere.</p>
-<p>Don’t dwell — 30 seconds max. The point is: you’re not locked in.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 </section>
-<section id="data-sources" class="slide level2 center">
-<h2>Data sources</h2>
-<p>querychat works with data you already have:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
-<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># In-memory DataFrames (pandas, polars, pyarrow)</span></span>
-<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(pd.read_csv(<span class="st">"sales.csv"</span>), <span class="st">"sales"</span>)</span>
-<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Databases (via SQLAlchemy)</span></span>
-<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">"duckdb:///warehouse.duckdb"</span>)</span>
-<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(engine, <span class="st">"transactions"</span>)</span>
-<span id="cb10-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Pins boards (shared data)</span></span>
-<span id="cb10-12"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(board, <span class="st">"monthly_metrics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Show the breadth of data sources. For the tutorial exercises, they’ll use in-memory DataFrames (simplest). But in production, the database path is powerful — you point querychat at your data warehouse and the LLM writes SQL against real tables.</p>
-<p>Under the hood, DataFrame inputs are loaded into an in-memory DuckDB for SQL execution. This means even pandas DataFrames get DuckDB’s query performance.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="hands-on-build-your-own-analytics-app" class="slide level2 center">
-<h2>🛠️ Hands-on: build your own analytics app</h2>
-<p><strong>~15 minutes</strong> — work through as many as you can:</p>
+<section id="custom-clients-tools" class="slide level2">
+<h2>Custom clients &amp; tools</h2>
 <div class="columns">
-<div class="column" style="width:33%;">
-<h3 id="your-own-data">1️⃣ Your own data</h3>
-<p>Swap the Titanic dataset for <strong>your own CSV</strong> (or one we provide).</p>
-<p>Add a <code>data_description</code> to help the LLM.</p>
-</div><div class="column" style="width:33%;">
-<h3 id="add-web-search">2️⃣ Add web search</h3>
-<p>Register <code>tool_web_search()</code> so the assistant can answer questions <strong>beyond</strong> the dataset.</p>
-</div><div class="column" style="width:34%;">
-<h3 id="add-a-custom-tool">3️⃣ Add a custom tool</h3>
-<p>Write a tool that does something the built-in tools can’t — e.g., export to CSV, send a summary email, etc.</p>
+<div class="column">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat <span class="im">import</span> QueryChat</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>client <span class="op">=</span> ctl.ChatBedrockAnthropic()</span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>client.register_tool(ctl.tool_web_search())</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(client<span class="op">=</span>client)</span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(titanic(), <span class="st">"titanic"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column">
+<ul>
+<li>Supply your own <code>client</code> to <code>QueryChat</code> to add custom tools, like a web search tool.</li>
+</ul>
 </div></div>
-<p>Exercise file: <strong><code>exercises/03-querychat-starter.py</code></strong></p>
-<aside class="notes">
-<p>The exercise file starts with a working querychat app on the Titanic dataset. Task 1 is a data swap — if they don’t have their own CSV, have a few interesting ones ready (e.g., seaborn tips, Palmer penguins, a Kaggle dataset).</p>
-<p>Task 2 adds web search — this extends the assistant beyond the dataset. The pattern is: get <code>qc.client()</code> and call <code>register_tool(tool_web_search())</code>.</p>
-<p>Task 3 is open-ended. Ideas: a tool that saves the current filter as a bookmark, a tool that generates a matplotlib chart, a tool that exports the filtered data to CSV.</p>
-<p>Float around and help. Common stumbles: - table_name must be alphanumeric (no hyphens or spaces) - visualize tool requires <code>pip install "querychat[viz]"</code> - Adding tools to a Shiny querychat app requires getting the client via qc.client() before the app starts</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
 
 </section>
     </div>
