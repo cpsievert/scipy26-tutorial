@@ -6,7 +6,9 @@
 <script src="06-chatbots_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="06-chatbots_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="06-chatbots_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="06-chatbots_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="06-chatbots_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="06-chatbots_files/libs/quarto-contrib/countdown-0.6.0/countdown.js"></script>
+<link href="06-chatbots_files/libs/quarto-contrib/countdown-0.6.0/countdown.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
   <title>Chatbots (i.e., web apps)</title>
@@ -314,18 +316,44 @@
 <section id="slash-commands" class="slide level2">
 <h2>Slash commands</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@chat.slash_command</span>(<span class="st">"clear"</span>, <span class="st">"Clear the conversation"</span>)</span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> _():</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> _(user_input: <span class="bu">str</span>):</span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">await</span> chat.clear_messages()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
-<img data-src="images/slash-commands.png" class="quarto-figure quarto-figure-center r-stretch"></section>
-<section id="beyond-chat" class="slide level2" data-background-color="#0F3B5D">
-<h2>Beyond chat</h2>
-<p>We often associate LLMs with chat, but they can be used for <strong>any interactive app</strong>.</p>
-<p>We won’t dwell on this, but here are a couple examples:</p>
+<img data-src="images/slash-commands-shinychat.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="another-slash-command" class="slide level2">
+<h2>Another slash command</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@chat.slash_command</span>(<span class="st">"summarise"</span>, <span class="st">"Summarise the conversation"</span>)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">async</span> <span class="kw">def</span> _(user_input: <span class="bu">str</span>):</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""</span></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">      The user has requested a summary of the </span></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">      conversation with additional context:</span><span class="ch">\n\n</span><span class="sc">{</span>user_input<span class="sc">}</span></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ss">      """</span></span>
+<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>    stream <span class="op">=</span> <span class="cf">await</span> chat.stream_async(prompt)</span>
+<span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a>    chat.append_message_stream(stream)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/slash-command-summarize.png" class="quarto-figure quarto-figure-center" height="400"></p>
+</figure>
+</div>
+</section>
+<section id="exercise" class="slide level2 center">
+<h2>Exercise</h2>
 <ol type="1">
-<li><a href="https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs">Invoice data extractor</a></li>
-<li><a href="https://shiny.posit.co/py/templates/workout-plan/">Workout generator</a></li>
+<li>Open <code>exercises/shinychat-app.py</code> and run it.
+<ul>
+<li><code>shiny run exercises/shinychat-app.py</code> (or press run in Positron).</li>
+</ul></li>
+<li>Add a slash command (e.g.&nbsp;<code>"clear"</code>) that clears the conversation.</li>
+<li>Ask about the weather somewhere — notice the default tool display.</li>
+<li>Clear the conversation.</li>
+<li>Update <code>get_weather()</code> to return a <code>ToolResultDisplay</code> with a custom display.
+<ul>
+<li>Use <a href="https://shiny.posit.co/py/docs/genai-tools.html#toolresultdisplay">these docs</a> as a guide.</li>
+</ul></li>
 </ol>
+<p><br></p>
+<countdown-timer id="timer_d459f6ca1d67921e3072f30a27f2b7aaabc48f62" minutes="07" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+ </countdown-timer>
 
 </section>
     </div>

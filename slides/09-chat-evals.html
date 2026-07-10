@@ -428,14 +428,16 @@
 </section>
 <section id="exercise" class="slide level2 center">
 <h2>Exercise</h2>
+<p>Starter: <code>exercises/eval-starter.py</code> – a <code>PaperResults</code> eval, already wired up with a <code>Task</code>, solver, and scorer, with 4 samples ready to go.</p>
 <ol type="1">
-<li>Pick a chat you built earlier (the literature miner, or your own tool-using chat).</li>
-<li>Run it on 3-4 <strong>real</strong> inputs and <code>.export_eval()</code> each one with a clear target.</li>
-<li>Write a <code>Task</code> with <code>chat.to_solver()</code> and an appropriate scorer (<code>model_graded_qa</code> or <code>model_graded_fact</code>).</li>
-<li><code>inspect eval</code> your script, then <code>inspect view</code> the results.</li>
+<li><code>python exercises/eval-starter.py</code> – builds the dataset (one LLM call per sample).</li>
+<li><code>inspect eval exercises/eval-starter.py</code>, then <code>inspect view</code> – see how each sample scored.</li>
+<li>Break it on purpose: edit one <code>target</code> to be wrong or vague, rerun steps 1-2, and watch the score drop.</li>
+<li>Swap <code>model_graded_fact</code> for <code>model_graded_qa</code> – does grading get stricter or looser?</li>
+<li><strong>Bonus</strong>: turn on <code>partial_credit=True</code> and edit a target to be “half right” – what score do you get?</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_03f78cbe4b6aeb3a511e167a4a201ac8faa5bd2c" minutes="07" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_807da68da9276aa7f958de8102c147ce6b39e5fc" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>

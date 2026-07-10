@@ -380,7 +380,7 @@
 </ul></li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_da16fa905ac08467fed31eeb66472d7ceff918a3" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_3a18ce98dc3c7c8feed48f9205f7394c6fc99fcd" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="multiple-tables" class="slide level2">
@@ -388,7 +388,7 @@
 <div class="columns">
 <div class="column">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat <span class="im">import</span> QueryChat</span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic, penguins</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic, tips</span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(</span>
 <span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>  client<span class="op">=</span><span class="st">"bedrock-anthropic"</span>,</span>
@@ -396,7 +396,7 @@
 <span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(titanic(), <span class="st">"titanic"</span>)</span>
-<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(penguins(), <span class="st">"penguins"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>qc.add_table(tips(), <span class="st">"tips"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column">
 <ul>
 <li>Supports multiple tables, each with its own schema context.</li>
@@ -436,6 +436,16 @@
 <li>Supply your own <code>client</code> to <code>QueryChat</code> to add custom tools, like a web search tool.</li>
 </ul>
 </div></div>
+</section>
+<section id="exercise-1" class="slide level2 center" data-background-color="#0F3B5D">
+<h2>Exercise</h2>
+<ol type="1">
+<li>Open <code>exercises/querychat-custom-app.py</code> and run it.</li>
+<li>Follow the instructions at the top of the file to customize it.</li>
+</ol>
+<p><br></p>
+<countdown-timer id="timer_3a18ce98dc3c7c8feed48f9205f7394c6fc99fcd" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+ </countdown-timer>
 
 </section>
     </div>
