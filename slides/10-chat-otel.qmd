@@ -16,17 +16,21 @@ format:
 
 ## Shipping raises new questions
 
-Your chatbot works on your machine. Then it ships, and:
+- So your chatbot works for you, but are you sure it's working correctly in production?
 
 ::: fragment
-- Why is it slow for some users?
-- Which model calls or tool executions dominate latency?
-- Where are errors coming from?
-- What are people even asking it?
+- Even if you test extensively, users may encounter undiscovered issues.
 :::
 
 ::: fragment
-This is what **OpenTelemetry** (OTel) is for.
+- Collecting telemetry data from your app in production helps you answer questions like:
+  - Are users encountering errors?
+  - Is the LLM performing as expected?
+  - What are users asking?
+:::
+
+::: fragment
+- **OpenTelemetry** (OTel) is an open standard collecting information about your app's behavior.
 :::
 
 ## OpenTelemetry, briefly
@@ -34,11 +38,20 @@ This is what **OpenTelemetry** (OTel) is for.
 - A vendor-neutral, open standard for collecting traces, metrics, and logs from an app.
 
 ::: fragment
-- Instrument once, view anywhere -- [Logfire](https://logfire.pydantic.dev/), [Datadog](https://www.datadoghq.com/), [Honeycomb](https://www.honeycomb.io/), [Jaeger](https://www.jaegertracing.io/), and others all speak OTel.
+- Instrument once, view anywhere -- [Logfire](https://logfire.pydantic.dev/), [Datadog](https://www.datadoghq.com/), etc. all speak OTel.
 :::
 
 ::: fragment
 - `chatlas` is instrumented with OTel out of the box -- no tracing code to write yourself, just choose where to send the data.
+:::
+
+::: fragment
+- That said, you can also add your own spans to capture additional information about your app's behavior
+    - e.g., tool execution, database queries, etc.
+:::
+
+::: fragment
+- Shiny is also instrumented with [OTel](https://shiny.posit.co/py/docs/opentelemetry.html), so you can see the full picture of your app's behavior.
 :::
 
 ## Two concepts: span & trace
@@ -60,13 +73,9 @@ invoke_agent                      # wraps the full chat loop
 
 ## Quick start: console output
 
-```{.bash}
-pip install "chatlas[otel]"
-```
+Emit traces to the console:
 
-<br>
-
-```{.python}
+```{.python filename="otel_config.py"}
 from opentelemetry import trace
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import ConsoleSpanExporter, SimpleSpanProcessor
@@ -76,19 +85,61 @@ provider.add_span_processor(SimpleSpanProcessor(ConsoleSpanExporter()))
 trace.set_tracer_provider(provider)
 ```
 
-::: fragment
-- That's it -- `chatlas` now emits spans for every `chat()`, `stream()`, and tool call.
-:::
-
-## Worked example: a tool with its own span
-
-```{.bash}
-pip install opentelemetry-instrumentation-httpx
-```
-
 <br>
 
-```{.python filename="travel_assistant.py"}
+::: fragment
+```{.python filename="app.py"}
+import otel_config 
+import chatlas as ctl
+
+chat = ctl.ChatBedrockAnthropic()
+chat.app()
+```
+:::
+
+## Visualize traces
+
+A service like [Logfire](https://logfire.pydantic.dev/) is free to start and provide a nice UI for viewing traces.
+
+```{.bash}
+pip install logfire
+logfire auth
+```
+
+Add this to your app:
+
+```{.python filename="app.py"}
+import logfire
+logfire.configure()
+```
+
+::: fragment
+Or, the more generic OTel env vars works with many backends...
+
+```{.bash}
+OTEL_EXPORTER_OTLP_ENDPOINT="https://logfire-eu.pydantic.dev"
+OTEL_EXPORTER_OTLP_HEADERS="Authorization=<your-write-token>"
+OTEL_SERVICE_NAME="my-chatlas-app"
+```
+
+...also nice you don't need to touch app code ^^^
+:::
+
+## Visualize traces
+
+![](images/otel-trace.svg){fig-align="center"}
+
+::: fragment
+- Read top to bottom: the model decides to call the tool (blue), the tool runs (green), and a follow-up model call answers (blue).
+:::
+
+::: fragment
+- Here there is also custom instrumentation for HTTP traffic as well as the tool call (gray).
+:::
+
+## Example: custom spans
+
+```{.python}
 from opentelemetry import trace
 from opentelemetry.instrumentation.httpx import HTTPXClientInstrumentor
 from chatlas import ChatBedrockAnthropic
@@ -97,28 +148,15 @@ HTTPXClientInstrumentor().instrument()  # nests the HTTP call under `chat`
 tracer = trace.get_tracer("travel_assistant")
 
 def get_weather(city: str) -> str:
-    "Get the current weather forecast for a city."
     with tracer.start_as_current_span("fetch_forecast"):
         return f"{city}: 14°C, light rain, breezy this weekend."
 
-chat = ChatBedrockAnthropic(
-    system_prompt="Always call get_weather before advising what to pack."
-)
+chat = ChatBedrockAnthropic()
 chat.register_tool(get_weather)
 chat.chat("I'm headed to Tokyo this weekend — what should I pack?")
 ```
 
-## The resulting trace {.center}
-
-![](images/otel-trace.svg){fig-align="center"}
-
-::: fragment
-- Read top to bottom: the model decides to call the tool, the tool runs (`fetch_forecast` nested inside `execute_tool`), and a follow-up model call answers.
-:::
-
-::: fragment
-- Drop the `httpx` instrumentation and you'd still get `invoke_agent`, `chat`, and `execute_tool` -- just without the HTTP detail.
-:::
+![](images/otel-trace.svg){height="200px" fig-align="center"}
 
 ## What's captured
 
@@ -132,72 +170,14 @@ chat.chat("I'm headed to Tokyo this weekend — what should I pack?")
 - Attribute names follow the [OTel GenAI semantic conventions](https://opentelemetry.io/docs/specs/semconv/gen-ai/) (`gen_ai.*`) -- the same names other GenAI-instrumented libraries use.
 :::
 
-## Message content is opt-in
-
-- Message content -- the actual prompts and responses -- is **not** captured by default.
-- It may contain sensitive data.
-
 ::: fragment
-```{.bash}
-export OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
-```
-:::
-
-::: fragment
-- Your users' prompts stay out of your traces unless you choose otherwise.
-:::
-
-## Production: send it to Logfire
+- Since message content may contain sensitive data, it is **not** captured by default. You can opt-in to capture it if you want.
 
 ```{.bash}
-pip install logfire
-logfire auth
+OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=true
 ```
-
-<br>
-
-```{.python}
-import logfire
-
-logfire.configure()
-```
-
-::: fragment
-- Other OTel-compatible backends work too -- Datadog, Honeycomb, Jaeger -- just configure the appropriate exporter instead.
 :::
 
-## Wiring it into a Shiny app
-
-```{.python filename="otel_config.py"}
-import logfire
-logfire.configure()
-```
-
-```{.python filename="app.py"}
-import otel_config  # noqa: F401 -- side-effect import, runs before anything else
-from chatlas import ChatBedrockAnthropic
-# ...
-```
-
-::: fragment
-- The exporter has to be configured *before* `chatlas` creates any chats -- a dedicated module you import first guarantees that.
-:::
-
-## Config without code changes
-
-```{.bash}
-OTEL_EXPORTER_OTLP_ENDPOINT="https://logfire-eu.pydantic.dev"
-OTEL_EXPORTER_OTLP_HEADERS="Authorization=<your-write-token>"
-OTEL_SERVICE_NAME="my-chatlas-app"
-```
-
-::: fragment
-- Same app, same code -- point it at a different backend, or a different environment, by changing env vars, not source.
-:::
-
-::: fragment
-- On Posit Connect, set these as content environment variables -- no redeploy needed to change where traces go.
-:::
 
 ## Going deeper (optional)
 
@@ -219,53 +199,10 @@ available if they need it; most people in this room will never need more
 than the framework-level spans chatlas gives them for free.
 :::
 
-## 🛠️ Hands-on: build a chatbot {.center}
+## Exercise
 
-**~15 minutes** — pick your adventure:
+- Add `otel_config.py` (the console version above) to your `exercises/` folder, then add `import otel_config` as the very first line of `shinychat-app.py`.
+- Chat with it and watch spans print in your terminal.
+- **Bonus**: wrap `get_weather()` in a custom span, like the `travel_assistant` example.
 
-::: {.columns}
-::: {.column width="50%"}
-
-### 🧪 Option A: Add a tool display
-
-Start from the exercise file:
-
-1. Run the app — it has a working tool
-2. Upgrade the tool to return a **`ToolResultDisplay`**
-3. **Bonus**: add a **slash command**
-
-:::
-::: {.column width="50%"}
-
-### 🚀 Option B: Deploy it
-
-Take your working chatbot and:
-
-1. **Deploy** to Connect Cloud
-2. Share the URL with a neighbor
-3. Watch the OTel traces roll in
-
-:::
-:::
-
-Exercise file: **`exercises/02-shinychat-starter.py`**
-
-::: notes
-Option A is the guided path — they take a working chatbot and make the tool
-output prettier. This reinforces the ToolResultDisplay pattern.
-
-Option B is for people who are already comfortable and want the full loop.
-Deploying to Connect Cloud is a `rsconnect deploy shiny .` command if they
-have credentials set up.
-
-TODO(Carson): decide whether Connect Cloud deploy is realistic for the
-tutorial environment. If not, cut Option B and replace with "add a second tool
-with a display."
-:::
-
-# ☕ Break — 5 min {.center background-color="#0e3b5c"}
-
-::: notes
-Next up: Recap & Sendoff — tie chatlas + tools + shinychat + querychat back to
-the tutorial's core thesis.
-:::
+{{< countdown "5:00" >}}>}}

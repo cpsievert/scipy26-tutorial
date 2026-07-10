@@ -212,11 +212,14 @@ def papers_eval():
 
 ## Exercise {.center}
 
-1. Pick a chat you built earlier (the literature miner, or your own tool-using chat).
-2. Run it on 3-4 **real** inputs and `.export_eval()` each one with a clear target.
-3. Write a `Task` with `chat.to_solver()` and an appropriate scorer (`model_graded_qa` or `model_graded_fact`).
-4. `inspect eval` your script, then `inspect view` the results.
+Starter: `exercises/eval-starter.py` -- a `PaperResults` eval, already wired up with a `Task`, solver, and scorer, with 4 samples ready to go.
+
+1. `python exercises/eval-starter.py` -- builds the dataset (one LLM call per sample).
+2. `inspect eval exercises/eval-starter.py`, then `inspect view` -- see how each sample scored.
+3. Break it on purpose: edit one `target` to be wrong or vague, rerun steps 1-2, and watch the score drop.
+4. Swap `model_graded_fact` for `model_graded_qa` -- does grading get stricter or looser?
+5. **Bonus**: turn on `partial_credit=True` and edit a target to be "half right" -- what score do you get?
 
 <br>
 
-{{< countdown "7:00" >}}
+{{< countdown "5:00" >}}

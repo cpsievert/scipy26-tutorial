@@ -1,6 +1,6 @@
 from querychat import QueryChat
 from querychat.data import titanic
-import shiny.express
+import shiny
 
 qc = QueryChat(
     titanic(),

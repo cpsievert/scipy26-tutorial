@@ -32,7 +32,7 @@ through each row and remind them of the key takeaway. The arc: from "how to
 think about LLMs" to "a deployed analytics app" in 4 hours.
 :::
 
-## The recipe {.center}
+## The core concepts {.center}
 
 ::: {style="font-size: 1.5em; line-height: 2;"}
 
@@ -42,16 +42,19 @@ think about LLMs" to "a deployed analytics app" in 4 hours.
 
 :::
 
-That's it. Context engineering + tools + verification.
+* Can get a long way with just context engineering + tools + transparency.
+  * You probably don't need RAG, multi-agent, fine-tuning, etc.
 
-No RAG. No multi-agent. No fine-tuning.
+## One more thing: beyond chat {background-color="#0F3B5D"}
 
-::: notes
-Repeat the thesis from the foundations section. The whole tutorial was an
-exercise in showing how far you can get with these three simple principles.
-querychat is the proof: a production-ready analytics platform built entirely
-on context engineering (auto-generated schema) + tools (filter, query,
-visualize) + human-in-the-loop (verifiable SQL, reactive dashboards).
+Today's examples were mostly **chat** based — but `chatlas` is really broader than that.
+
+::: fragment
+Chat is a great default UI for LLMs, but not the only one:
+
+1. [Invoice data extractor](https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs)
+2. [Workout generator](https://shiny.posit.co/py/templates/workout-plan/)
+3. [Other examples](https://shiny.posit.co/py/docs/genai-stream.html)
 :::
 
 ## Where to go from here {.center}
@@ -78,46 +81,22 @@ visualize) + human-in-the-loop (verifiable SQL, reactive dashboards).
 :::
 ::: {.column width="34%"}
 
-### 🧪 Next steps
+### 💪 Free tools
 
+- **Posit AI trial** (no credit card)
 - Deploy to **Connect Cloud**
-- Add **OTel** observability
-- Try **structured output** + **MCP**
-- Explore the **visualize** tool
 
 :::
 :::
 
-::: notes
-Don't rush this — people want the links. Have the slide up while you talk
-through each column briefly. The "next steps" column plants seeds for things
-they can explore after the tutorial.
-:::
+## Thank you! 🎉 {background-color="#0e3b5c"}
 
-## Feedback {.center}
+::: hcenter
+![](images/website-qr.svg){height="350px"}
 
-::: {.placeholder style="min-height: 300px;"}
-QR CODE: link to feedback survey<br>
-(generate via your preferred QR tool)
-:::
-
-Your feedback makes the next tutorial better.
-
-::: notes
-TODO(Carson): create the feedback survey and generate the QR code.
-Give them 60 seconds to scan and start filling it out while you're still
-at the front. People who leave the room first never fill out the survey.
-:::
-
-# Thank you! 🎉 {.center background-color="#0e3b5c"}
+### [bit.ly/scipy26](https://bit.ly/scipy26)
 
 ::: {style="color: white; font-size: 0.9em;"}
 Carson Sievert · Posit
-
-All materials: **[short link TBD]**
 :::
-
-::: notes
-Thank them for their time. Remind them all materials (slides, exercises, code)
-are public and linked. Stick around for questions.
 :::

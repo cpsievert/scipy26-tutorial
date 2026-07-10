@@ -8,7 +8,7 @@
 Install the Python packages needed for the exercises:
 
 ```bash
-pip install chatlas shinychat querychat "querychat[viz]" requests shiny faicons
+pip install -r requirements.txt
 ```
 
 ## Building slides
@@ -25,7 +25,7 @@ Individual decks rebuild automatically when their `.qmd` or `theme.scss` changes
 Live-preview a single deck with hot reload:
 
 ```bash
-make serve DECK=02-chatlas
+make serve DECK=02-basics
 ```
 
 Open all rendered decks in the browser at once:
@@ -39,12 +39,11 @@ make preview
 Each exercise is a standalone Python file:
 
 ```bash
-# chatlas (runs in the terminal)
-python exercises/01-chatlas-starter.py
+# pure chatlas (runs in the terminal)
+python exercises/00-chat-hello.py
 
 # shinychat / querychat (opens in the browser)
-shiny run exercises/02-shinychat-starter.py
-shiny run exercises/03-querychat-starter.py
+shiny run exercises/shinychat-app.py
 ```
 
 ## Make targets

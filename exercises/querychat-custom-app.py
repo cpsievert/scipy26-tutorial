@@ -17,17 +17,17 @@ Work through as many tasks as you can:
   3. ADD A CUSTOM TOOL: Write a tool that does something the built-in
      tools can't (e.g., export filtered data to CSV).
 
-Run with:  shiny run 03-querychat-starter.py
+Run with:  shiny run querychat-custom-app.py
 """
 
-import pandas as pd
+import polars as pl
 from shiny.express import render, ui
 from querychat.express import QueryChat
 from querychat.data import titanic
 
 # -------------------------------------------------------------------
 # Task 1: swap this for your own data
-# e.g., pd.read_csv("your_data.csv")
+# e.g., pl.read_csv("your_data.csv")
 # -------------------------------------------------------------------
 data = titanic()
 

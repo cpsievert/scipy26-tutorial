@@ -188,7 +188,7 @@ with ui.card():
 
 ```{.python}
 from querychat import QueryChat
-from querychat.data import titanic, penguins
+from querychat.data import titanic, tips
 
 qc = QueryChat(
   client="bedrock-anthropic",
@@ -196,7 +196,7 @@ qc = QueryChat(
 )
 
 qc.add_table(titanic(), "titanic")
-qc.add_table(penguins(), "penguins")
+qc.add_table(tips(), "tips")
 ```
 
 :::
@@ -242,3 +242,14 @@ qc.add_table(titanic(), "titanic")
 * Supply your own `client` to `QueryChat` to add custom tools, like a web search tool.
 :::
 :::
+
+
+
+## Exercise {.center background-color="#0F3B5D"}
+
+1. Open `exercises/querychat-custom-app.py` and run it.
+2. Follow the instructions at the top of the file to customize it.
+
+<br>
+
+{{< countdown "5:00" >}}

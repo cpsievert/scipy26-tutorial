@@ -133,17 +133,37 @@ def my_tool():
 
 ```{.python}
 @chat.slash_command("clear", "Clear the conversation")
-async def _():
+async def _(user_input: str):
     await chat.clear_messages()
 ```
 
-![](images/slash-commands.png){fig-align="center"}
+![](images/slash-commands-shinychat.png){fig-align="center"}
 
-## Beyond chat {background-color="#0F3B5D"}
+## Another slash command
 
-We often associate LLMs with chat, but they can be used for **any interactive app**.
+```{.python}
+@chat.slash_command("summarise", "Summarise the conversation")
+async def _(user_input: str):
+    prompt = f"""
+      The user has requested a summary of the 
+      conversation with additional context:\n\n{user_input}
+      """
+    stream = await chat.stream_async(prompt)
+    chat.append_message_stream(stream)
+```
 
-We won't dwell on this, but here are a couple examples:
+![](images/slash-command-summarize.png){height="400px" fig-align="center"}
 
-1. [Invoice data extractor](https://shiny.posit.co/py/docs/genai-structured-data.html#populating-inputs)
-2. [Workout generator](https://shiny.posit.co/py/templates/workout-plan/)
+## Exercise {.center}
+
+1. Open `exercises/shinychat-app.py` and run it.
+    * `shiny run exercises/shinychat-app.py` (or press run in Positron).
+2. Add a slash command (e.g. `"clear"`) that clears the conversation.
+3. Ask about the weather somewhere — notice the default tool display.
+4. Clear the conversation.
+5. Update `get_weather()` to return a `ToolResultDisplay` with a custom display.
+    * Use [these docs](https://shiny.posit.co/py/docs/genai-tools.html#toolresultdisplay) as a guide.
+
+<br>
+
+{{< countdown "7:00" >}}
