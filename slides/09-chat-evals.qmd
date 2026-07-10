@@ -12,62 +12,50 @@ format:
     code-line-numbers: false
 ---
 
-## Same question, two different answers
+## What are evals and why are they important?
 
-```{.python}
-chat.chat("How many times does the letter 'r' appear in 'strawberry'?")
-```
+* Generic term for measuring correctness and quality LLM responses. 
 
 ::: fragment
-> "3"
+* Many ways to measure, but "LLM as a grader" is the most common and scalable.
 :::
 
 ::: fragment
-You tweak the prompt, or swap models -- and now:
-
-```{.python}
-chat.chat("How many times does the letter 'r' appear in 'strawberry'?")
-```
-> "2"
+* Helpful for **regression testing**: you change your system (model, prompt, tools) and want to know things still work.
 :::
 
 ::: fragment
-Go ahead, count them -- it's 3. LLMs are famously bad at this kind of precise, symbol-level counting, and it's an easy thing to silently regress on.
-:::
-
-## How do you know it still works?
-
-* You swap in a new model, tweak the system prompt, or add a tool.
-
-::: fragment
-* How do you know you didn't just break something that used to work?
+* Also useful for **benchmarking**: you want to know which model or prompt is best
+for your use case.
 :::
 
 ::: fragment
-* Re-checking outputs by hand doesn't scale, and it's not repeatable -- ask two people (or the same person twice) and you can get two different verdicts.
+* The hard part: how do you get a representative dataset of inputs and expected outputs?
+    * Next section we'll learn about collecting user activity (OTel).
 :::
+
+
+## What's in an eval?
+
+* One popular eval framework is [Inspect AI](https://inspect.aisi.org.uk/) (`chatlas` integrates with it). There are three main components:
 
 ::: fragment
-* **Evals** turn "looks right to me" into a **test suite you re-run after every change**.
-:::
-
-## Three ingredients
-
 1. **Dataset** -- test cases: realistic inputs + target responses.
+:::
 
 ::: fragment
-2. **Solver** -- your chat, turned into something that generates a response for each input.
+2. **Solver** -- your chat, turned into something that generates a response for each input. 
+    * `chatlas` makes this easy with `.to_solver()`.
 :::
 
 ::: fragment
 3. **Scorer** -- grades the response against the target.
+    * Main drivers are `model_graded_fact()` (fact-checking) and `model_graded_qa()` (general purpose QA).
 :::
 
-::: fragment
-`chatlas` plugs your chat directly into all three, via [Inspect AI](https://inspect.aisi.org.uk/).
-:::
+## Define a task
 
-## Install & define a task
+These three components are combined into a **Task**:
 
 ```{.python filename="my_eval.py"}
 from chatlas import ChatBedrockAnthropic
@@ -82,11 +70,15 @@ def my_eval():
     return Task(
         dataset=csv_dataset("my_eval_dataset.csv"),
         solver=chat.to_solver(),
-        scorer=model_graded_qa(model="openai/gpt-4o-mini"),
+        scorer=model_graded_qa(),
     )
 ```
 
-## The dataset: just a CSV (for now)
+::: fragment
+Tasks can be run over a grid of models, parameters, etc. 
+:::
+
+## A basic CSV dataset {.center}
 
 ```{.python filename="my_eval_dataset.csv"}
 input,           target
@@ -94,67 +86,57 @@ What is 2 + 2?,  4
 What is 10 * 5?, 50
 ```
 
-::: fragment
 * `input` is what the solver sends.
 * `target` is what the scorer checks it against.
-:::
 
-## Run it
+## Run and view {.center}
 
 ```bash
 inspect eval my_eval.py
 inspect view
 ```
 
-::: fragment
 * `inspect view` opens a browser UI: every sample, its score, and *why* the grader scored it that way.
 * There's also a VS Code extension if you'd rather stay in the editor.
-:::
 
-## `.to_solver()`: your chat, as a solver
+## Multi-turn evals
 
-```{.python}
-chat = ChatBedrockAnthropic(model="gpt-4.1")
-chat.register_tool(my_custom_tool)
-chat.set_model_params(temperature=0.2)
-
-solver = chat.to_solver()
-```
-
-Carries over automatically, so the eval runs against the **same configuration** as your real app:
+* If an eval involves multiple turns, a CSV isn't enough to capture the conversation history. 
 
 ::: fragment
-- ✅ **Model**
-- ✅ **System prompt**
-- ✅ **Registered tools**
-- ✅ **Model params** (e.g. `temperature`)
+* Instead, you can build the dataset from an actual chat with `.export_eval()`.
 :::
 
-## Beyond one-off Q&A
+::: fragment
 
-A CSV works for single-turn questions. Real conversations have history -- so build the dataset from an actual chat with `.export_eval()`:
+::: columns
+::: {.column width="55%"}
 
 ```{.python}
-chat = ChatBedrockAnthropic(system_prompt="You are a helpful assistant.")
-
 chat.chat("My first name is Alice.")
 chat.chat("My last name is Smith.")
 chat.chat("What is my full name?")
 
 chat.export_eval(
     "my_eval_dataset.jsonl",
-    target="Response should include 'Alice Smith'.",
+    target="""
+Response should include 'Alice Smith'.
+""",
 )
 ```
+:::
 
-::: fragment
+::: {.fragment .column width="45%"}
 Each call appends one **Sample**:
 
 * Prior turns become the **input**.
 * The **target** is whatever grading guidance you give it.
 :::
+:::
+:::
 
-## Worked example: evaluating the literature miner
+
+## Structured output evals
 
 Recall the `PaperResults` extractor from the structured-data section. Let's eval it properly:
 
@@ -174,7 +156,7 @@ chat.export_eval(
 ```
 
 ::: fragment
-* Repeat for a few more abstracts -- ideally ones pulled from real papers, not written for the demo.
+* Repeat for a few more abstracts (ideally ones pulled from real papers :)
 :::
 
 ## Scoring structured output
@@ -190,7 +172,7 @@ def papers_eval():
     return Task(
         dataset=json_dataset("papers_eval.jsonl"),
         solver=chat.to_solver(data_model=PaperResults),
-        scorer=model_graded_fact(model="openai/gpt-4o"),
+        scorer=model_graded_fact(),
     )
 ```
 
@@ -198,17 +180,14 @@ def papers_eval():
 * `model_graded_fact()` compares against a correct answer and ignores style/wording -- a better fit here than `model_graded_qa()`.
 :::
 
-## Two gotchas
+## Keep in mind
 
-* `include_system_prompt` and `include_turns` on `.to_solver()` default to `False` -- `.export_eval()` already captured that context, so including it again would duplicate it.
-
-::: fragment
-* Turn them on only for hand-written datasets (like a CSV) that don't carry system prompt / history themselves.
-:::
+* `.export_eval()` captures system prompt and conversation history by default
+    * For this reason, `.to_solver()` doesn't include them, but you should opt-in for hand-written datasets (like a CSV) that don't carry system prompt / history themselves.
 
 ::: fragment
 * The **grader** model (scoring) doesn't need to be the same as the **solver** model (generating).
-* Using a stronger or different model to grade avoids a model marking its own homework.
+    * Good practice: use a stronger or different model to grade, which avoids a model marking its own homework.
 :::
 
 ## Partial credit
@@ -228,19 +207,7 @@ def papers_eval():
 :::
 
 ::: fragment
-* Don't fix typos, don't remove ambiguity, don't offer multiple-choice framing -- unless your production app actually does that.
-:::
-
-## No production data yet? Design it on purpose
-
-Vary your synthetic cases along three dimensions, deliberately:
-
-1. **Features** -- which specific capabilities (e.g. extracting metrics vs. author names vs. dates)
-2. **Scenarios** -- situations the system must handle (a clean abstract vs. one with no reported numbers)
-3. **Personas** -- who's asking, and what they need from the answer
-
-::: fragment
-* Crossing these systematically covers the space -- improvising examples one at a time tends to cluster around whatever you thought of first.
+* Don't have real users? Why not use AI to generate input for AI to then solve and score? 😜
 :::
 
 ## Exercise {.center}
