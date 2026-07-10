@@ -30,7 +30,7 @@ A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI app
 
 ## Setup
 
-A computing environment with all of the dependencies needed to run exercises is available [here](https://dev.workshop.posit.team). Please follow the instructions in the [welcome slides](slides/00-welcome#/computing-environment) to get set up.
+A computing environment with all of the dependencies needed to run exercises is available [here](https://dev.workshop.posit.team). Please follow the instructions in the [welcome slides](slides/00-welcome.html#/workbench) to get set up.
 
 ## Local Setup
 

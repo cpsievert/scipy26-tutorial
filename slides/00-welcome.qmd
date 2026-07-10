@@ -151,7 +151,7 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 :::
 
 
-## Your computing environment 💻 {.center}
+## Your computing environment 💻 {.center} {#workbench}
 
 1. Go to [dev.workshop.posit.team](https://dev.workshop.posit.team)
 2. Sign in via your GitHub account (or create a new account)
