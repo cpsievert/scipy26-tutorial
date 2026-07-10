@@ -11,7 +11,7 @@
     "href": "index.html#slides",
     "title": "Safe, Verifiable, & Maintainable AI Apps in Python",
     "section": "Slides",
-    "text": "Slides\n\nWelcome & Setup\nFoundations\nIntro to chatting with LLMs (chatlas)\nRecap\nTool calling and agents\nStructured data extraction\nChatbots\nRecap & Sendoff\nEvals\nObservability (OTel)\nquerychat\nRecap & Sendoff"
+    "text": "Slides\n\nWelcome & Setup\nFoundations\nIntro to chatting with LLMs (chatlas)\nRecap\nTool calling and agents\nStructured data extraction\nChatbots\nRecap\nEvals\nObservability (OTel)\nquerychat\nRecap & Sendoff"
   },
   {
     "objectID": "index.html#setup",
