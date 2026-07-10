@@ -151,16 +151,16 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 :::
 
 
-## Computing environment 💻 {.center}
+## Your computing environment 💻 {.center}
 
 1. Go to [dev.workshop.posit.team](https://dev.workshop.posit.team)
 2. Sign in via your GitHub account (or create a new account)
 3. Click **New session** at the top
 4. Under **Environment**, select the appropriate image:
-    * `654654567442.dkr.ecr.us-east-2.amazonaws.com/ptd-adhoc-pwb:session-jammy-scipy-2026.05.0-218.pro1-76c65f7f`
+    * The one ending with `7c95519f`
 5. Click **Launch**.
-    * Wait for longer than you expect -- blank screen is normal while the environment is being provisioned.
-7. Click **Open** -> **Open Folder** -> Enter `/opt/scipy26-tutorial`
+    * Can take a while (blank screen is normal)
+6. Click **Open** -> **Open Folder** -> Enter `/opt/scipy26-tutorial`
 
 ::: {.callout-tip}
 If you'd rather work locally, follow the instructions in [the website](https://bit.ly/scipy26).
