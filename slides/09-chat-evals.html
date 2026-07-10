@@ -204,207 +204,198 @@
 </div>
 
 </section>
-<section id="same-question-two-different-answers" class="slide level2">
-<h2>Same question, two different answers</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"How many times does the letter 'r' appear in 'strawberry'?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
-<blockquote>
-<p>“3”</p>
-</blockquote>
-</div>
-<div class="fragment">
-<p>You tweak the prompt, or swap models – and now:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"How many times does the letter 'r' appear in 'strawberry'?"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<blockquote>
-<p>“2”</p>
-</blockquote>
-</div>
-<div class="fragment">
-<p>Go ahead, count them – it’s 3. LLMs are famously bad at this kind of precise, symbol-level counting, and it’s an easy thing to silently regress on.</p>
-</div>
-</section>
-<section id="how-do-you-know-it-still-works" class="slide level2">
-<h2>How do you know it still works?</h2>
+<section id="what-are-evals-and-why-are-they-important" class="slide level2">
+<h2>What are evals and why are they important?</h2>
 <ul>
-<li>You swap in a new model, tweak the system prompt, or add a tool.</li>
+<li>Generic term for measuring correctness and quality LLM responses.</li>
 </ul>
 <div class="fragment">
 <ul>
-<li>How do you know you didn’t just break something that used to work?</li>
+<li>Many ways to measure, but “LLM as a grader” is the most common and scalable.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Re-checking outputs by hand doesn’t scale, and it’s not repeatable – ask two people (or the same person twice) and you can get two different verdicts.</li>
+<li>Helpful for <strong>regression testing</strong>: you change your system (model, prompt, tools) and want to know things still work.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><strong>Evals</strong> turn “looks right to me” into a <strong>test suite you re-run after every change</strong>.</li>
+<li>Also useful for <strong>benchmarking</strong>: you want to know which model or prompt is best for your use case.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The hard part: how do you get a representative dataset of inputs and expected outputs?
+<ul>
+<li>Next section we’ll learn about collecting user activity (OTel).</li>
+</ul></li>
 </ul>
 </div>
 </section>
-<section id="three-ingredients" class="slide level2">
-<h2>Three ingredients</h2>
+<section id="whats-in-an-eval" class="slide level2">
+<h2>What’s in an eval?</h2>
+<ul>
+<li>One popular eval framework is <a href="https://inspect.aisi.org.uk/">Inspect AI</a> (<code>chatlas</code> integrates with it). There are three main components:</li>
+</ul>
+<div class="fragment">
 <ol type="1">
 <li><strong>Dataset</strong> – test cases: realistic inputs + target responses.</li>
 </ol>
+</div>
 <div class="fragment">
 <ol start="2" type="1">
-<li><strong>Solver</strong> – your chat, turned into something that generates a response for each input.</li>
+<li><strong>Solver</strong> – your chat, turned into something that generates a response for each input.
+<ul>
+<li><code>chatlas</code> makes this easy with <code>.to_solver()</code>.</li>
+</ul></li>
 </ol>
 </div>
 <div class="fragment">
 <ol start="3" type="1">
-<li><strong>Scorer</strong> – grades the response against the target.</li>
+<li><strong>Scorer</strong> – grades the response against the target.
+<ul>
+<li>Main drivers are <code>model_graded_fact()</code> (fact-checking) and <code>model_graded_qa()</code> (general purpose QA).</li>
+</ul></li>
 </ol>
 </div>
-<div class="fragment">
-<p><code>chatlas</code> plugs your chat directly into all three, via <a href="https://inspect.aisi.org.uk/">Inspect AI</a>.</p>
-</div>
 </section>
-<section id="install-define-a-task" class="slide level2">
-<h2>Install &amp; define a task</h2>
+<section id="define-a-task" class="slide level2">
+<h2>Define a task</h2>
+<p>These three components are combined into a <strong>Task</strong>:</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>my_eval.py</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="my_eval.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> chatlas <span class="im">import</span> ChatBedrockAnthropic</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai <span class="im">import</span> Task, task</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.dataset <span class="im">import</span> csv_dataset</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.scorer <span class="im">import</span> model_graded_qa</span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ChatBedrockAnthropic()</span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@task</span></span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_eval():</span>
-<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Task(</span>
-<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>        dataset<span class="op">=</span>csv_dataset(<span class="st">"my_eval_dataset.csv"</span>),</span>
-<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>        solver<span class="op">=</span>chat.to_solver(),</span>
-<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a>        scorer<span class="op">=</span>model_graded_qa(model<span class="op">=</span><span class="st">"openai/gpt-4o-mini"</span>),</span>
-<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="my_eval.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> chatlas <span class="im">import</span> ChatBedrockAnthropic</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai <span class="im">import</span> Task, task</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.dataset <span class="im">import</span> csv_dataset</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.scorer <span class="im">import</span> model_graded_qa</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ChatBedrockAnthropic()</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@task</span></span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_eval():</span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Task(</span>
+<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>        dataset<span class="op">=</span>csv_dataset(<span class="st">"my_eval_dataset.csv"</span>),</span>
+<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>        solver<span class="op">=</span>chat.to_solver(),</span>
+<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>        scorer<span class="op">=</span>model_graded_qa(),</span>
+<span id="cb1-14"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<p>Tasks can be run over a grid of models, parameters, etc.</p>
 </div>
 </section>
-<section id="the-dataset-just-a-csv-for-now" class="slide level2">
-<h2>The dataset: just a CSV (for now)</h2>
+<section id="a-basic-csv-dataset" class="slide level2 center">
+<h2>A basic CSV dataset</h2>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>my_eval_dataset.csv</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="my_eval_dataset.csv"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span>,           target</span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>What <span class="kw">is</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span>?,  <span class="dv">4</span></span>
-<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>What <span class="kw">is</span> <span class="dv">10</span> <span class="op">*</span> <span class="dv">5</span>?, <span class="dv">50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="my_eval_dataset.csv"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="bu">input</span>,           target</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>What <span class="kw">is</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">2</span>?,  <span class="dv">4</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>What <span class="kw">is</span> <span class="dv">10</span> <span class="op">*</span> <span class="dv">5</span>?, <span class="dv">50</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="fragment">
 <ul>
 <li><code>input</code> is what the solver sends.</li>
 <li><code>target</code> is what the scorer checks it against.</li>
 </ul>
-</div>
 </section>
-<section id="run-it" class="slide level2">
-<h2>Run it</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">inspect</span> eval my_eval.py</span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">inspect</span> view</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment">
+<section id="run-and-view" class="slide level2 center">
+<h2>Run and view</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">inspect</span> eval my_eval.py</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">inspect</span> view</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>inspect view</code> opens a browser UI: every sample, its score, and <em>why</em> the grader scored it that way.</li>
 <li>There’s also a VS Code extension if you’d rather stay in the editor.</li>
 </ul>
-</div>
 </section>
-<section id="to_solver-your-chat-as-a-solver" class="slide level2">
-<h2><code>.to_solver()</code>: your chat, as a solver</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ChatBedrockAnthropic(model<span class="op">=</span><span class="st">"gpt-4.1"</span>)</span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.register_tool(my_custom_tool)</span>
-<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat.set_model_params(temperature<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> chat.to_solver()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Carries over automatically, so the eval runs against the <strong>same configuration</strong> as your real app:</p>
+<section id="multi-turn-evals" class="slide level2">
+<h2>Multi-turn evals</h2>
+<ul>
+<li>If an eval involves multiple turns, a CSV isn’t enough to capture the conversation history.</li>
+</ul>
 <div class="fragment">
 <ul>
-<li>✅ <strong>Model</strong></li>
-<li>✅ <strong>System prompt</strong></li>
-<li>✅ <strong>Registered tools</strong></li>
-<li>✅ <strong>Model params</strong> (e.g.&nbsp;<code>temperature</code>)</li>
+<li>Instead, you can build the dataset from an actual chat with <code>.export_eval()</code>.</li>
 </ul>
 </div>
-</section>
-<section id="beyond-one-off-qa" class="slide level2">
-<h2>Beyond one-off Q&amp;A</h2>
-<p>A CSV works for single-turn questions. Real conversations have history – so build the dataset from an actual chat with <code>.export_eval()</code>:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ChatBedrockAnthropic(system_prompt<span class="op">=</span><span class="st">"You are a helpful assistant."</span>)</span>
-<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"My first name is Alice."</span>)</span>
-<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"My last name is Smith."</span>)</span>
-<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What is my full name?"</span>)</span>
-<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>chat.export_eval(</span>
-<span id="cb7-8"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_eval_dataset.jsonl"</span>,</span>
-<span id="cb7-9"><a href="" aria-hidden="true" tabindex="-1"></a>    target<span class="op">=</span><span class="st">"Response should include 'Alice Smith'."</span>,</span>
-<span id="cb7-10"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"My first name is Alice."</span>)</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"My last name is Smith."</span>)</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat(<span class="st">"What is my full name?"</span>)</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>chat.export_eval(</span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"my_eval_dataset.jsonl"</span>,</span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a>    target<span class="op">=</span><span class="st">"""</span></span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">Response should include 'Alice Smith'.</span></span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>,</span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="fragment column" style="width:45%;">
 <p>Each call appends one <strong>Sample</strong>:</p>
 <ul>
 <li>Prior turns become the <strong>input</strong>.</li>
 <li>The <strong>target</strong> is whatever grading guidance you give it.</li>
 </ul>
+</div></div>
 </div>
 </section>
-<section id="worked-example-evaluating-the-literature-miner" class="slide level2">
-<h2>Worked example: evaluating the literature miner</h2>
+<section id="structured-output-evals" class="slide level2">
+<h2>Structured output evals</h2>
 <p>Recall the <code>PaperResults</code> extractor from the structured-data section. Let’s eval it properly:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatBedrockAnthropic()</span>
-<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>abstract <span class="op">=</span> <span class="st">"""ResNet-50 achieves 93.2% top-1 accuracy on CIFAR-10 and</span></span>
-<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">76.1</span><span class="sc">% o</span><span class="st">n ImageNet. A fine-tuned ViT-B/16 reaches 98.1</span><span class="sc">% o</span><span class="st">n CIFAR-10."""</span></span>
-<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat_structured(abstract, data_model<span class="op">=</span>PaperResults)</span>
-<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>chat.export_eval(</span>
-<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"papers_eval.jsonl"</span>,</span>
-<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>    target<span class="op">=</span><span class="st">"Should extract ResNet-50 (93.2% CIFAR-10, 76.1% ImageNet) "</span></span>
-<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="st">"and ViT-B/16 (98.1% CIFAR-10)."</span>,</span>
-<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>chat <span class="op">=</span> ctl.ChatBedrockAnthropic()</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>abstract <span class="op">=</span> <span class="st">"""ResNet-50 achieves 93.2% top-1 accuracy on CIFAR-10 and</span></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="st">76.1</span><span class="sc">% o</span><span class="st">n ImageNet. A fine-tuned ViT-B/16 reaches 98.1</span><span class="sc">% o</span><span class="st">n CIFAR-10."""</span></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>chat.chat_structured(abstract, data_model<span class="op">=</span>PaperResults)</span>
+<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a>chat.export_eval(</span>
+<span id="cb5-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="st">"papers_eval.jsonl"</span>,</span>
+<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>    target<span class="op">=</span><span class="st">"Should extract ResNet-50 (93.2% CIFAR-10, 76.1% ImageNet) "</span></span>
+<span id="cb5-11"><a href="" aria-hidden="true" tabindex="-1"></a>           <span class="st">"and ViT-B/16 (98.1% CIFAR-10)."</span>,</span>
+<span id="cb5-12"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <ul>
-<li>Repeat for a few more abstracts – ideally ones pulled from real papers, not written for the demo.</li>
+<li>Repeat for a few more abstracts (ideally ones pulled from real papers :)</li>
 </ul>
 </div>
 </section>
 <section id="scoring-structured-output" class="slide level2">
 <h2>Scoring structured output</h2>
 <p>Pass <code>data_model</code> to <code>.to_solver()</code> and it calls <code>.chat_structured()</code> instead of <code>.chat()</code> – same trick, structured version:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.dataset <span class="im">import</span> json_dataset</span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.scorer <span class="im">import</span> model_graded_fact</span>
-<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@task</span></span>
-<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> papers_eval():</span>
-<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Task(</span>
-<span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a>        dataset<span class="op">=</span>json_dataset(<span class="st">"papers_eval.jsonl"</span>),</span>
-<span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a>        solver<span class="op">=</span>chat.to_solver(data_model<span class="op">=</span>PaperResults),</span>
-<span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a>        scorer<span class="op">=</span>model_graded_fact(model<span class="op">=</span><span class="st">"openai/gpt-4o"</span>),</span>
-<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.dataset <span class="im">import</span> json_dataset</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> inspect_ai.scorer <span class="im">import</span> model_graded_fact</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="at">@task</span></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> papers_eval():</span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Task(</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>        dataset<span class="op">=</span>json_dataset(<span class="st">"papers_eval.jsonl"</span>),</span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>        solver<span class="op">=</span>chat.to_solver(data_model<span class="op">=</span>PaperResults),</span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>        scorer<span class="op">=</span>model_graded_fact(),</span>
+<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <ul>
 <li><code>model_graded_fact()</code> compares against a correct answer and ignores style/wording – a better fit here than <code>model_graded_qa()</code>.</li>
 </ul>
 </div>
 </section>
-<section id="two-gotchas" class="slide level2">
-<h2>Two gotchas</h2>
+<section id="keep-in-mind" class="slide level2">
+<h2>Keep in mind</h2>
 <ul>
-<li><code>include_system_prompt</code> and <code>include_turns</code> on <code>.to_solver()</code> default to <code>False</code> – <code>.export_eval()</code> already captured that context, so including it again would duplicate it.</li>
+<li><code>.export_eval()</code> captures system prompt and conversation history by default
+<ul>
+<li>For this reason, <code>.to_solver()</code> doesn’t include them, but you should opt-in for hand-written datasets (like a CSV) that don’t carry system prompt / history themselves.</li>
+</ul></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>Turn them on only for hand-written datasets (like a CSV) that don’t carry system prompt / history themselves.</li>
-</ul>
-</div>
-<div class="fragment">
+<li>The <strong>grader</strong> model (scoring) doesn’t need to be the same as the <strong>solver</strong> model (generating).
 <ul>
-<li>The <strong>grader</strong> model (scoring) doesn’t need to be the same as the <strong>solver</strong> model (generating).</li>
-<li>Using a stronger or different model to grade avoids a model marking its own homework.</li>
+<li>Good practice: use a stronger or different model to grade, which avoids a model marking its own homework.</li>
+</ul></li>
 </ul>
 </div>
 </section>
@@ -431,21 +422,7 @@
 </div>
 <div class="fragment">
 <ul>
-<li>Don’t fix typos, don’t remove ambiguity, don’t offer multiple-choice framing – unless your production app actually does that.</li>
-</ul>
-</div>
-</section>
-<section id="no-production-data-yet-design-it-on-purpose" class="slide level2">
-<h2>No production data yet? Design it on purpose</h2>
-<p>Vary your synthetic cases along three dimensions, deliberately:</p>
-<ol type="1">
-<li><strong>Features</strong> – which specific capabilities (e.g.&nbsp;extracting metrics vs.&nbsp;author names vs.&nbsp;dates)</li>
-<li><strong>Scenarios</strong> – situations the system must handle (a clean abstract vs.&nbsp;one with no reported numbers)</li>
-<li><strong>Personas</strong> – who’s asking, and what they need from the answer</li>
-</ol>
-<div class="fragment">
-<ul>
-<li>Crossing these systematically covers the space – improvising examples one at a time tends to cluster around whatever you thought of first.</li>
+<li>Don’t have real users? Why not use AI to generate input for AI to then solve and score? 😜</li>
 </ul>
 </div>
 </section>
@@ -458,7 +435,7 @@
 <li><code>inspect eval</code> your script, then <code>inspect view</code> the results.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_267a020e0a7107259d8e017e738cec919e1aa81f" minutes="07" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_03f78cbe4b6aeb3a511e167a4a201ac8faa5bd2c" minutes="07" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>
