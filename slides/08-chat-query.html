@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="10-chat-query_files/libs/clipboard/clipboard.min.js"></script>
-<script src="10-chat-query_files/libs/quarto-html/tabby.min.js"></script>
-<script src="10-chat-query_files/libs/quarto-html/popper.min.js"></script>
-<script src="10-chat-query_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="10-chat-query_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="10-chat-query_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="10-chat-query_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="08-chat-query_files/libs/clipboard/clipboard.min.js"></script>
+<script src="08-chat-query_files/libs/quarto-html/tabby.min.js"></script>
+<script src="08-chat-query_files/libs/quarto-html/popper.min.js"></script>
+<script src="08-chat-query_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="08-chat-query_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="08-chat-query_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="08-chat-query_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.37">
 
   <title>querychat</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="10-chat-query_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="10-chat-query_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="08-chat-query_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="08-chat-query_files/libs/revealjs/dist/reveal.css">
   <style>
     /* Default styles provided by pandoc.
     ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -97,11 +97,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="10-chat-query_files/libs/revealjs/dist/theme/quarto-037fb6bbb0c52faed5d85f9e131ff02b.css">
-  <link href="10-chat-query_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="10-chat-query_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="10-chat-query_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="10-chat-query_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="08-chat-query_files/libs/revealjs/dist/theme/quarto-037fb6bbb0c52faed5d85f9e131ff02b.css">
+  <link href="08-chat-query_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="08-chat-query_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="08-chat-query_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="08-chat-query_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -196,36 +196,71 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">querychat</h1>
-  <p class="subtitle">A self-service analytics platform</p>
+  <p class="subtitle">An example of a ‘safe’ and verifiable AI app</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="section" class="slide level2 center">
+<section id="section" class="slide level2">
 <h2></h2>
+<script src="https://fast.wistia.com/player.js" async=""></script>
+<script src="https://fast.wistia.com/embed/at01coepkh.js" async="" type="module"></script>
+<style>wistia-player[media-id='at01coepkh']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/at01coepkh/swatch'); display: block; filter: blur(5px); padding-top:58.76%; }</style>
+<p><wistia-player media-id="at01coepkh" aspect="1.701851851851852"></wistia-player></p>
+</section>
+<section id="three-tools-visualize-query-filter" class="slide level2">
+<h2>Three tools: visualize, query, filter</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/querychat.png" class="quarto-figure quarto-figure-center" height="250"></p>
+<p><img data-src="images/querychat-viz.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
 </figure>
 </div>
-<p>Give users a <strong>natural language interface</strong> to your data — in 3 lines.</p>
-<aside class="notes">
-<p>querychat is the capstone of the day. It combines everything we’ve learned: chatlas for the LLM client, shinychat for the UI, and adds purpose-built tools for data exploration. The result is a self-service analytics platform that’s safe to hand to non-technical users.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div><div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Visualize:</strong> execute ggsql queries, rendered as visualizations in the chat.</li>
+</ol>
+</div></div>
 </section>
-<section id="the-3-line-analytics-app" class="slide level2 center">
-<h2>The 3-line analytics app</h2>
+<section id="three-tools-visualize-query-filter-1" class="slide level2">
+<h2>Three tools: visualize, query, filter</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/querychat-query.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Visualize:</strong> execute <a href="https://ggsql.org/">ggsql</a> queries, rendered as visualizations in the chat.</li>
+<li><strong>Query:</strong> execute SQL queries, rendered as tables/text in the chat.</li>
+</ol>
+</div></div>
+</section>
+<section id="three-tools-visualize-query-filter-2" class="slide level2">
+<h2>Three tools: visualize, query, filter</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/querychat-filter.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:40%;">
+<ol type="1">
+<li><strong>Visualize:</strong> execute ggsql queries, rendered as visualizations in the chat.</li>
+<li><strong>Query:</strong> execute SQL queries, rendered as tables/text in the chat.</li>
+<li><strong>Filter:</strong> execute filter SQL queries on predetermined views, allowing the LLM to reactively drill into the data in response to user questions.</li>
+</ol>
+</div></div>
+</section>
+<section id="get-started" class="slide level2">
+<h2>Get started</h2>
+<div class="columns">
+<div class="column">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>app.py</strong></pre>
@@ -233,64 +268,104 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat <span class="im">import</span> QueryChat</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic</span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(titanic(), <span class="st">"titanic"</span>)</span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> qc.app()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>  titanic(), </span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>  <span class="st">"titanic"</span>,</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>  client<span class="op">=</span><span class="st">"bedrock-anthropic"</span>,</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>  tools<span class="op">=</span>(<span class="st">"filter"</span>, <span class="st">"query"</span>, <span class="st">"visualize"</span>),</span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">shiny</span> run app.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<aside class="notes">
-<p>Live demo: create this file, run it, open the browser. You get a full chat interface that can filter, query, and (optionally) visualize the Titanic dataset — from 3 lines.</p>
-<p>Let them play with it for 30 seconds. Ask “show me all first-class passengers who survived” or “what was the average fare by class?” to demonstrate both the filter and query tools.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+</div><div class="column">
+<ol type="1">
+<li>Supply a <a href="https://posit-dev.github.io/querychat/py/data-sources.html">data source</a>, LLM client, and tools to enable.</li>
+</ol>
+<div class="fragment">
+<ol start="2" type="1">
+<li><code>QueryChat</code> auto-generates a system prompt with schema context and instructions for the LLM.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
+<li>Users can also provide a <a href="https://posit-dev.github.io/querychat/py/context.html#data-dictionary">data dictionary</a> to further guide the LLM.</li>
+</ol>
+</div>
+</div></div>
 </section>
-<section id="a-real-dashboard" class="slide level2 center">
-<h2>A real dashboard</h2>
+<section id="the-pre-bundled-app" class="slide level2">
+<h2>The pre-bundled app</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>app.py</strong></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny.express <span class="im">import</span> render, ui</span>
-<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.express <span class="im">import</span> QueryChat</span>
-<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic</span>
-<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(titanic(), <span class="st">"titanic"</span>)</span>
-<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>qc.sidebar()</span>
-<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ui.card():</span>
-<span id="cb3-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> ui.card_header():</span>
-<span id="cb3-10"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="at">@render.text</span></span>
-<span id="cb3-11"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> title():</span>
-<span id="cb3-12"><a href="" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> qc.title() <span class="kw">or</span> <span class="st">"Titanic Dataset"</span></span>
-<span id="cb3-13"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.data_frame</span></span>
-<span id="cb3-15"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> data_table():</span>
-<span id="cb3-16"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> qc.df()</span>
-<span id="cb3-17"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="" aria-hidden="true" tabindex="-1"></a>ui.page_opts(fillable<span class="op">=</span><span class="va">True</span>, title<span class="op">=</span><span class="st">"Titanic Explorer"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat <span class="im">import</span> QueryChat</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(...)</span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>app <span class="op">=</span> qc.app()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<aside class="notes">
-<p>This is the pattern people will actually use. <code>qc.sidebar()</code> places the chat in a sidebar. <code>qc.df()</code> is a <strong>reactive</strong> value — the data table re-renders automatically when the user filters through the chat.</p>
-<p>Point out: <code>qc.df()</code> and <code>qc.title()</code> are the integration points. Any Shiny output that reads <code>qc.df()</code> — a table, a plot, a summary stat — will update automatically. This is the power of Shiny’s reactivity.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
+<p><br></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="ex">shiny</span> run app.py</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:60%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/querychat-titanic.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+<div class="fragment">
+<p>Useful for your own exploration, but for sharing with others, you’ll probably want to build a <strong>custom dashboard</strong>.</p>
+</div>
+</section>
+<section id="a-basic-custom-dashboard" class="slide level2">
+<h2>A basic custom dashboard</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>app.py</strong></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-filename="app.py"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> shiny.express <span class="im">import</span> render, ui</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.express <span class="im">import</span> QueryChat</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.data <span class="im">import</span> titanic</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(titanic(), <span class="st">"titanic"</span>)</span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>qc.sidebar()</span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> ui.card():</span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="at">@render.data_frame</span></span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> data_table():</span>
+<span id="cb4-11"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> qc.df()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>This is essentially what <code>qc.app()</code> does under the hood.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><code>qc.sidebar()</code> places the chat in a sidebar.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><code>qc.df()</code>: a <strong>reactive</strong> value containing the filtered dataset.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Shiny provides best UX, but you can also use Streamlit, Dash, or Gradio.</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="exercise" class="slide level2 center" data-background-color="#0F3B5D">
+<h2>Exercise</h2>
+<ol type="1">
+<li>Open</li>
+</ol>
+<p>Give them an <code>.app()</code> to run? Make them trigger each of the three tools? Make them add a custom tool?</p>
 </section>
 <section id="built-in-tools" class="slide level2 center">
 <h2>Built-in tools</h2>
@@ -326,11 +401,11 @@
 </tbody>
 </table>
 <div class="fragment">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Default: filter + query</span></span>
-<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>)</span>
-<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># All three</span></span>
-<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>, tools<span class="op">=</span>(<span class="st">"filter"</span>, <span class="st">"query"</span>, <span class="st">"visualize"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Default: filter + query</span></span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>)</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># All three</span></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(df, <span class="st">"data"</span>, tools<span class="op">=</span>(<span class="st">"filter"</span>, <span class="st">"query"</span>, <span class="st">"visualize"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
 <p>All tools are <strong>read-only</strong> — no INSERT, UPDATE, or DELETE.</p>
@@ -388,17 +463,17 @@
 <p><em>The LLM knows your schema without seeing your data.</em></p>
 </div><div class="column" style="width:50%;">
 <h3 id="user-supplied">User-supplied</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>QueryChat(</span>
-<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>    df, <span class="st">"titanic"</span>,</span>
-<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>    data_description<span class="op">=</span>(</span>
-<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"survived: 1 = survived, "</span></span>
-<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0 = did not survive"</span></span>
-<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a>    extra_instructions<span class="op">=</span>(</span>
-<span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Use British spelling. "</span></span>
-<span id="cb5-9"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Refuse off-topic questions."</span></span>
-<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb5-11"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>QueryChat(</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>    df, <span class="st">"titanic"</span>,</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>    data_description<span class="op">=</span>(</span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"survived: 1 = survived, "</span></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"0 = did not survive"</span></span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>    extra_instructions<span class="op">=</span>(</span>
+<span id="cb6-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Use British spelling. "</span></span>
+<span id="cb6-9"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Refuse off-topic questions."</span></span>
+<span id="cb6-10"><a href="" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb6-11"><a href="" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <aside class="notes">
 <p>This is the “context engineering” theme paying off. Auto-generated context means the LLM understands the shape of the data (what columns exist, what values are valid) without ever seeing the raw rows. This is both a <strong>correctness</strong> benefit (the LLM writes valid SQL) and a <strong>privacy</strong> benefit (no data leaks to the provider).</p>
@@ -466,16 +541,16 @@
 <p>Best experience — native reactivity. <code>qc.df()</code> drives the whole dashboard.</p>
 </div><div class="column" style="width:25%;">
 <h3 id="streamlit">Streamlit</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.streamlit <span class="op">\</span></span>
-<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div><div class="column" style="width:25%;">
-<h3 id="dash">Dash</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.dash <span class="op">\</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.streamlit <span class="op">\</span></span>
 <span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:25%;">
-<h3 id="gradio">Gradio</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.gradio <span class="op">\</span></span>
+<h3 id="dash">Dash</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.dash <span class="op">\</span></span>
 <span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:25%;">
+<h3 id="gradio">Gradio</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> querychat.gradio <span class="op">\</span></span>
+<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> QueryChat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="fragment">
 <p>Same <code>QueryChat</code> API — swap the import, keep your code.</p>
@@ -498,18 +573,18 @@
 <section id="data-sources" class="slide level2 center">
 <h2>Data sources</h2>
 <p>querychat works with data you already have:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb9-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
-<span id="cb9-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># In-memory DataFrames (pandas, polars, pyarrow)</span></span>
-<span id="cb9-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(pd.read_csv(<span class="st">"sales.csv"</span>), <span class="st">"sales"</span>)</span>
-<span id="cb9-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Databases (via SQLAlchemy)</span></span>
-<span id="cb9-8"><a href="" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">"duckdb:///warehouse.duckdb"</span>)</span>
-<span id="cb9-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(engine, <span class="st">"transactions"</span>)</span>
-<span id="cb9-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Pins boards (shared data)</span></span>
-<span id="cb9-12"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(board, <span class="st">"monthly_metrics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> create_engine</span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># In-memory DataFrames (pandas, polars, pyarrow)</span></span>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(pd.read_csv(<span class="st">"sales.csv"</span>), <span class="st">"sales"</span>)</span>
+<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Databases (via SQLAlchemy)</span></span>
+<span id="cb10-8"><a href="" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">"duckdb:///warehouse.duckdb"</span>)</span>
+<span id="cb10-9"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(engine, <span class="st">"transactions"</span>)</span>
+<span id="cb10-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># Pins boards (shared data)</span></span>
+<span id="cb10-12"><a href="" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QueryChat(board, <span class="st">"monthly_metrics"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
 <p>Show the breadth of data sources. For the tutorial exercises, they’ll use in-memory DataFrames (simplest). But in production, the database path is powerful — you point querychat at your data warehouse and the LLM writes SQL against real tables.</p>
 <p>Under the hood, DataFrame inputs are loaded into an in-memory DuckDB for SQL execution. This means even pandas DataFrames get DuckDB’s query performance.</p>
@@ -567,19 +642,19 @@
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="10-chat-query_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="10-chat-query_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="10-chat-query_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="10-chat-query_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="08-chat-query_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

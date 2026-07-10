@@ -21,8 +21,8 @@ format:
 | 🔧 | **Tools & agents** | Real capabilities, with guardrails |
 | 📦 | **Structured data** | Typed data from text, images, and PDFs |
 | ![](images/shinychat.svg){height="45px"} | **shinychat** | 5 lines to a chatbot with tool displays |
-| 🧪 | **Evals & observability** | Know if it works, and watch it in production |
 | ![](images/querychat.png){height="45px"} | **querychat** | Self-service analytics, safe by architecture |
+| 🧪 | **Evals & observability** | Know if it works, and watch it in production |
 
 : {tbl-colwidths="[10,25,65]"}
 

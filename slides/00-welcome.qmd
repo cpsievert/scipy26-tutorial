@@ -1,5 +1,5 @@
 ---
-title: "Safe, Verifiable, & Maintainable AI Apps in Python"
+title: "Safe, Verifiable, & Maintainable AI Apps"
 subtitle: "Welcome & Setup"
 author: "Carson Sievert · Posit"
 format:
@@ -27,7 +27,7 @@ callout-appearance: simple
 - Open source software engineer at **Posit**
 - Work on **chatlas**, **shinychat**, **querychat**
 - Background in **statistics** and **data science**
-
+- Live in Duluth, MN
 :::
 :::
 
@@ -111,13 +111,12 @@ Quick show of hands 🙋
 | **Structured data extraction** | 15 min |
 | **Chatbots** | 20 min |
 | Break+Recap | 10 min |
-| **Production tooling** | 25 min |
-| **Evals** | 20 min |
-| **querychat** — self-service analytics case study | 15 min |
+| **querychat** — self-service analytics case study | 20 min |
+| **Evals** + **Observability (OTel)** | 40 min |
+| Recap+Sendoff | 10 min |
+
 
 : {tbl-colwidths="[75,25]"}
-
-
 
 
 ## Website (materials) 📁
@@ -191,4 +190,4 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 - 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
 
 
-# It's ok to feel conflicted about AI, I certainly am! {.center}
+# Feel conflicted about AI? Same here! {.center background-color="#3C0919"}

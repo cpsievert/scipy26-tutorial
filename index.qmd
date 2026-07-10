@@ -23,9 +23,9 @@ A 4-hour hands-on tutorial on building safe, verifiable, and maintainable AI app
 6. [Structured data extraction](slides/05-data.html)
 7. [Chatbots](slides/06-chatbots.html)
 8. [Recap](slides/07-recap.html)
-9. [Evals](slides/08-chat-evals.html)
-10. [Observability (OTel)](slides/09-chat-otel.html)
-11. [querychat](slides/10-chat-query.html)
+9. [querychat](slides/08-chat-query.html)
+10. [Evals](slides/09-chat-evals.html)
+11. [Observability (OTel)](slides/10-chat-otel.html)
 12. [Recap & Sendoff](slides/11-sendoff.html)
 
 ## Setup

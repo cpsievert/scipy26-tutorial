@@ -1,6 +1,6 @@
 ---
 title: "querychat"
-subtitle: "A self-service analytics platform"
+subtitle: "An example of a 'safe' and verifiable AI app"
 format:
   revealjs:
     theme: [default, theme.scss]
@@ -12,44 +12,123 @@ format:
     code-line-numbers: false
 ---
 
-## {.center}
+## 
 
-![](images/querychat.png){height="250px" fig-align="center"}
+<script src="https://fast.wistia.com/player.js" async></script>
+<script src="https://fast.wistia.com/embed/at01coepkh.js" async type="module"></script>
+<style>wistia-player[media-id='at01coepkh']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/at01coepkh/swatch'); display: block; filter: blur(5px); padding-top:58.76%; }</style>
 
-Give users a **natural language interface** to your data — in 3 lines.
+<wistia-player media-id="at01coepkh" aspect="1.701851851851852"></wistia-player>
 
-::: notes
-querychat is the capstone of the day. It combines everything we've learned:
-chatlas for the LLM client, shinychat for the UI, and adds purpose-built tools
-for data exploration. The result is a self-service analytics platform that's
-safe to hand to non-technical users.
+
+## Three tools: visualize, query, filter
+
+::: columns
+::: {.column width="60%"}
+![](images/querychat-viz.png){width="100%" fig-align="center"}
 :::
 
-## The 3-line analytics app {.center}
+::: {.column width="40%"}
+1. **Visualize:** execute ggsql queries, rendered as visualizations in the chat.
+:::
+:::
+
+## Three tools: visualize, query, filter
+
+::: columns
+::: {.column width="60%"}
+![](images/querychat-query.png){width="100%" fig-align="center"}
+:::
+
+::: {.column width="40%"}
+1. **Visualize:** execute [ggsql](https://ggsql.org/) queries, rendered as visualizations in the chat.
+2. **Query:** execute SQL queries, rendered as tables/text in the chat.
+:::
+:::
+
+
+## Three tools: visualize, query, filter
+
+::: columns
+::: {.column width="60%"}
+![](images/querychat-filter.png){width="100%" fig-align="center"}
+:::
+
+::: {.column width="40%"}
+1. **Visualize:** execute ggsql queries, rendered as visualizations in the chat.
+2. **Query:** execute SQL queries, rendered as tables/text in the chat.
+3. **Filter:** execute filter SQL queries on predetermined views, allowing the LLM to reactively drill into the data in response to user questions.
+:::
+:::
+
+
+## Get started
+
+::: columns
+::: column
+```{.python filename="app.py"}
+from querychat import QueryChat
+from querychat.data import titanic
+
+qc = QueryChat(
+  titanic(), 
+  "titanic",
+  client="bedrock-anthropic",
+  tools=("filter", "query", "visualize"),
+)
+```
+:::
+
+::: column
+1. Supply a [data source](https://posit-dev.github.io/querychat/py/data-sources.html), LLM client, and tools to enable.
+
+::: fragment
+2. `QueryChat` auto-generates a system prompt with schema context and instructions for the LLM.
+:::
+
+::: fragment
+3. Users can also provide a [data dictionary](https://posit-dev.github.io/querychat/py/context.html#data-dictionary) to further guide the LLM.
+:::
+:::
+:::
+
+
+## The pre-bundled app
+
+::: columns
+::: {.column width="40%"}
 
 ```{.python filename="app.py"}
 from querychat import QueryChat
 from querychat.data import titanic
 
-qc = QueryChat(titanic(), "titanic")
+qc = QueryChat(...)
+
 app = qc.app()
 ```
+<br>
 
-```{.bash}
+```bash
 shiny run app.py
 ```
 
-::: notes
-Live demo: create this file, run it, open the browser. You get a full chat
-interface that can filter, query, and (optionally) visualize the Titanic
-dataset — from 3 lines.
-
-Let them play with it for 30 seconds. Ask "show me all first-class passengers
-who survived" or "what was the average fare by class?" to demonstrate both
-the filter and query tools.
 :::
 
-## A real dashboard {.center}
+::: {.column width="60%"}
+![](images/querychat-titanic.png){width="100%" fig-align="center"}
+:::
+
+:::
+
+::: fragment
+Useful for your own exploration, but for sharing with others, you'll probably want to build a **custom dashboard**.
+:::
+
+
+## A basic custom dashboard
+
+::: columns
+::: {.column width="50%"}
 
 ```{.python filename="app.py"}
 from shiny.express import render, ui
@@ -60,27 +139,38 @@ qc = QueryChat(titanic(), "titanic")
 qc.sidebar()
 
 with ui.card():
-    with ui.card_header():
-        @render.text
-        def title():
-            return qc.title() or "Titanic Dataset"
-
     @render.data_frame
     def data_table():
         return qc.df()
-
-ui.page_opts(fillable=True, title="Titanic Explorer")
 ```
 
-::: notes
-This is the pattern people will actually use. `qc.sidebar()` places the chat
-in a sidebar. `qc.df()` is a **reactive** value — the data table re-renders
-automatically when the user filters through the chat.
-
-Point out: `qc.df()` and `qc.title()` are the integration points. Any Shiny
-output that reads `qc.df()` — a table, a plot, a summary stat — will update
-automatically. This is the power of Shiny's reactivity.
 :::
+
+::: {.column width="50%"}
+* This is essentially what `qc.app()` does under the hood.
+
+::: fragment
+* `qc.sidebar()` places the chat in a sidebar.
+:::
+
+::: fragment
+* `qc.df()`: a **reactive** value containing the filtered dataset.
+:::
+
+::: fragment 
+* Shiny provides best UX, but you can also use Streamlit, Dash, or Gradio.
+:::
+
+:::
+
+:::
+
+## Exercise {.center background-color="#0F3B5D"}
+
+1. Open 
+
+
+Give them an `.app()` to run? Make them trigger each of the three tools? Make them add a custom tool?
 
 ## Built-in tools {.center}
 

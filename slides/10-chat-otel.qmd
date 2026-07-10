@@ -266,6 +266,6 @@ with a display."
 # ☕ Break — 5 min {.center background-color="#0e3b5c"}
 
 ::: notes
-Next up: querychat — the capstone. Everything we've learned (chatlas + tools +
-shinychat UI) comes together as a self-service analytics platform.
+Next up: Recap & Sendoff — tie chatlas + tools + shinychat + querychat back to
+the tutorial's core thesis.
 :::
