@@ -222,7 +222,15 @@
 <p>Three main techniques:</p>
 <ol type="1">
 <li><strong>Prompting</strong>: supply knowledge to system prompt. Simple, but it doesn’t scale well.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="2" type="1">
 <li><strong>RAG</strong>: retrieve relevant information based on user prompt.</li>
+</ol>
+</div>
+<div class="fragment">
+<ol start="3" type="1">
 <li><strong>Tool calling</strong>: define a tool that can access knowledge, and let the model call it.</li>
 </ol>
 </div>
@@ -297,9 +305,10 @@
 <li>Open up <code>exercises/chat-tools.py</code>.</li>
 <li>Write a python function that reports the current date.</li>
 <li>Register it as a tool and call it from chat.</li>
+<li>Add another tool that takes Python code as input and <code>eval()</code> it.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_8903f331c4354e1352afbf4271aff5facc3a5855" minutes="03" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_b899f1a0a0557fd7e530a5502bfb6da991bddfa1" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="agents-llm-tools-loop" class="slide level2">
@@ -309,7 +318,7 @@
 </ul>
 <div class="fragment">
 <ul>
-<li>This particular “agent” is safe, but not very capable.</li>
+<li>This “weather agent” is safe, but not very capable.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -352,6 +361,7 @@
 <ul>
 <li>This is the approach used by querychat.</li>
 <li>Can also lead to model getting “less creative”, which can be a good thing for correctness.</li>
+<li>Especially relevant for web apps <em>other people</em> are driving.</li>
 </ul></li>
 </ol>
 </div>
@@ -359,14 +369,14 @@
 <section id="remote-tools" class="slide level2">
 <h2>Remote tools</h2>
 <ul>
-<li>Tools don’t <em>have</em> to be available in the same process as the LLM client.</li>
+<li>Tools don’t <em>have</em> to live in the same process as the LLM client.</li>
 </ul>
 <div class="fragment">
 <ul>
 <li>They can be:
 <ul>
-<li><strong>Provider tools</strong>: connect through a particular provider’s API.</li>
-<li><strong>MCP tools</strong>: connect through a web service or local process.</li>
+<li><strong>Provider</strong>: the LLM provider provides tools that run on their servers</li>
+<li><strong>MCP</strong>: serve tools through a web service or local process.</li>
 </ul></li>
 </ul>
 </div>
@@ -446,17 +456,17 @@
 </ul>
 </div>
 </section>
-<section id="exercise-1" class="slide level2 center">
+<section id="exercise-1" class="slide level2 center" data-background-color="#0e3b5c">
 <h2>Exercise</h2>
 <ol type="1">
 <li>Go to <a href="https://www.pulsemcp.com/servers" class="uri">https://www.pulsemcp.com/servers</a>.</li>
 <li>Click on Filters -&gt; “Remote Available”.</li>
 <li>Sort from most popular.</li>
 <li>Pick an MCP server.</li>
-<li>Register it with a chatlas client and make a query to it.</li>
+<li>Open <code>exercises/chat-mcp-tools.py</code>. Tweak it to use the MCP server you picked.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_8903f331c4354e1352afbf4271aff5facc3a5855" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_b899f1a0a0557fd7e530a5502bfb6da991bddfa1" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>

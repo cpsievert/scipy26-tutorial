@@ -230,9 +230,11 @@
 <h2>There are many frameworks – why chatlas?</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
+<div class="fragment">
 <ul>
 <li>I’m the author :)</li>
 </ul>
+</div>
 <div class="fragment">
 <ul>
 <li>Backed by Posit – a company with 15+ years of heavy investment in open source</li>
@@ -296,10 +298,11 @@
 </figure>
 </div>
 </div><div class="column">
-<p>See what model slugs are available for each provider.</p>
+<p>See what model IDs are available for each provider.</p>
 </div></div>
 <div class="fragment">
 <p>💡 Expressed as a single string: <code>ChatAuto("openai/gpt-5.5")</code>.</p>
+<p>💡 If no model is provided, a sensible default is provided.</p>
 </div>
 </section>
 <section id="streaming-just-works" class="slide level2 center">
@@ -409,9 +412,11 @@
 <li>Open up <code>exercises/00-chat-hello.py</code>.</li>
 <li>Add a custom system prompt to change the model’s behavior.</li>
 <li>Try using <code>.app()</code> – how is this similar/different from ChatGPT, etc?</li>
+<li>Quit the app, and programmatically determine the number of turns in the conversation history.</li>
+<li>Go to the <a href="https://posit-dev.github.io/chatlas/reference/Chat.html">API reference</a> – find the <code>Chat</code> method for computing cost.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_08a3e7f493f5ba12a56d05f59b0267db0a523fe6" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_eb5e1d742cab78d88e7b3ee6ed4e3d2dcc10ec00" minutes="07" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>

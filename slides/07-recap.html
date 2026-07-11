@@ -136,82 +136,98 @@
 </div>
 
 </section>
-<section id="where-weve-been" class="slide level2">
-<h2>Where we’ve been</h2>
+<section id="tool-calling" class="slide level2">
+<h2>🔧 Tool calling</h2>
 <ul>
-<li>🔧 <strong>Tools</strong>: give LLMs real capabilities</li>
+<li>Agent = LLM + tools + loop</li>
 </ul>
 <div class="fragment">
 <ul>
-<li>📦 <strong>Structured data extraction</strong>: turn text/images/PDFs into typed data</li>
+<li>A tool can be a <strong>typed, documented function</strong> — the model decides when to call it.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>💬 <strong>shinychat</strong>: turn a chat into an app.
+<li><code>register_tool()</code> turns a Python function into something the model can call.</li>
+</ul>
+</div>
+<div class="fragment">
 <ul>
-<li>Customize with tool displays, slash commands, and more</li>
+<li>Letting an LLM execute arbitrary code is powerful but risky — <strong>sandbox it, run it remotely, or restrict its scope</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Tools can be extended beyond your own process using <strong>MCP</strong> (over HTTP or STDIO).</li>
+</ul>
+</div>
+</section>
+<section id="structured-data-extraction" class="slide level2">
+<h2>📦 Structured data extraction</h2>
+<ul>
+<li>Extract structured data from text/images/PDFs</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Transform LLM responses into <strong>data your code can branch on</strong>, not just prose.
+<ul>
+<li>Useful for a lot of stuff beyond chat apps!</li>
 </ul></li>
 </ul>
 </div>
-</section>
-<section id="the-big-idea-again" class="slide level2">
-<h2>The big idea, again</h2>
-<p><strong>Agent = LLM + tools + loop</strong> — tools are how LLMs learn and act on the world.</p>
 <div class="fragment">
-<p>A tool is just a <strong>typed, documented function</strong> — the model decides when to call it.</p>
+<ul>
+<li><code>.chat_structured()</code> + a <strong>Pydantic model</strong> extracts typed data from text, images, or PDFs.</li>
+</ul>
 </div>
 <div class="fragment">
-<p>Letting an LLM execute arbitrary code is powerful but risky — <strong>sandbox it, run it remotely, or restrict its scope</strong>.</p>
-</div>
-<div class="fragment">
-<p>Structured output turns LLM responses into <strong>data your code can branch on</strong>, not just prose.</p>
+<ul>
+<li><code>str | None</code> fields handle data that’s sometimes missing.</li>
+</ul>
 </div>
 </section>
-<section id="tools-data-so-far" class="slide level2">
-<h2>Tools &amp; data, so far</h2>
-<p><code>register_tool()</code> turns a Python function into something the model can call.</p>
+<section id="shinychat" class="slide level2">
+<h2>💬 shinychat</h2>
+<ul>
+<li>Turn any <code>chatlas</code> instance into a web app in just a few lines of code.</li>
+</ul>
 <div class="fragment">
-<p><strong>MCP</strong> extends tools beyond your own process — over HTTP or STDIO.</p>
+<ul>
+<li><code>client=</code> gives you history, tool display, streaming, cancel, attachments, and error handling for free.</li>
+</ul>
 </div>
 <div class="fragment">
-<p><code>.chat_structured()</code> + a <strong>Pydantic model</strong> extracts typed data from text, images, or PDFs.</p>
+<ul>
+<li>Return a <code>ToolResultDisplay</code> to show the user a polished view while the model sees raw data.</li>
+</ul>
 </div>
 <div class="fragment">
-<p><code>str | None</code> fields handle data that’s sometimes missing.</p>
-</div>
-</section>
-<section id="shinychat-so-far" class="slide level2 center">
-<h2>shinychat, so far</h2>
-<div class="fragment">
-<p><code>chat.app()</code> is a thin wrapper — <code>shinychat</code> is what’s actually powering it.</p>
-</div>
-<div class="fragment">
-<p><code>client=</code> gives you history, tool display, streaming, cancel, attachments, error handling — <strong>for free</strong>.</p>
-</div>
-<div class="fragment">
-<p>Return a <code>ToolResultDisplay</code> to show the user a polished view while the model sees raw data.</p>
+<ul>
+<li>Customize with tool displays, slash commands, and more</li>
+</ul>
 </div>
 </section>
 <section id="quick-check" class="slide level2">
 <h2>Quick check 🙋🏻‍♀️</h2>
-<p>What two things does a Python function need to become a tool?</p>
+<ul>
+<li>What two things does a Python function need to become a tool?</li>
+</ul>
 <div class="fragment">
-<p>Name one way to keep LLM-driven code execution safe.</p>
+<ul>
+<li>Name one way to keep LLM-driven code execution safe.</li>
+</ul>
 </div>
 <div class="fragment">
-<p>What does <code>client=</code> give you for free in <code>shinychat</code>?</p>
+<ul>
+<li>What does <code>client=</code> give you for free in <code>shinychat</code>?</li>
+</ul>
 </div>
 </section>
 <section id="up-next" class="slide level2 center" data-background-color="#0F3B5D">
 <h2>Up next</h2>
 <p>📊 <strong>querychat</strong> — the capstone: self-service analytics</p>
-<div class="fragment">
 <p>✔️ <strong>Measuring correctness</strong> — evals</p>
-</div>
-<div class="fragment">
 <p>🧪 <strong>Production tooling</strong> — observability</p>
-</div>
 
 </section>
     </div>

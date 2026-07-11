@@ -228,11 +228,11 @@
 <section id="some-example-use-cases" class="slide level2">
 <h2>Some example use cases</h2>
 <ol type="1">
-<li><strong>Article summaries:</strong> Extract key points from lengthy reports or articles to create concise summaries for decision-makers.</li>
+<li><strong>Article summaries:</strong> Extract key points from lengthy reports or articles.</li>
 </ol>
 <div class="fragment">
 <ol start="2" type="1">
-<li><strong>Image/PDF input:</strong> Extract data from images or PDFs, such as tables or forms, to automate data entry processes.</li>
+<li><strong>Image/PDF input:</strong> Extract data from images or PDFs, such as tables or forms</li>
 </ol>
 </div>
 <div class="fragment">
@@ -242,12 +242,12 @@
 </div>
 <div class="fragment">
 <ol start="4" type="1">
-<li><strong>Entity recognition:</strong> Identify and extract entities such as names, dates, and locations from unstructured text to create structured datasets.</li>
+<li><strong>Entity recognition:</strong> Identify and extract entities such as names, dates, and locations</li>
 </ol>
 </div>
 <div class="fragment">
 <ol start="5" type="1">
-<li><strong>Sentiment analysis:</strong> Extract sentiment scores and associated entities from customer reviews or social media posts to gain insights into public opinion.</li>
+<li><strong>Sentiment analysis:</strong> Extract sentiment scores and associated entities from reviews, etc.</li>
 </ol>
 </div>
 </section>
@@ -349,7 +349,6 @@
 </section>
 <section id="optional-fields" class="slide level2">
 <h2>Optional fields</h2>
-<p>Use <code>| None</code> for fields that may be absent — preprints often lack a journal or DOI.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> chatlas <span class="im">as</span> ctl</span>
 <span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel, Field</span>
 <span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
@@ -370,16 +369,18 @@
 <span id="cb11-3"><a href="" aria-hidden="true" tabindex="-1"></a>         journal<span class="op">=</span><span class="va">None</span>, doi<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="exercise" class="slide level2">
+<section id="exercise" class="slide level2 center" data-background-color="#0e3b5c">
 <h2>Exercise</h2>
 <p>Try extracting structured data from this PDF:</p>
 <p><a href="https://storage.googleapis.com/generativeai-downloads/data/pdf_structured_outputs/invoice.pdf" class="uri">https://storage.googleapis.com/generativeai-downloads/data/pdf_structured_outputs/invoice.pdf</a></p>
-<p>Tips:</p>
+<p><br></p>
+<h3 id="tips">Tips:</h3>
 <ol type="1">
 <li>Use <code>ctl.content_pdf_url()</code> to pass the PDF to the LLM.</li>
-<li>The hard part is the data model. Note there are multiple items, as well as metadata like invoice number, date, and total. You may want to use nested models.</li>
+<li>Note there are multiple items, as well as metadata like invoice number, date, and total.</li>
 </ol>
-<countdown-timer id="timer_dbf3247bb0c9f24fbdbb0a46897564359c3c518d" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<p><br></p>
+<countdown-timer id="timer_55129aadea3971d071d1f3e50af71fa2d59c6bde" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 
 </section>
