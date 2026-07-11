@@ -94,15 +94,15 @@ Most LLMs confidently answer **2**, but it's actually **3**.
 :::
 
 ::: fragment
-* That said, they definitely know how to **write code** to count!
+* However, if it can execute code, correctness dramatically improves.
 :::
 
 ::: fragment
-* LLMs don't come with the inherent capability to execute code, but it's excellent way for them to learn, be precise, and productive.
+* Bad at "implicit" computation, but awesome at coding!
 :::
 
 ::: fragment
-* If the harness (i.e., context in which the LLM is operating) can **execute code**, then the LLM would get this right every time.
+* Excellent way for them to learn, be precise, and productive.
 :::
 
 
@@ -193,7 +193,7 @@ An LLM with tools (i.e., **functions**) running in a loop — deciding each next
 
 ::: columns
 ::: {.column width="65%"}
-![](images/slash-commands.png){fig-align="center"}
+![](images/slash-commands.png){height="500px" fig-align="center"}
 :::
 
 
@@ -246,7 +246,7 @@ An LLM with tools (i.e., **functions**) running in a loop — deciding each next
 ## Goals for today {background-color="#0F3B5D"}
 
 1. Learn the basics of programming with LLMs (via **chatlas**).
-    * System prompts, tool calling, etc.
+    * System prompts, tool calling, extracting data, etc.
 
 ::: fragment
 2. Learn the basics of **shinychat**, which makes it easy to build LLM-powered web apps.

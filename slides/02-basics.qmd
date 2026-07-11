@@ -39,7 +39,9 @@ format:
 
 ::: {.columns}
 ::: {.column width="40%"}
+::: fragment
 * I'm the author :)
+:::
 
 ::: fragment
 * Backed by Posit -- a company with 15+ years of heavy investment in open source
@@ -116,7 +118,7 @@ Switch providers without changing downstream code.
 :::
 
 ::: {.column}
-See what model slugs are available for each provider.
+See what model IDs are available for each provider.
 :::
 
 :::
@@ -124,6 +126,8 @@ See what model slugs are available for each provider.
 ::: {.fragment}
 
 💡 Expressed as a single string: `ChatAuto("openai/gpt-5.5")`.
+
+💡 If no model is provided, a sensible default is provided. 
 :::
 
 
@@ -264,7 +268,9 @@ help?
 1. Open up `exercises/00-chat-hello.py`.
 2. Add a custom system prompt to change the model's behavior.
 3. Try using `.app()` -- how is this similar/different from ChatGPT, etc?
+4. Quit the app, and programmatically determine the number of turns in the conversation history.
+5. Go to the [API reference](https://posit-dev.github.io/chatlas/reference/Chat.html) -- find the `Chat` method for computing cost.
 
 <br>
 
-{{< countdown "5:00" >}}
+{{< countdown "7:00" >}}

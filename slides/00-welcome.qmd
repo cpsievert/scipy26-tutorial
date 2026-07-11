@@ -32,15 +32,29 @@ callout-appearance: simple
 :::
 
 
-## Posit’s mission... {.center}
+## Posit’s mission...
 
 
 > ### To create open-source software for data science, scientific research, and technical communication.
 
-::: {.r-hstack .fragment}
-![](images/shiny.svg){height="200px"}
+::: fragment
+> ### Posit (RStudio) has been fulfilling this missing for 15+ years.
+:::
+
+::: fragment
+> ### In recent years, more investment in Python, AI, etc.
+:::
+
+
+## Posit’s mission...
+
+
+> ### To create open-source software for data science, scientific research, and technical communication.
+
+::: {.r-hstack}
 ![](images/quarto.svg){height="200px"}
 ![](images/great_tables.svg){height="200px"}
+![](images/shiny.svg){height="200px"}
 :::
 
 ::: {.r-hstack .fragment style="margin-top: -2em; margin-left: 4em;"}
@@ -104,10 +118,10 @@ Quick show of hands 🙋
 | Section | Time |
 |---|---|
 | **Welcome & Setup** | 30 min |
-| **LLM foundations** | 30 min |
+| **LLM foundations** | 25 min |
 | **Chat basics** | 30 min |
 | Break+Recap | 10 min |
-| **Tool calling / agents** | 25 min |
+| **Tool calling / agents** | 30 min |
 | **Structured data extraction** | 15 min |
 | **Chatbots** | 20 min |
 | Break+Recap | 10 min |
@@ -165,15 +179,21 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 If you'd rather work locally, follow the instructions in [the website](https://bit.ly/scipy26).
 :::
 
+## Ground rules {.center}
+
+- ❓ **Interrupt with questions** — this is a tutorial, not a keynote.
+- 🤝 **Pair up** with a neighbor — it's more fun and faster.
+- 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
+
 
 ## Exercise: Test run {.center background-color="#0e3b5c"}
 
 1. Open the `exercises/00-chat-hello.py` file.
 2. Run it in the provided environment.
-    * Press play button or Cmd/Ctrl+Enter
+    * Press play button or `Cmd/Ctrl+Enter`
 3. You should see a joke response from the LLM.
 4. If you prefer a notebook
-    * Open command palette with Cmd/Ctrl+Shift+Enter
+    * Open command palette with `Cmd/Ctrl+Shift+Enter`
     * Enter "New Jupyter notebook"
     * Copy/paste over code over
 
@@ -181,13 +201,6 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 <br>
 
 {{<countdown "3:00" >}}
-
-
-## Ground rules {.center}
-
-- ❓ **Interrupt with questions** — this is a tutorial, not a keynote.
-- 🤝 **Pair up** with a neighbor — it's more fun and faster.
-- 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
 
 
 # Feel conflicted about AI? Same here! {.center background-color="#3C0919"}

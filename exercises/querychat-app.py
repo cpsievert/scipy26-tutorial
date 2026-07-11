@@ -5,7 +5,7 @@ import shiny
 qc = QueryChat(
     titanic(),
     "titanic",
-    client="bedrock-anthropic",
+    client="anthropic",
     tools=("filter", "query", "visualize"),
 )
 

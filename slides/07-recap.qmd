@@ -12,86 +12,78 @@ format:
     code-line-numbers: false
 ---
 
-## Where we've been
+## 🔧 Tool calling
 
-* 🔧 **Tools**: give LLMs real capabilities
+* Agent = LLM + tools + loop
 
 ::: fragment
-* 📦 **Structured data extraction**: turn text/images/PDFs into typed data
+* A tool can be a **typed, documented function** — the model decides when to call it.
 :::
 
 ::: fragment
-* 💬 **shinychat**: turn a chat into an app. 
-    * Customize with tool displays, slash commands, and more
-:::
-
-
-## The big idea, again
-
-**Agent = LLM + tools + loop** — tools are how LLMs learn and act on the world.
-
-::: fragment
-A tool is just a **typed, documented function** — the model decides when to call it.
+* `register_tool()` turns a Python function into something the model can call.
 :::
 
 ::: fragment
-Letting an LLM execute arbitrary code is powerful but risky — **sandbox it, run it remotely, or restrict its scope**.
+* Letting an LLM execute arbitrary code is powerful but risky — **sandbox it, run it remotely, or restrict its scope**.
 :::
 
 ::: fragment
-Structured output turns LLM responses into **data your code can branch on**, not just prose.
+* Tools can be extended beyond your own process using **MCP** (over HTTP or STDIO).
 :::
 
-## Tools & data, so far
 
-`register_tool()` turns a Python function into something the model can call.
+## 📦 Structured data extraction
 
-::: fragment
-**MCP** extends tools beyond your own process — over HTTP or STDIO.
-:::
+* Extract structured data from text/images/PDFs
 
 ::: fragment
-`.chat_structured()` + a **Pydantic model** extracts typed data from text, images, or PDFs.
+* Transform LLM responses into **data your code can branch on**, not just prose.
+    * Useful for a lot of stuff beyond chat apps!
 :::
 
 ::: fragment
-`str | None` fields handle data that's sometimes missing.
-:::
-
-## shinychat, so far {.center}
-
-::: fragment
-`chat.app()` is a thin wrapper — `shinychat` is what's actually powering it.
+* `.chat_structured()` + a **Pydantic model** extracts typed data from text, images, or PDFs.
 :::
 
 ::: fragment
-`client=` gives you history, tool display, streaming, cancel, attachments, error handling — **for free**.
+* `str | None` fields handle data that's sometimes missing.
+:::
+
+
+## 💬 shinychat
+
+* Turn any `chatlas` instance into a web app in just a few lines of code.
+
+::: fragment
+* `client=` gives you history, tool display, streaming, cancel, attachments, and error handling for free.
 :::
 
 ::: fragment
-Return a `ToolResultDisplay` to show the user a polished view while the model sees raw data.
+* Return a `ToolResultDisplay` to show the user a polished view while the model sees raw data.
 :::
+
+::: fragment
+* Customize with tool displays, slash commands, and more
+:::
+
 
 ## Quick check 🙋🏻‍♀️
 
-What two things does a Python function need to become a tool?
+* What two things does a Python function need to become a tool?
 
 ::: fragment
-Name one way to keep LLM-driven code execution safe.
+* Name one way to keep LLM-driven code execution safe.
 :::
 
 ::: fragment
-What does `client=` give you for free in `shinychat`?
+* What does `client=` give you for free in `shinychat`?
 :::
 
 ## Up next {.center background-color="#0F3B5D"}
 
 📊 **querychat** — the capstone: self-service analytics
 
-::: fragment
 ✔️ **Measuring correctness** — evals
-:::
 
-::: fragment
 🧪 **Production tooling** — observability
-:::

@@ -27,10 +27,10 @@ format:
 
 ## Some example use cases
 
-1. **Article summaries:** Extract key points from lengthy reports or articles to create concise summaries for decision-makers.
+1. **Article summaries:** Extract key points from lengthy reports or articles.
 
 ::: fragment
-2. **Image/PDF input:** Extract data from images or PDFs, such as tables or forms, to automate data entry processes.
+2. **Image/PDF input:** Extract data from images or PDFs, such as tables or forms
 :::
 
 ::: fragment
@@ -38,11 +38,11 @@ format:
 :::
 
 ::: fragment
-4. **Entity recognition:** Identify and extract entities such as names, dates, and locations from unstructured text to create structured datasets.
+4. **Entity recognition:** Identify and extract entities such as names, dates, and locations
 :::
 
 ::: fragment
-5. **Sentiment analysis:** Extract sentiment scores and associated entities from customer reviews or social media posts to gain insights into public opinion.
+5. **Sentiment analysis:** Extract sentiment scores and associated entities from reviews, etc.
 :::
 
 
@@ -171,8 +171,6 @@ IssueLabel(label='bug', confidence='high')
 
 ## Optional fields
 
-Use `| None` for fields that may be absent — preprints often lack a journal or DOI.
-
 ```{.python}
 import chatlas as ctl
 from pydantic import BaseModel, Field
@@ -200,15 +198,19 @@ Citation(authors=['Harris', 'et al.'], year=2025,
 
 
 
-## Exercise
+## Exercise {.center background-color="#0e3b5c"}
 
 Try extracting structured data from this PDF:
 
 <https://storage.googleapis.com/generativeai-downloads/data/pdf_structured_outputs/invoice.pdf>
 
-Tips: 
+<br>
+
+### Tips: 
 
 1. Use `ctl.content_pdf_url()` to pass the PDF to the LLM.
-2. The hard part is the data model. Note there are multiple items, as well as metadata like invoice number, date, and total. You may want to use nested models.
+2. Note there are multiple items, as well as metadata like invoice number, date, and total.
+
+<br>
 
 {{< countdown "5:00" >}}

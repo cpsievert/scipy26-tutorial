@@ -154,7 +154,7 @@ async def _(user_input: str):
 
 ![](images/slash-command-summarize.png){height="400px" fig-align="center"}
 
-## Exercise {.center}
+## Exercise {.center background-color="#0e3b5c"}
 
 1. Open `exercises/shinychat-app.py` and run it.
     * `shiny run exercises/shinychat-app.py` (or press run in Positron).

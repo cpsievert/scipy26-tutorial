@@ -12,64 +12,54 @@ format:
     code-line-numbers: false
 ---
 
-## Where we've been {.center}
+## LLMs, Agents, & Context {.center}
 
 ::: fragment
-🧭 **Foundations**: how to think about LLMs (strengths and limitations)
+* LLMs are **jagged** — great at some things, bad at others (e.g. counting).
 :::
 
 ::: fragment
-🐍 **chatlas**: how to talk to LLMs from Python
-:::
-
-## The big idea, again {.center}
-
-::: fragment
-LLMs are **jagged** — great at some things, bad at others (e.g. counting).
+* LLMs are _really good_ at coding — so enable them to, and verify the result.
 :::
 
 ::: fragment
-Correctness can improve with the right **context and constraints**.
+* **Agent = LLM + tools + loop.**
 :::
 
 ::: fragment
-LLMs are _really good_ at writing code — so let them, and verify the result.
-:::
-
-::: fragment
-**Agent = LLM + tools + loop.**
+* Correctness and usefulness can (further) improve with the right **context, constraints, and tooling**.
 :::
 
 ## chatlas, so far {.center}
 
 ::: fragment
-One interface (`Chat{Provider}`) to many LLMs — swap providers, keep your code.
+* One interface (`Chat{Provider}`) to many LLMs — swap providers, keep your code.
 :::
 
 ::: fragment
-`.chat()` echoes responses; `.stream()` yields the chunks.
+* `.chat()` echoes responses; `.stream()` yields the chunks.
 :::
 
 ::: fragment
-Chat objects are **stateful** — they remember the conversation (`get_turns()`, `set_turns()`).
+* Chat objects are **stateful** — they remember the conversation (`get_turns()`, `set_turns()`).
 :::
 
 ::: fragment
-A **system prompt** shapes every response, invisibly, without RAG or tool calling.
+* A **system prompt** shapes every response, invisibly, without RAG or tool calling.
 :::
 
 ## Quick check ✅ {.center}
 
 ::: fragment
-What's the difference between a system and user prompt?
+* What's the difference between a system and user prompt?
 :::
 
 ::: fragment
-What method yields a chatbot in 1 line of code?
+* What method yields a chatbot in 1 line of code?
 :::
 
 ::: fragment
-Why might you want to use `.stream()` over `.chat()`?
+* Why might you want to use `.stream()` over `.chat()`?
 :::
 
 ## Up next {.center background-color="#0F3B5D"}

@@ -38,7 +38,13 @@ LLMs are trained on a "fixed" data set -- providers typically refer to this as a
 Three main techniques:
 
 1. **Prompting**: supply knowledge to system prompt. Simple, but it doesn't scale well.
+:::
+
+::: fragment
 2. **RAG**: retrieve relevant information based on user prompt.
+:::
+
+::: fragment
 3. **Tool calling**: define a tool that can access knowledge, and let the model call it.
 :::
 
@@ -122,10 +128,11 @@ The current weather in San Francisco is sunny.
 1. Open up `exercises/chat-tools.py`.
 2. Write a python function that reports the current date.
 3. Register it as a tool and call it from chat.
+4. Add another tool that takes Python code as input and `eval()` it.
 
 <br>
 
-{{< countdown "3:00" >}}
+{{< countdown "5:00" >}}
 
 
 ## Agents: LLM + tools + loop
@@ -133,7 +140,7 @@ The current weather in San Francisco is sunny.
 * Tools are a means by which LLMs both learn & alter the state of the world. 
 
 ::: fragment
-* This particular "agent" is safe, but not very capable.
+* This "weather agent" is safe, but not very capable.
 :::
 
 ::: fragment
@@ -172,17 +179,18 @@ Three main strategies to mitigate risk:
 3. Restrict the **scope** of what can be executed (e.g., read-only SQL).
     * This is the approach used by querychat.
     * Can also lead to model getting "less creative", which can be a good thing for correctness.
+    * Especially relevant for web apps *other people* are driving.
 :::
 
 
 ## Remote tools
 
-* Tools don't _have_ to be available in the same process as the LLM client. 
+* Tools don't _have_ to live in the same process as the LLM client. 
 
 ::: fragment
 * They can be:
-  * **Provider tools**: connect through a particular provider's API.
-  * **MCP tools**: connect through a web service or local process.
+  * **Provider**: the LLM provider provides tools that run on their servers
+  * **MCP**: serve tools through a web service or local process.
 :::
 
 ::: fragment
@@ -273,14 +281,13 @@ await chat.chat_async(
 * MCP is safer since it reduces the risk surface, making it a better fit for web apps.
 :::
 
-
-## Exercise {.center}
+## Exercise {.center background-color="#0e3b5c"}
 
 1. Go to <https://www.pulsemcp.com/servers>.
 2. Click on Filters -> "Remote Available".
 3. Sort from most popular.
 4. Pick an MCP server.
-5. Register it with a chatlas client and make a query to it.
+5. Open `exercises/chat-mcp-tools.py`. Tweak it to use the MCP server you picked.
 
 <br>
 
