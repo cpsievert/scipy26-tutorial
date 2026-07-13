@@ -169,7 +169,7 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 1. Go to [dev.workshop.posit.team](https://dev.workshop.posit.team)
 2. Sign in via your GitHub account (or create a new account)
 3. Click **New session** at the top
-4. Under **Environment**, select the image with `scipy` in the name.
+4. Under **Environment**, select the *last* image (the one with `scipy` is in the name).
 5. Click **Launch**.
     * Can take a while (blank screen is normal)
 6. Click **Open** -> **Open Folder** -> Enter `/opt/scipy26-tutorial`

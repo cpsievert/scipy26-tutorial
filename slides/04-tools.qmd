@@ -292,3 +292,30 @@ await chat.chat_async(
 <br>
 
 {{< countdown "5:00" >}}
+
+
+## Bonus: knowledge retrieval
+
+* Agentic search (i.e., tools to web search, read files, etc) gets you a long way, but not necessarily efficient.
+
+::: fragment
+* Common pattern: "Agentic RAG"
+    1. Pre fetch/index knowledge into an efficient storage system.
+    2. Supply a tool for LLM to retrieve from it.
+:::
+
+::: fragment
+
+```{.python}
+def search_docs(query: str, num_results: int = 5) -> str:
+    "Search the documentation for relevant information."
+    chunks = store.retrieve(query, top_k=num_results, deoverlap=True)
+    return json.dumps(
+        [{"text": chunk.text, "context": chunk.context} for chunk in chunks]
+    )
+```
+:::
+
+::: fragment
+* This is using `raghilda` for the `store`. Learn more [here](https://posit-dev.github.io/raghilda/user-guide/chatlas-integration.html).
+:::

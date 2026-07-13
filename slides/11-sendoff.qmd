@@ -68,6 +68,7 @@ Chat is a great default UI for LLMs, but not the only one:
 - [shinychat](https://posit-dev.github.io/shinychat/py/)
 - [querychat](https://posit-dev.github.io/querychat/py/)
 - [Shiny GenAI guide](https://shiny.posit.co/py/docs/genai-chatbots.html)
+- [chatlas w/ raghilda](https://posit-dev.github.io/raghilda/user-guide/chatlas-integration.html)
 
 :::
 ::: {.column width="33%"}
