@@ -308,7 +308,7 @@
 <li>Add another tool that takes Python code as input and <code>eval()</code> it.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_74865c793fc87f9b3ea612a25592ba68288ec8bc" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_5aa0dba64c854ed414fe42d4d1e8cc341a91751b" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
 </section>
 <section id="agents-llm-tools-loop" class="slide level2">
@@ -466,8 +466,36 @@
 <li>Open <code>exercises/chat-mcp-tools.py</code>. Tweak it to use the MCP server you picked.</li>
 </ol>
 <p><br></p>
-<countdown-timer id="timer_74865c793fc87f9b3ea612a25592ba68288ec8bc" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
+<countdown-timer id="timer_5aa0dba64c854ed414fe42d4d1e8cc341a91751b" minutes="05" seconds="00" class="countdown" warn-when="0" update-every="1" play-sound="false" blink-colon="false" start-immediately="false" tabindex="0" style="right: 0;bottom: 0;">
  </countdown-timer>
+</section>
+<section id="bonus-knowledge-retrieval" class="slide level2">
+<h2>Bonus: knowledge retrieval</h2>
+<ul>
+<li>Agentic search (i.e., tools to web search, read files, etc) gets you a long way, but not necessarily efficient.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Common pattern: “Agentic RAG”
+<ol type="1">
+<li>Pre fetch/index knowledge into an efficient storage system.</li>
+<li>Supply a tool for LLM to retrieve from it.</li>
+</ol></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> search_docs(query: <span class="bu">str</span>, num_results: <span class="bu">int</span> <span class="op">=</span> <span class="dv">5</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb10-2"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Search the documentation for relevant information."</span></span>
+<span id="cb10-3"><a href="" aria-hidden="true" tabindex="-1"></a>    chunks <span class="op">=</span> store.retrieve(query, top_k<span class="op">=</span>num_results, deoverlap<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-4"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> json.dumps(</span>
+<span id="cb10-5"><a href="" aria-hidden="true" tabindex="-1"></a>        [{<span class="st">"text"</span>: chunk.text, <span class="st">"context"</span>: chunk.context} <span class="cf">for</span> chunk <span class="kw">in</span> chunks]</span>
+<span id="cb10-6"><a href="" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="fragment">
+<ul>
+<li>This is using <code>raghilda</code> for the <code>store</code>. Learn more <a href="https://posit-dev.github.io/raghilda/user-guide/chatlas-integration.html">here</a>.</li>
+</ul>
+</div>
 
 </section>
     </div>
