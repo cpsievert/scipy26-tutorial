@@ -216,9 +216,9 @@ Starter: `exercises/eval-starter.py` -- a `PaperResults` eval, already wired up 
 
 1. `python exercises/eval-starter.py` builds the dataset.
 2. `inspect eval exercises/eval-starter.py`, then `inspect view` -- see how each sample scored.
+    * Tip: install "Inspect AI" VS Code extension for a better experience
 3. Break it on purpose: edit one `target` to be wrong or vague, rerun steps 1-2, and watch the score drop.
 4. Swap `model_graded_fact` for `model_graded_qa` -- does grading get stricter or looser?
-5. **Bonus**: turn on `partial_credit=True` and edit a target to be "half right" -- what score do you get?
 
 <br>
 
