@@ -29,7 +29,7 @@ def get_weather(lat: float, lng: float, location: str):
     return resp.json()["current"]
 
 
-client = ctl.ChatAnthropic(
+client = ctl.ChatBedrockAnthropic(
     system_prompt="You are a helpful weather assistant. Use the weather tool to answer questions.",
 )
 client.register_tool(get_weather)
