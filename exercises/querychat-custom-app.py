@@ -34,6 +34,7 @@ data = titanic()
 qc = QueryChat(
     data,
     "titanic",
+    client="bedrock-anthropic",
     # Task 1: add a data_description for your data, e.g.:
     # data_description="survived: 1 = survived, 0 = did not survive",
 )
