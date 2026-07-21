@@ -181,6 +181,7 @@ If you'd rather work locally, follow the instructions in [the website](https://b
 ## Ground rules {.center}
 
 - ❓ **Interrupt with questions** — this is a tutorial, not a keynote.
+- ❓ Use Slack channel `#tutorial-intro-to-safe-reliable-maintainable-ai-apps`
 - 🤝 **Pair up** with a neighbor — it's more fun and faster.
 - 🛑 **Stuck? Flag it.** Don't suffer silently during exercises.
 
